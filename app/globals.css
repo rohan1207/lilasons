@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f7f7;
+  --foreground: #0a0a0a;
+  --muted: #6b6b6b;
+  --tick: #d6d6d6;
+  --tick-active: #1a1a1a;
+  --accent: #c5e24a;
+
+  /* Premium tight display type — matches reference */
+  --tracking-display: -0.04em;
+  --tracking-heading: -0.03em;
+  --tracking-body: -0.01em;
+  --tracking-label: 0.08em;
+  --leading-display: 1.02;
+  --leading-heading: 1.08;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-tick: var(--tick);
+  --color-tick-active: var(--tick-active);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overscroll-behavior-y: none;
+}
+
+/* ——— Typography system ——— */
+
+.type-display {
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.type-heading {
+  font-weight: 700;
+  letter-spacing: var(--tracking-heading);
+  line-height: var(--leading-heading);
+  color: var(--foreground);
+}
+
+.type-heading-upper {
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-heading);
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.type-body {
+  font-weight: 500;
+  letter-spacing: var(--tracking-body);
+  line-height: 1.55;
+  color: #3d3d3d;
+}
+
+.type-label {
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #6b6b6b;
+}
+
+.type-button {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.type-logo {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+::selection {
+  background: var(--accent);
+  color: #111;
+}
