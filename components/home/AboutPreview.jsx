@@ -1,12 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { ABOUT } from "@/lib/brand";
 
 const ease = [0.22, 1, 0.36, 1];
 
 const STATS = [
   {
-    label: "Residential schemes across the city",
+    label: ABOUT.stats[0].label,
     icon: (
       <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" aria-hidden>
         <path
@@ -20,7 +22,7 @@ const STATS = [
     ),
   },
   {
-    label: "Homes in new & upcoming areas",
+    label: ABOUT.stats[1].label,
     icon: (
       <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" aria-hidden>
         <path
@@ -41,7 +43,7 @@ const STATS = [
     ),
   },
   {
-    label: "Commercial sale & leasing wing",
+    label: ABOUT.stats[2].label,
     icon: (
       <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" aria-hidden>
         <path
@@ -124,13 +126,13 @@ export default function AboutPreview() {
       <div className="relative mx-auto flex h-full min-h-0 w-full max-w-[1500px] flex-1 flex-col px-5 pb-8 sm:px-8 sm:pb-5 lg:px-12 lg:pb-6">
         <Reveal delay={0.02} y={16} className="mb-5 shrink-0 sm:mb-6 lg:mb-7">
           <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:mb-2 sm:text-[12px]">
-            — Our Company
+            {ABOUT.eyebrow}
           </p>
           <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px] md:text-[42px] lg:text-[46px]">
-            30 Years and Counting
+            {ABOUT.subtitle}
           </h2>
           <p className="type-body mt-2 max-w-[48ch] text-[13px] text-neutral-500 sm:mt-2.5 sm:text-[14px] md:text-[15px]">
-            The Lilasons Group since 1971 — now shaping Aurangabad’s skyline with residential and commercial landmarks.
+            {ABOUT.body}
           </p>
         </Reveal>
 
@@ -161,7 +163,7 @@ export default function AboutPreview() {
 
           <Reveal delay={0.18} y={18} className="mt-5 lg:mt-0">
             <p className="type-heading text-[30px] uppercase leading-none tracking-[-0.04em] text-neutral-950 sm:text-[38px] lg:text-[44px] xl:text-[50px]">
-              Homes
+              {ABOUT.wordmark}
             </p>
           </Reveal>
         </div>
@@ -204,6 +206,9 @@ export default function AboutPreview() {
               <br />
               Building your environment.
             </h3>
+            <p className="type-body mt-3 max-w-[32ch] text-[13px] text-neutral-500 sm:text-[14px]">
+              {ABOUT.detail}
+            </p>
           </Reveal>
 
           <Reveal delay={0.3} y={18} className="mt-6 lg:mt-0">
@@ -227,14 +232,12 @@ export default function AboutPreview() {
           </Reveal>
 
           <Reveal delay={0.42} y={14} className="mt-6 flex justify-start lg:mt-0 lg:justify-end">
-            <a
-              href="https://lilasonsdevelopers.in/our-company"
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href={ABOUT.ctaHref}
               className="type-button btn-pill btn-shine inline-flex h-10 items-center justify-center bg-neutral-950 px-5 text-[11px] text-white transition-opacity hover:opacity-85 sm:px-6"
             >
-              Our Company
-            </a>
+              {ABOUT.cta}
+            </Link>
           </Reveal>
         </div>
         </div>

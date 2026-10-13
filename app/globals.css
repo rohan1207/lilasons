@@ -27,6 +27,10 @@
   --font-sans: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.font-display {
+  font-family: var(--font-lilasons-display), "Times New Roman", Georgia, serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -99,11 +103,81 @@ body {
   text-transform: uppercase;
 }
 
+/* Numbers / metrics — simple professional sans (never display/serif) */
+.type-stat,
+.font-numeric {
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
 .type-logo {
   font-weight: 700;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1;
+}
+
+/* ——— Soft radius system: chips, fields, cards ——— */
+
+.chip,
+.tag-pill {
+  border-radius: 9999px;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+select {
+  border-radius: 9999px;
+}
+
+textarea {
+  border-radius: 1.25rem;
+}
+
+.surface-card {
+  border-radius: 1.25rem;
+}
+
+/* ——— Pill + glass shine (sitewide CTAs) ——— */
+
+.btn-pill {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 9999px !important;
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.1) 65%,
+    transparent 100%
+  );
+  transform: translateX(-160%) skewX(-16deg);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-shine:hover::after,
+.btn-shine:focus-visible::after {
+  transform: translateX(280%) skewX(-16deg);
 }
 
 ::selection {

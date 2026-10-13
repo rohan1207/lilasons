@@ -128,10 +128,14 @@ export default function IdCard() {
                 <div className="relative flex h-full flex-col justify-between p-5 text-white sm:p-6">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="type-logo text-[1.15rem] tracking-[-0.02em]">
-                        {BRAND.shortName.toUpperCase()}
-                      </p>
-                      <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={BRAND.logo}
+                        alt={BRAND.name}
+                        className="h-10 w-auto max-w-[200px] object-contain brightness-0 invert"
+                        draggable={false}
+                      />
+                      <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
                         Developers
                       </p>
                     </div>
@@ -152,7 +156,7 @@ export default function IdCard() {
                         <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-white/40">
                           Access
                         </p>
-                        <p className="mt-0.5 font-mono text-[12px] tracking-[0.08em] text-white/80">
+                        <p className="type-stat mt-0.5 text-[12px] tracking-[0.04em] text-white/80">
                           IN · CSN · MH
                         </p>
                       </div>

@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   FRAME_COUNT,
   getFrameImage,
   startFramePreload,
   subscribeFramePreload,
 } from "@/lib/framePreloader";
+import { BRAND } from "@/lib/brand";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -272,26 +274,26 @@ export default function Hero() {
             redefined
           </h2>
           <p className="type-body mt-5 text-[14px] sm:text-[15px] md:text-[16px]">
-            Building your foundation, building your environment — thoughtfully
-            crafted homes and commercial spaces across Aurangabad.
+            {BRAND.tagline} — thoughtfully crafted homes and commercial spaces
+            across Aurangabad.
           </p>
           <div className="type-label mt-6 flex flex-col gap-1.5 text-[11px] text-neutral-500 sm:text-[12px]">
-            <span>Residences · Row Houses · Commercial</span>
+            <span>Residences · Row Houses · Commercial · Plots</span>
             <span>Trusted since the Lilasons Group, 1971</span>
           </div>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <a
-              href="#residences"
+            <Link
+              href="/projects"
               className="type-button btn-pill btn-shine pointer-events-auto inline-flex h-11 items-center justify-center bg-neutral-950 px-7 text-[11px] text-white transition-opacity hover:opacity-85 sm:h-12 sm:px-8 sm:text-[12px]"
             >
               Our Projects
-            </a>
-            <a
-              href="#contact"
+            </Link>
+            <Link
+              href="/contact"
               className="type-button btn-pill btn-shine pointer-events-auto inline-flex h-11 items-center justify-center border border-neutral-900/25 px-6 text-[11px] text-neutral-950 transition-colors hover:border-neutral-950 sm:h-12 sm:px-7 sm:text-[12px]"
             >
               Contact Us
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -302,7 +304,7 @@ export default function Hero() {
           style={{ opacity: 1 }}
         >
           <p className="type-label mb-2 text-[11px] sm:text-[12px] md:text-[13px]">
-            Lilasons Developers
+            {BRAND.name}
           </p>
           <h3 className="type-display mb-4 text-[1.55rem] text-neutral-950 sm:text-[1.95rem] md:text-[2.25rem]">
             Homes built
@@ -310,8 +312,8 @@ export default function Hero() {
             with trust
           </h3>
           <p className="type-body mb-3 text-[14px] sm:text-[15px] md:text-[16px]">
-            From Amrut Sai Gold Star to Golden Heights — spaces designed for
-            modern families and lasting value.
+            From Amrut Sai Gold Star to Lilasons Golden Estate — spaces designed
+            for modern families and lasting value.
           </p>
           <p className="type-body text-[13px] text-neutral-500 sm:text-[14px]">
             State-of-the-art design, RERA-registered projects, and a legacy of

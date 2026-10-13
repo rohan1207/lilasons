@@ -68,7 +68,7 @@ export default function Domains() {
           </div>
 
           <Link
-            href="#residences"
+            href="/projects"
             className="type-button btn-pill btn-shine inline-flex h-10 w-fit shrink-0 items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-11 sm:px-6 sm:text-[12px]"
           >
             <span aria-hidden className="text-[13px] leading-none">

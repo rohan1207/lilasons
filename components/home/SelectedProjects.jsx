@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AnimatePresence, motion } from "framer-motion";
-import { PROJECTS } from "@/lib/brand";
+import Link from "next/link";
+import { PROJECTS } from "@/lib/projects";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const ease = [0.22, 1, 0.36, 1];
 
 function readNavOffset() {
   const header = document.querySelector("header");
@@ -18,17 +16,31 @@ function readNavOffset() {
   return Math.round(header.getBoundingClientRect().height);
 }
 
+function indexFromProgress(progress, total) {
+  if (progress >= 0.999) return total - 1;
+  return Math.min(total - 1, Math.floor(progress * total));
+}
+
+function lerpFactor(distance) {
+  // Soft catch-up: far = a bit quicker, near = silk
+  if (distance > 0.4) return 0.14;
+  if (distance > 0.2) return 0.1;
+  if (distance > 0.08) return 0.075;
+  return 0.055;
+}
+
 export default function SelectedProjects() {
   const rootRef = useRef(null);
   const stageRef = useRef(null);
-  const [active, setActive] = useState(0);
-  const total = PROJECTS.length;
-  const project = PROJECTS[active];
+  const targetProgress = useRef(0);
+  const displayProgress = useRef(0);
+  const activeRef = useRef(0);
+  const rafRef = useRef(0);
+  const barRef = useRef(null);
 
-  const progressWidth = useMemo(
-    () => `${((active + 1) / total) * 100}%`,
-    [active, total],
-  );
+  const [active, setActive] = useState(0);
+
+  const total = PROJECTS.length;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -44,28 +56,53 @@ export default function SelectedProjects() {
 
     layout();
 
-    // One viewport of scroll per project while pinned
+    const tick = () => {
+      const target = targetProgress.current;
+      let display = displayProgress.current;
+      const delta = target - display;
+      const dist = Math.abs(delta);
+
+      if (dist < 0.00035) {
+        display = target;
+      } else {
+        display += delta * lerpFactor(dist);
+      }
+
+      displayProgress.current = display;
+
+      if (barRef.current) {
+        barRef.current.style.width = `${Math.min(100, Math.max(0, display * 100))}%`;
+      }
+
+      const idx = indexFromProgress(display, total);
+      if (idx !== activeRef.current) {
+        activeRef.current = idx;
+        setActive(idx);
+      }
+
+      rafRef.current = window.requestAnimationFrame(tick);
+    };
+
+    rafRef.current = window.requestAnimationFrame(tick);
+
     const st = ScrollTrigger.create({
       id: "tsk-selected-projects",
       trigger: root,
       start: () => `top top+=${readNavOffset()}`,
       end: () => {
         const h = Math.max(320, window.innerHeight - readNavOffset());
-        return `+=${h * total}`;
+        // ~1 viewport per project — calm pacing without feeling endless
+        return `+=${Math.round(h * total)}`;
       },
       pin: true,
       pinSpacing: true,
       anticipatePin: 1,
-      scrub: 0.35,
+      scrub: 0.65,
       invalidateOnRefresh: true,
-      fastScrollEnd: true,
+      fastScrollEnd: false,
       onRefreshInit: layout,
       onUpdate: (self) => {
-        const idx = Math.min(
-          total - 1,
-          Math.floor(self.progress * total + 0.0001),
-        );
-        setActive((prev) => (prev === idx ? prev : idx));
+        targetProgress.current = self.progress;
       },
     });
 
@@ -75,6 +112,7 @@ export default function SelectedProjects() {
     window.addEventListener("resize", refresh);
 
     return () => {
+      window.cancelAnimationFrame(rafRef.current);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
       window.removeEventListener("resize", refresh);
@@ -87,105 +125,123 @@ export default function SelectedProjects() {
       id="residences"
       ref={rootRef}
       className="relative z-10 bg-white"
-      aria-label="Selected projects"
+      aria-label="Selected work"
     >
       <div
         ref={stageRef}
         className="relative flex w-full flex-col overflow-hidden lg:flex-row"
       >
         {/* Left panel */}
-        <div className="relative flex min-h-0 w-full flex-1 flex-col justify-between bg-white px-5 py-8 sm:px-8 sm:py-10 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-12 xl:px-14">
-          <div className="min-h-0 flex-1">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.55, ease }}
-                className="flex h-full flex-col"
-              >
-                <p className="type-label text-[11px] text-neutral-400 sm:text-[12px]">
-                  {project.category} · {project.indexLabel}
-                </p>
+        <div className="relative flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-7 sm:px-8 sm:py-9 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
+          {/* Heading */}
+          <header className="shrink-0 pb-5 sm:pb-6">
+            <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:text-[12px]">
+              — Our Projects
+            </p>
+            <h2 className="type-heading text-[28px] uppercase leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:text-[34px] lg:text-[38px]">
+              Selected Work
+            </h2>
+          </header>
 
-                <h2 className="type-heading mt-4 text-[32px] leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:mt-5 sm:text-[42px] md:text-[48px] lg:text-[52px]">
-                  {project.title}
-                </h2>
+          {/* Project copy — stacked fades, no remount jitter */}
+          <div className="relative min-h-0 flex-1 overflow-hidden">
+            {PROJECTS.map((project, i) => {
+              const on = i === active;
+              return (
+                <div
+                  key={project.id}
+                  className="absolute inset-0 flex flex-col transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{
+                    opacity: on ? 1 : 0,
+                    transform: on ? "translateY(0)" : "translateY(10px)",
+                    pointerEvents: on ? "auto" : "none",
+                  }}
+                  aria-hidden={!on}
+                >
+                  <p className="type-label text-[11px] text-neutral-400 sm:text-[12px]">
+                    {project.category} · {project.indexLabel}
+                  </p>
 
-                <p className="type-label mt-3 text-[11px] text-neutral-500 sm:mt-4 sm:text-[12px]">
-                  {project.placeLine}
-                </p>
+                  <h3 className="type-heading mt-3 text-[26px] leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
+                    {project.title}
+                  </h3>
 
-                <p className="type-body mt-5 max-w-[40ch] text-[13px] text-neutral-600 sm:mt-6 sm:text-[14px] md:text-[15px]">
-                  {project.summary}
-                </p>
+                  <p className="type-label mt-2.5 text-[11px] text-neutral-500 sm:mt-3 sm:text-[12px]">
+                    {project.placeLine}
+                  </p>
 
-                <div className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-neutral-200 pt-6 sm:mt-8 sm:gap-y-5 sm:pt-7">
-                  {project.meta.map((item) => (
-                    <div key={item.label}>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400 sm:text-[11px]">
-                        {item.label}
-                      </p>
-                      <p className="mt-1 text-[13px] font-medium tracking-[-0.01em] text-neutral-900 sm:text-[14px]">
-                        {item.value}
-                      </p>
-                    </div>
-                  ))}
+                  <p className="type-body mt-4 max-w-[40ch] text-[13px] leading-relaxed text-neutral-600 sm:mt-5 sm:text-[14px] md:text-[15px]">
+                    {project.summary}
+                  </p>
+
+                  <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 border-t border-neutral-200 pt-5 sm:mt-6 sm:gap-y-4 sm:pt-6">
+                    {project.meta.slice(0, 4).map((item) => (
+                      <div key={item.label}>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400 sm:text-[11px]">
+                          {item.label}
+                        </p>
+                        <p className="mt-1 text-[13px] font-medium tracking-[-0.01em] text-neutral-900 sm:text-[14px]">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-
-                <div className="mt-8 sm:mt-10">
-                  <a
-                    href={project.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="type-button btn-pill btn-shine inline-flex h-10 items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-11 sm:px-6 sm:text-[12px]"
-                  >
-                    <span aria-hidden className="text-[13px] leading-none">
-                      ↗
-                    </span>
-                    View Project
-                  </a>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+              );
+            })}
           </div>
 
-          {/* Progress + scroll cue */}
-          <div className="mt-8 flex shrink-0 items-end justify-between gap-6 pt-4 sm:mt-10">
-            <div className="min-w-[120px] flex-1 max-w-[200px]">
-              <p className="type-label text-[11px] text-neutral-500">
-                {String(active + 1).padStart(2, "0")} /{" "}
-                {String(total).padStart(2, "0")}
-              </p>
-              <div className="mt-2.5 h-px w-full bg-neutral-200">
+          {/* Footer: CTA + tracker on one row — never overlaps */}
+          <div className="mt-5 flex shrink-0 flex-col gap-4 border-t border-neutral-200 pt-5 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
+            <Link
+              href={PROJECTS[active].href}
+              className="type-button btn-pill btn-shine inline-flex h-10 w-fit items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-11 sm:px-6 sm:text-[12px]"
+            >
+              <span aria-hidden className="text-[13px] leading-none">
+                ↗
+              </span>
+              View Project
+            </Link>
+
+            <div className="min-w-[140px] sm:max-w-[200px] sm:flex-1 sm:text-right">
+              <div className="flex items-center justify-between gap-3 sm:justify-end sm:gap-4">
+                <p className="type-label text-[11px] tabular-nums text-neutral-500">
+                  {String(active + 1).padStart(2, "0")} /{" "}
+                  {String(total).padStart(2, "0")}
+                </p>
+                <p className="type-label text-[10px] text-neutral-400 sm:text-[11px]">
+                  Scroll
+                </p>
+              </div>
+              <div className="mt-2.5 h-px w-full bg-neutral-200 sm:ml-auto sm:max-w-[200px]">
                 <div
-                  className="h-px bg-neutral-950 transition-[width] duration-500 ease-out"
-                  style={{ width: progressWidth }}
+                  ref={barRef}
+                  className="h-px w-0 bg-neutral-950 will-change-[width]"
                 />
               </div>
             </div>
-            <p className="type-label pb-0.5 text-[10px] text-neutral-400 sm:text-[11px]">
-              Scroll
-            </p>
           </div>
         </div>
 
-        {/* Right image */}
+        {/* Right image — stacked crossfade */}
         <div className="relative min-h-[42vh] w-full flex-1 overflow-hidden bg-neutral-200 lg:min-h-0 lg:w-[54%]">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={project.image}
-              src={project.image}
-              alt={project.alt}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.7, ease }}
-              className="absolute inset-0 h-full w-full object-cover"
-              draggable={false}
-            />
-          </AnimatePresence>
+          {PROJECTS.map((project, i) => {
+            const on = i === active;
+            return (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={project.id}
+                src={project.gallery?.[0] || project.image}
+                alt={project.alt}
+                draggable={false}
+                className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                style={{
+                  opacity: on ? 1 : 0,
+                  transform: on ? "scale(1)" : "scale(1.03)",
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

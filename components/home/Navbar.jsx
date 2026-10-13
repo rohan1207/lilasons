@@ -1,22 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import BrandMark from "@/components/BrandMark";
-import { BRAND, NAV_ALL, NAV_PRIMARY } from "@/lib/brand";
+import { BRAND, NAV_PRIMARY, PROJECT_NAV } from "@/lib/brand";
 
-const CONTACT = { label: "Contact", href: "#contact" };
+const CONTACT = { label: "Contact", href: "/contact" };
 const ease = [0.22, 1, 0.36, 1];
 
-export default function Navbar() {
+export default function Navbar({ forceSolid = false }) {
+  const pathname = usePathname();
   const [megaOpen, setMegaOpen] = useState(false);
-  const [solid, setSolid] = useState(false);
+  const [projectsOpen, setProjectsOpen] = useState(false);
+  const [solid, setSolid] = useState(forceSolid);
 
   useEffect(() => {
+    if (forceSolid) {
+      setSolid(true);
+      return;
+    }
+
     const update = () => {
       const hero = document.getElementById("home");
       if (!hero) {
-        setSolid(false);
+        setSolid(true);
         return;
       }
       setSolid(hero.getBoundingClientRect().bottom <= 0);
@@ -35,7 +44,7 @@ export default function Navbar() {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
-  }, []);
+  }, [forceSolid, pathname]);
 
   useEffect(() => {
     if (!megaOpen) return;
@@ -56,6 +65,11 @@ export default function Navbar() {
 
   const closeMega = () => setMegaOpen(false);
 
+  const isActive = (href) => {
+    if (href === "/home") return pathname === "/home" || pathname === "/";
+    return pathname === href || pathname?.startsWith(`${href}/`);
+  };
+
   return (
     <>
       <header
@@ -68,29 +82,61 @@ export default function Navbar() {
         <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 sm:h-24 sm:px-8 lg:px-10">
           <BrandMark />
 
-          <ul className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-x-6 lg:flex xl:gap-x-8">
+          <ul className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-x-5 lg:flex xl:gap-x-7">
             {NAV_PRIMARY.map((link) => (
-              <li key={link.href + link.label}>
-                <a
+              <li
+                key={link.href + link.label}
+                className="relative"
+                onMouseEnter={() =>
+                  link.children ? setProjectsOpen(true) : setProjectsOpen(false)
+                }
+                onMouseLeave={() => setProjectsOpen(false)}
+              >
+                <Link
                   href={link.href}
-                  {...(link.href.startsWith("http")
-                    ? { target: "_blank", rel: "noreferrer" }
-                    : {})}
-                  className="type-label whitespace-nowrap text-[11px] text-neutral-500 transition-colors hover:text-neutral-950 xl:text-[12px]"
+                  className={`type-label whitespace-nowrap text-[11px] transition-colors xl:text-[12px] ${
+                    isActive(link.href)
+                      ? "text-[#3b6ea5]"
+                      : "text-neutral-500 hover:text-neutral-950"
+                  }`}
                 >
                   {link.label}
-                </a>
+                  {link.children ? (
+                    <span className="ml-1 inline-block text-[10px] opacity-60">
+                      ›
+                    </span>
+                  ) : null}
+                </Link>
+
+                {link.children && projectsOpen && (
+                  <div className="absolute left-1/2 top-full z-30 w-[280px] -translate-x-1/2 pt-4">
+                    <div className="rounded-2xl border border-neutral-200 bg-[#efefef] px-5 py-4 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.35)]">
+                      <ul className="space-y-2.5">
+                        {PROJECT_NAV.map((item) => (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              className="block text-[13px] font-medium tracking-[-0.01em] text-neutral-700 transition-colors hover:text-neutral-950"
+                            >
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
 
           <div className="relative z-20 flex items-center gap-3 sm:gap-4">
-            <a
+            <Link
               href={CONTACT.href}
               className="type-button btn-pill btn-shine inline-flex h-10 items-center justify-center bg-neutral-950 px-5 text-[11px] text-white transition-opacity hover:opacity-85 sm:px-6"
             >
               {CONTACT.label}
-            </a>
+            </Link>
 
             <button
               type="button"
@@ -131,46 +177,65 @@ export default function Navbar() {
                 </button>
               </div>
 
-              <div className="mt-10 flex flex-1 flex-col justify-between pb-8 lg:mt-14 lg:flex-row lg:items-end">
-                <ul className="grid max-w-3xl grid-cols-1 gap-x-16 gap-y-3 sm:grid-cols-2">
-                  {NAV_ALL.map((link, i) => (
+              <div className="mt-8 flex min-h-0 flex-1 flex-col overflow-auto pb-8 lg:mt-10 lg:flex-row">
+                <ul className="w-full space-y-1 border-b border-neutral-200 pb-8 lg:w-[42%] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-10">
+                  {NAV_PRIMARY.map((link) => (
                     <li key={link.href + link.label}>
-                      <a
+                      <Link
                         href={link.href}
                         onClick={closeMega}
-                        {...(link.href.startsWith("http")
-                          ? { target: "_blank", rel: "noreferrer" }
-                          : {})}
-                        className="group flex items-baseline gap-3 py-1"
+                        className={`block py-2.5 text-[22px] font-medium tracking-[-0.02em] transition-colors sm:text-[26px] ${
+                          isActive(link.href)
+                            ? "text-[#3b6ea5]"
+                            : "text-neutral-500 hover:text-neutral-950"
+                        }`}
                       >
-                        <span className="type-label w-6 text-[10px] text-neutral-300 transition-colors group-hover:text-neutral-500">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="type-heading text-[22px] text-neutral-950 transition-opacity group-hover:opacity-60 sm:text-[26px]">
-                          {link.label}
-                        </span>
-                      </a>
+                        {link.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-12 space-y-4 lg:mt-0 lg:max-w-xs lg:text-right">
-                  <p className="type-label text-[11px] text-neutral-400">
-                    {BRAND.address.short}
+                <div className="w-full bg-[#ebebeb]/60 px-0 py-8 lg:flex-1 lg:px-10 lg:py-2">
+                  <p className="type-label mb-4 text-[11px] text-neutral-400">
+                    Our Projects
                   </p>
-                  <a
-                    href={`mailto:${BRAND.email}`}
-                    className="block text-[14px] font-medium text-neutral-800"
-                  >
-                    {BRAND.email}
-                  </a>
-                  <a
-                    href={CONTACT.href}
-                    onClick={closeMega}
-                    className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center bg-neutral-950 px-8 text-[11px] text-white transition-opacity hover:opacity-85"
-                  >
-                    Contact Us
-                  </a>
+                  <ul className="space-y-3">
+                    {PROJECT_NAV.map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={closeMega}
+                          className={`block text-[16px] font-medium tracking-[-0.015em] transition-colors sm:text-[18px] ${
+                            isActive(item.href)
+                              ? "text-[#3b6ea5]"
+                              : "text-neutral-600 hover:text-neutral-950"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-10 space-y-3 border-t border-neutral-300/70 pt-8">
+                    <p className="type-label text-[11px] text-neutral-400">
+                      {BRAND.address.short}
+                    </p>
+                    <a
+                      href={`mailto:${BRAND.email}`}
+                      className="block text-[14px] font-medium text-neutral-800"
+                    >
+                      {BRAND.email}
+                    </a>
+                    <Link
+                      href={CONTACT.href}
+                      onClick={closeMega}
+                      className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center bg-neutral-950 px-8 text-[11px] text-white transition-opacity hover:opacity-85"
+                    >
+                      Contact Us
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

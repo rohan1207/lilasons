@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Compass from "./Compass";
 import AnimatedSlogan from "./AnimatedSlogan";
+import BrandMark from "@/components/BrandMark";
 import {
   LANDING_BG_SRC,
   LANDING_LOAD_MS,
@@ -71,9 +72,12 @@ export default function LandingScreen({ onComplete }) {
       >
         <Compass progress={progress} />
 
-        <h1 className="type-logo mt-12 max-w-[12ch] text-[clamp(2.4rem,9vw,4.25rem)] leading-[1.02] tracking-[-0.03em] text-neutral-950">
-          Lilasons
-        </h1>
+        <div className="mt-12 flex justify-center">
+          <BrandMark
+            asLink={false}
+            imgClassName="h-[4.75rem] w-auto max-w-[380px] object-contain sm:h-20 sm:max-w-[440px] md:h-24 md:max-w-[520px]"
+          />
+        </div>
 
         <AnimatedSlogan />
 
@@ -81,7 +85,7 @@ export default function LandingScreen({ onComplete }) {
           <p className="type-label text-[11px] text-neutral-500 sm:text-[12px]">
             Loading your experience
           </p>
-          <p className="type-heading text-[2rem] tabular-nums text-neutral-950 sm:text-[2.25rem]">
+          <p className="type-stat text-[2rem] text-neutral-950 sm:text-[2.25rem]">
             {percent}
             <span className="ml-0.5 text-[0.9rem] font-semibold text-neutral-400">
               %
