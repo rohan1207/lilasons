@@ -7,11 +7,16 @@ import AnimatedSlogan from "./AnimatedSlogan";
 import BrandMark from "@/components/BrandMark";
 import {
   LANDING_BG_SRC,
-  LANDING_LOAD_MS,
+  LANDING_MAX_MS,
+  LANDING_MIN_MS,
   startFramePreload,
+  subscribeFramePreload,
 } from "@/lib/framePreloader";
 
 /**
+ * Blocks until the hero frame set is fully decoded (desktop: 300, phone: scrub set).
+ * Progress mirrors real preload so home never opens with missing frames / black flashes.
+ *
  * @param {{ onComplete?: () => void }} props
  */
 export default function LandingScreen({ onComplete }) {
@@ -24,22 +29,37 @@ export default function LandingScreen({ onComplete }) {
     let cancelled = false;
     let raf = 0;
     const start = performance.now();
+    let loadState = {
+      requiredProgress: 0,
+      ready: false,
+    };
+
+    const unsub = subscribeFramePreload((state) => {
+      loadState = state;
+    });
 
     const tick = (now) => {
       if (cancelled) return;
-      const t = Math.min(1, (now - start) / LANDING_LOAD_MS);
-      const eased = 1 - Math.pow(1 - t, 1.35);
-      setProgress(eased);
+      const elapsed = now - start;
+      const timeFloor = Math.min(1, elapsed / LANDING_MIN_MS);
+      // Prefer real decode progress; ease the early seconds so UI doesn't look stuck at 0
+      const blended = Math.max(loadState.requiredProgress, timeFloor * 0.15);
+      setProgress(Math.min(1, blended));
 
-      if (t < 1) {
-        raf = requestAnimationFrame(tick);
+      const minTimeDone = elapsed >= LANDING_MIN_MS;
+      const framesReady = loadState.ready;
+      const timedOut = elapsed >= LANDING_MAX_MS;
+
+      if ((minTimeDone && framesReady) || timedOut) {
+        setProgress(1);
+        if (!completed.current) {
+          completed.current = true;
+          onComplete?.();
+        }
         return;
       }
 
-      setProgress(1);
-      if (completed.current) return;
-      completed.current = true;
-      onComplete?.();
+      raf = requestAnimationFrame(tick);
     };
 
     raf = requestAnimationFrame(tick);
@@ -47,6 +67,7 @@ export default function LandingScreen({ onComplete }) {
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      unsub();
     };
   }, [onComplete]);
 

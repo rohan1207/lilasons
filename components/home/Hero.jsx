@@ -9,8 +9,6 @@ import {
   FRAME_COUNT,
   frameSrc,
   getFrameImage,
-  getPhoneScrubFrames,
-  loadFrameIndices,
   startFramePreload,
   subscribeFramePreload,
 } from "@/lib/framePreloader";
@@ -21,14 +19,14 @@ import { isPhoneViewport } from "@/lib/mobile";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Desktop: fixed canvas + ScrollTrigger scrub (full 300).
- * Phone (anti-jitter, no Lenis / no ST):
- *   sticky layer + native scroll → full phoneFrames list → CSS backgroundImage
- *   (canvas hidden — iOS freezes fixed-canvas paints during touch momentum).
+ * Same full 300-frame sequence on desktop and phone.
+ * Desktop: fixed canvas + ScrollTrigger.
+ * Phone: sticky dual-img + native scroll (no Lenis / no ST — anti-jitter).
  */
 
 const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
-const PHONE = { sequence: 340, hold: 48, lerp: 1 };
+/** Same frame count as desktop; runway sized for touch scrub of all 300. */
+const PHONE = { sequence: 900, hold: 80, lerp: 1 };
 
 const COPY_LAST_FRAME = 68;
 const COPY_FADE_START = 38;
@@ -59,28 +57,19 @@ function cornerVisibility(frame) {
   );
 }
 
-/** Nearest loaded frame — never collapse the whole scrub onto frame 0. */
+/** Exact frame only — landing preloads all 300 so we never jump to neighbors. */
 function findDrawable(index) {
-  const max = FRAME_COUNT - 1;
-  const i = Math.max(0, Math.min(index, max));
-  const direct = getFrameImage(i);
-  if (direct) return { img: direct, index: i };
-
-  for (let back = i - 1; back >= 0; back -= 1) {
-    const img = getFrameImage(back);
-    if (img) return { img, index: back };
-  }
-  for (let fwd = i + 1; fwd <= max; fwd += 1) {
-    const img = getFrameImage(fwd);
-    if (img) return { img, index: fwd };
-  }
-  return null;
+  const i = Math.max(0, Math.min(index, FRAME_COUNT - 1));
+  const img = getFrameImage(i);
+  return img ? { img, index: i } : null;
 }
 
 export default function Hero() {
   const blockRef = useRef(null);
   const canvasRef = useRef(null);
   const canvasWrapRef = useRef(null);
+  const phoneImgARef = useRef(null);
+  const phoneImgBRef = useRef(null);
   const headingRef = useRef(null);
   const restRef = useRef(null);
   const cloudsRef = useRef(null);
@@ -107,7 +96,6 @@ export default function Hero() {
 
     const onPhone = isPhoneViewport();
     const cfg = onPhone ? PHONE : DESKTOP;
-    const phoneFrames = onPhone ? getPhoneScrubFrames() : null;
     const totalVh = cfg.sequence + cfg.hold;
     const frameProgressEnd = cfg.sequence / totalVh;
     block.style.height = `${totalVh}vh`;
@@ -116,7 +104,7 @@ export default function Hero() {
     let rafId = 0;
     let lastDrawn = -1;
     let touchTimer = 0;
-    let lastBgIndex = -1;
+    let phoneFront = 0; // 0 = A visible, 1 = B visible
 
     const targetFrameRef = { current: 0 };
     const currentFrameRef = { current: 0 };
@@ -168,51 +156,75 @@ export default function Hero() {
       lastDrawn = -1;
     };
 
-    const setPhoneBg = (frameIndex) => {
-      if (!onPhone) return;
-      const i = Math.max(0, Math.min(FRAME_COUNT - 1, frameIndex));
-      if (i === lastBgIndex) return;
-      lastBgIndex = i;
-      wrap.style.backgroundImage = `url(${frameSrc(i)})`;
-      wrap.style.backgroundSize = "cover";
-      wrap.style.backgroundPosition = "center";
+    /**
+     * Phone: dual <img> swap — only switch when the next frame is already decoded.
+     * Keeps the previous frame visible so there is never a black gap.
+     */
+    const drawPhoneFrame = (index) => {
+      const found = findDrawable(index);
+      if (!found?.img) return null;
+
+      const imgA = phoneImgARef.current;
+      const imgB = phoneImgBRef.current;
+      if (!imgA || !imgB) return found;
+
+      const nextEl = phoneFront === 0 ? imgB : imgA;
+      const prevEl = phoneFront === 0 ? imgA : imgB;
+      const src = frameSrc(found.index);
+
+      if (nextEl.getAttribute("data-frame") === String(found.index)) {
+        // Already showing / staged this frame
+        nextEl.style.opacity = "1";
+        prevEl.style.opacity = "0";
+        phoneFront = phoneFront === 0 ? 1 : 0;
+        return found;
+      }
+
+      const reveal = () => {
+        if (cancelled) return;
+        nextEl.style.opacity = "1";
+        prevEl.style.opacity = "0";
+        phoneFront = phoneFront === 0 ? 1 : 0;
+      };
+
+      nextEl.setAttribute("data-frame", String(found.index));
+      if (nextEl.src.endsWith(src) || nextEl.currentSrc.endsWith(src)) {
+        if (nextEl.complete && nextEl.naturalWidth > 0) reveal();
+        else nextEl.onload = reveal;
+        return found;
+      }
+
+      nextEl.onload = reveal;
+      nextEl.src = src;
+      // Cached + pre-decoded → often already complete synchronously
+      if (nextEl.complete && nextEl.naturalWidth > 0) {
+        nextEl.onload = null;
+        reveal();
+      }
+      return found;
     };
 
     const drawFrame = (index) => {
-      // Phone: CSS background is the visible scrub (updates during touch scroll).
-      // Always point at the target index so animation isn't gated on preload cache.
-      if (onPhone) {
-        setPhoneBg(index);
-        return findDrawable(index) || { img: null, index };
-      }
+      if (onPhone) return drawPhoneFrame(index);
 
       const found = findDrawable(index);
+      if (!found?.img) return found; // keep previous canvas pixels — no black clear
+
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
-
-      ctx.fillStyle = "#0a0a0a";
-      ctx.fillRect(0, 0, w, h);
-      if (!found) return found;
-
       const { img } = found;
       const scale = Math.max(w / img.width, h / img.height);
       const dw = img.width * scale;
       const dh = img.height * scale;
+      // Draw over previous frame — never wipe to black between frames
       ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
       return found;
     };
 
     const applyProgress = (progress) => {
       const play = Math.min(1, Math.max(0, progress) / frameProgressEnd);
-      if (phoneFrames) {
-        const idx = Math.min(
-          phoneFrames.length - 1,
-          Math.round(play * (phoneFrames.length - 1)),
-        );
-        targetFrameRef.current = phoneFrames[idx];
-      } else {
-        targetFrameRef.current = play * (FRAME_COUNT - 1);
-      }
+      // Full 0→299 sequence on phone and desktop
+      targetFrameRef.current = play * (FRAME_COUNT - 1);
     };
 
     const renderLoop = () => {
@@ -231,9 +243,11 @@ export default function Hero() {
       );
       if (display !== lastDrawn) {
         const found = drawFrame(display);
-        lastDrawn = display;
-        syncCopy(found?.index ?? display);
-        setReady(true);
+        if (found) {
+          lastDrawn = display;
+          syncCopy(found.index);
+          setReady(true);
+        }
       }
 
       // Phone: keep the loop alive while the hero is on screen — iOS pauses
@@ -270,9 +284,11 @@ export default function Hero() {
       const display = Math.round(target);
       if (display !== lastDrawn) {
         const found = drawFrame(display);
-        lastDrawn = display;
-        syncCopy(found?.index ?? display);
-        setReady(true);
+        if (found) {
+          lastDrawn = display;
+          syncCopy(found.index);
+          setReady(true);
+        }
       }
       kickRender();
 
@@ -282,9 +298,6 @@ export default function Hero() {
     };
 
     startFramePreload();
-    if (phoneFrames) {
-      loadFrameIndices(phoneFrames, 8);
-    }
     syncCanvasSize();
 
     const paintCurrent = () => {
@@ -421,23 +434,39 @@ export default function Hero() {
     >
       <div
         ref={canvasWrapRef}
-        className="pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
-        style={
+        className={
           phone
-            ? {
-                backgroundImage: `url(${frameSrc(0)})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : undefined
+            ? "pointer-events-none sticky top-0 z-[1] h-[100dvh] w-full overflow-hidden bg-neutral-950"
+            : "pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
         }
       >
-        {/* Phone: canvas stays for decode/warmup but CSS bg is the visible scrub
-            (iOS freezes fixed-canvas paints during touch momentum). */}
+        {/* Phone: dual images — previous stays until next is ready (no black flash). */}
+        {phone ? (
+          <>
+            <img
+              ref={phoneImgARef}
+              alt=""
+              draggable={false}
+              data-frame="0"
+              src={frameSrc(0)}
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ opacity: 1 }}
+            />
+            <img
+              ref={phoneImgBRef}
+              alt=""
+              draggable={false}
+              data-frame=""
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ opacity: 0 }}
+            />
+          </>
+        ) : null}
+
         <canvas
           ref={canvasRef}
           className={`absolute inset-0 block h-full w-full ${
-            phone ? "opacity-0" : ""
+            phone ? "pointer-events-none opacity-0" : ""
           }`}
           style={{ transform: "translateZ(0)" }}
           aria-hidden={phone ? "true" : undefined}
