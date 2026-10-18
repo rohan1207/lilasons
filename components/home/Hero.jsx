@@ -9,6 +9,7 @@ import {
   FRAME_COUNT,
   frameSrc,
   getFrameImage,
+  loadFrameIndices,
   startFramePreload,
   subscribeFramePreload,
 } from "@/lib/framePreloader";
@@ -19,17 +20,19 @@ import { isPhoneViewport } from "@/lib/mobile";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Desktop: tall runway + fixed canvas + scrubbed frame sequence.
- * Phone: short runway + sticky canvas + immediate scrub — fixed layers +
- * long ScrollTriggers hang / jitter hard on iOS momentum scroll.
+ * Desktop: tall runway + fixed canvas + scrubbed full sequence.
+ * Phone: short runway + subsampled frames + native scroll driver
+ * (ScrollTrigger alone often stalls on iOS; only frame 0 looked “stuck”).
  */
 
 const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
-const PHONE = { sequence: 220, hold: 36, scrub: true, lerp: 0.45 };
+/** Shorter runway so phone scroll feels purposeful */
+const PHONE = { sequence: 340, hold: 48, scrub: true, lerp: 1 };
+/** Every Nth frame on phone — fewer downloads, still smooth enough */
+const PHONE_FRAME_STEP = 3;
 
 const COPY_LAST_FRAME = 68;
 const COPY_FADE_START = 38;
-/** Split exit distance — heading left, body/CTA right */
 const SLIDE_HEADING_PX = 96;
 const SLIDE_REST_PX = 72;
 
@@ -40,6 +43,7 @@ function smoothstep(t) {
 
 function frameLerpFactor(delta, baseLerp) {
   const d = Math.abs(delta);
+  if (baseLerp >= 0.99) return 1;
   if (d > 48) return 0.85;
   if (d > 24) return 0.55;
   if (d > 10) return 0.38;
@@ -56,22 +60,32 @@ function cornerVisibility(frame) {
   );
 }
 
-/** Prefer exact frame; else walk backward then forward (Drip pattern). */
+function buildPhoneFrameList() {
+  const list = [];
+  for (let i = 0; i < FRAME_COUNT; i += PHONE_FRAME_STEP) list.push(i);
+  if (list[list.length - 1] !== FRAME_COUNT - 1) list.push(FRAME_COUNT - 1);
+  return list;
+}
+
+/** Nearest loaded frame by absolute distance (not “always walk back to 0”). */
 function findDrawable(index) {
   const max = FRAME_COUNT - 1;
   const i = Math.max(0, Math.min(index, max));
   const direct = getFrameImage(i);
   if (direct) return { img: direct, index: i };
 
-  for (let back = i - 1; back >= 0; back -= 1) {
-    const img = getFrameImage(back);
-    if (img) return { img, index: back };
+  let best = null;
+  let bestDist = Infinity;
+  for (let j = 0; j <= max; j += 1) {
+    const img = getFrameImage(j);
+    if (!img) continue;
+    const d = Math.abs(j - i);
+    if (d < bestDist) {
+      bestDist = d;
+      best = { img, index: j };
+    }
   }
-  for (let fwd = i + 1; fwd <= max; fwd += 1) {
-    const img = getFrameImage(fwd);
-    if (img) return { img, index: fwd };
-  }
-  return null;
+  return best;
 }
 
 export default function Hero() {
@@ -102,7 +116,9 @@ export default function Hero() {
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
-    const cfg = isPhoneViewport() ? PHONE : DESKTOP;
+    const onPhone = isPhoneViewport();
+    const cfg = onPhone ? PHONE : DESKTOP;
+    const phoneFrames = onPhone ? buildPhoneFrameList() : null;
     const totalVh = cfg.sequence + cfg.hold;
     const frameProgressEnd = cfg.sequence / totalVh;
     block.style.height = `${totalVh}vh`;
@@ -110,8 +126,6 @@ export default function Hero() {
     let cancelled = false;
     let rafId = 0;
     let lastDrawn = -1;
-    let scrolling = false;
-    let scrollIdleTimer = 0;
 
     const targetFrameRef = { current: 0 };
     const currentFrameRef = { current: 0 };
@@ -126,14 +140,10 @@ export default function Hero() {
       if (Math.abs(cornerVis - lastCorner.current) < 0.002) return;
       lastCorner.current = cornerVis;
 
-      // Controlled split exit: heading ← left, sub + CTA → right
       const leave = smoothstep(1 - cornerVis);
-      const headOpacity = Math.pow(cornerVis, 0.85);
-      const restOpacity = Math.pow(cornerVis, 1.05);
-
-      heading.style.opacity = String(headOpacity);
+      heading.style.opacity = String(Math.pow(cornerVis, 0.85));
       heading.style.transform = `translate3d(${-leave * SLIDE_HEADING_PX}px, ${leave * 10}px, 0)`;
-      rest.style.opacity = String(restOpacity);
+      rest.style.opacity = String(Math.pow(cornerVis, 1.05));
       rest.style.transform = `translate3d(${leave * SLIDE_REST_PX}px, ${leave * 14}px, 0)`;
 
       const clouds = cloudsRef.current;
@@ -155,10 +165,7 @@ export default function Hero() {
     const syncCanvasSize = () => {
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
-      // Phone: 1x canvas — half the fill/draw cost
-      const dpr = isPhoneViewport()
-        ? 1
-        : Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = onPhone ? 1 : Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;
@@ -180,9 +187,20 @@ export default function Hero() {
       const scale = Math.max(w / img.width, h / img.height);
       const dw = img.width * scale;
       const dh = img.height * scale;
-      const dx = (w - dw) / 2;
-      const dy = (h - dh) / 2;
-      ctx.drawImage(img, dx, dy, dw, dh);
+      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    };
+
+    const applyProgress = (progress) => {
+      const play = Math.min(1, Math.max(0, progress) / frameProgressEnd);
+      if (phoneFrames) {
+        const idx = Math.min(
+          phoneFrames.length - 1,
+          Math.round(play * (phoneFrames.length - 1)),
+        );
+        targetFrameRef.current = phoneFrames[idx];
+      } else {
+        targetFrameRef.current = play * (FRAME_COUNT - 1);
+      }
     };
 
     const renderLoop = () => {
@@ -205,26 +223,41 @@ export default function Hero() {
         syncCopy(display);
       }
 
-      // Phone: pause rAF when idle — stops battery + jank during page rest
-      if (isPhoneViewport() && !scrolling && Math.abs(target - next) < 0.08) {
+      // Keep looping while target is moving; stop only when caught up
+      if (Math.abs(target - next) < 0.08) {
         rafId = 0;
         return;
       }
-
       rafId = requestAnimationFrame(renderLoop);
     };
 
     const kickRender = () => {
       if (cancelled) return;
-      scrolling = true;
-      window.clearTimeout(scrollIdleTimer);
-      scrollIdleTimer = window.setTimeout(() => {
-        scrolling = false;
-      }, 140);
       if (!rafId) rafId = requestAnimationFrame(renderLoop);
     };
 
+    /** Native scroll progress — reliable on iOS when ST scrub stalls */
+    const readNativeProgress = () => {
+      const total = Math.max(1, block.offsetHeight - window.innerHeight);
+      const top = block.getBoundingClientRect().top;
+      return Math.min(1, Math.max(0, -top / total));
+    };
+
+    const onNativeScroll = () => {
+      if (!onPhone) return;
+      applyProgress(readNativeProgress());
+      kickRender();
+
+      const past = readNativeProgress() >= 0.998;
+      wrap.style.visibility = past ? "hidden" : "visible";
+      wrap.style.pointerEvents = "none";
+    };
+
     startFramePreload();
+    if (phoneFrames) {
+      // Ensure the subsampled set loads first so scroll isn't stuck on frame 0
+      loadFrameIndices(phoneFrames, 6);
+    }
     syncCanvasSize();
 
     const paintCurrent = () => {
@@ -242,16 +275,17 @@ export default function Hero() {
 
     const unsub = subscribeFramePreload(() => {
       if (cancelled) return;
-      // When first frames arrive (common on phone after slow start), force a redraw.
-      // Idle rAF pause used to leave a permanent grey/black canvas.
-      paintCurrent();
+      // New frames decoded — invalidate so next rAF picks nearest loaded
+      if (!getFrameImage(0) && !getFrameImage(Math.round(currentFrameRef.current))) {
+        return;
+      }
+      setReady(true);
+      lastDrawn = -1;
+      kickRender();
     });
 
-    if (!rafId) rafId = requestAnimationFrame(renderLoop);
-
-    let st;
-    const attachST = () => {
-      if (st) st.kill();
+    let st = null;
+    if (!onPhone) {
       st = ScrollTrigger.create({
         trigger: block,
         start: "top top",
@@ -260,27 +294,26 @@ export default function Hero() {
         invalidateOnRefresh: true,
         fastScrollEnd: true,
         onUpdate: (self) => {
-          const play = Math.min(1, self.progress / frameProgressEnd);
-          targetFrameRef.current = play * (FRAME_COUNT - 1);
+          applyProgress(self.progress);
           kickRender();
-
-          // Sticky on phone unpins naturally; fixed on desktop needs hide
           const past = self.progress >= 0.998;
-          if (!isPhoneViewport()) {
-            wrap.style.visibility = past ? "hidden" : "visible";
-          } else {
-            wrap.style.visibility = "visible";
-          }
+          wrap.style.visibility = past ? "hidden" : "visible";
           wrap.style.pointerEvents = "none";
         },
       });
       ScrollTrigger.refresh();
-    };
+    } else {
+      // Phone: native scroll is the source of truth
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
+      onNativeScroll();
+    }
 
     let bootA = requestAnimationFrame(() => {
       bootA = requestAnimationFrame(() => {
-        attachST();
-        drawFrame(0);
+        syncCanvasSize();
+        paintCurrent();
+        if (st) ScrollTrigger.refresh();
+        else onNativeScroll();
       });
     });
 
@@ -289,7 +322,8 @@ export default function Hero() {
       block.style.height = `${next.sequence + next.hold}vh`;
       syncCanvasSize();
       drawFrame(Math.round(currentFrameRef.current));
-      ScrollTrigger.refresh();
+      if (st) ScrollTrigger.refresh();
+      else onNativeScroll();
     };
     window.addEventListener("resize", onResize);
 
@@ -303,9 +337,9 @@ export default function Hero() {
       cancelled = true;
       cancelAnimationFrame(rafId);
       cancelAnimationFrame(bootA);
-      window.clearTimeout(scrollIdleTimer);
       unsub();
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onNativeScroll);
       ro.disconnect();
       if (st) st.kill();
     };
@@ -316,19 +350,20 @@ export default function Hero() {
       id="home"
       ref={blockRef}
       className="relative w-full"
-      style={{ height: phone ? `${PHONE.sequence + PHONE.hold}vh` : `${DESKTOP.sequence + DESKTOP.hold}vh` }}
+      style={{
+        height: phone
+          ? `${PHONE.sequence + PHONE.hold}vh`
+          : `${DESKTOP.sequence + DESKTOP.hold}vh`,
+      }}
       aria-label="Hero sequence"
     >
-      {/* Desktop: fixed. Phone: sticky — fixed+tall runway jitters on iOS */}
+      {/* Fixed on all viewports — sticky + ST was freezing phone frames */}
       <div
         ref={canvasWrapRef}
-        className={`pointer-events-none z-[1] h-dvh w-full overflow-hidden bg-neutral-950 ${
-          phone ? "sticky top-0" : "fixed inset-0"
-        }`}
+        className="pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
         style={
           phone
             ? {
-                // Fallback still while WebP frames decode on cellular
                 backgroundImage: `url(${frameSrc(0)})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -338,10 +373,8 @@ export default function Hero() {
       >
         <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 
-        {/* Realistic mist banks — visible with intro copy, fades with it */}
         <HeroClouds ref={cloudsRef} />
 
-        {/* Centered intro — one tight stack: title → sub → CTA */}
         <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(6.75rem,17vh)]">
           <div
             ref={headingRef}
@@ -381,7 +414,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Scroll hint — dark on mist; fades with clouds + copy */}
         <div
           ref={scrollHintRef}
           className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9"

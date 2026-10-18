@@ -52,8 +52,11 @@ export default function ExperienceGate() {
             if (phase !== "exiting") return;
             setPhase("done");
             window.history.replaceState(null, "", "/home");
-            // Recalc pin after overlay is gone
-            requestAnimationFrame(() => ScrollTrigger.refresh());
+            // Recalc pins + nudge phone hero native-scroll driver
+            requestAnimationFrame(() => {
+              ScrollTrigger.refresh();
+              window.dispatchEvent(new Event("scroll"));
+            });
           }}
         >
           <LandingScreen onComplete={handleComplete} />
