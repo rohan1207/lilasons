@@ -64,7 +64,7 @@ export default function CompanyPage() {
 
             <div className="flex flex-col gap-5">
               <ScrollRevealHeading delay={0.1}>
-                <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-semibold leading-[1.15] tracking-[-0.03em] text-[#0a0a0a]">
+                <h2 className="type-heading text-[clamp(1.5rem,3vw,2.25rem)] text-[#0a0a0a]">
                   {storyLines.map((line) => (
                     <span key={line}>
                       {line}
@@ -113,7 +113,7 @@ export default function CompanyPage() {
           <Reveal className="mb-12 md:mb-16">
             <SectionEyebrow className="mb-4">Our Brands</SectionEyebrow>
             <RevealClip>
-              <h2 className="font-display max-w-2xl text-[clamp(1.75rem,3.8vw,3rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+              <h2 className="type-heading max-w-2xl text-[clamp(1.75rem,3.8vw,3rem)] text-[#0a0a0a]">
                 Group companies
               </h2>
             </RevealClip>
@@ -190,7 +190,7 @@ export default function CompanyPage() {
           <Reveal className="mb-12 md:mb-14">
             <SectionEyebrow className="mb-4">Philosophy</SectionEyebrow>
             <RevealClip>
-              <h2 className="font-display max-w-lg text-[clamp(1.75rem,3.8vw,3rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+              <h2 className="type-heading max-w-lg text-[clamp(1.75rem,3.8vw,3rem)] text-[#0a0a0a]">
                 How we work
               </h2>
             </RevealClip>
@@ -222,7 +222,7 @@ export default function CompanyPage() {
           <Reveal className="mb-12">
             <SectionEyebrow className="mb-4">Timeline</SectionEyebrow>
             <RevealClip>
-              <h2 className="font-display text-[clamp(1.75rem,3.8vw,3rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+              <h2 className="type-heading text-[clamp(1.75rem,3.8vw,3rem)] text-[#0a0a0a]">
                 Decades of practice
               </h2>
             </RevealClip>
@@ -257,7 +257,7 @@ export default function CompanyPage() {
             <Reveal>
               <SectionEyebrow className="mb-4">Presence</SectionEyebrow>
               <RevealClip>
-                <h2 className="font-display mb-6 text-[clamp(1.75rem,3.8vw,3rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+                <h2 className="type-heading mb-6 text-[clamp(1.75rem,3.8vw,3rem)] text-[#0a0a0a]">
                   Aurangabad
                 </h2>
               </RevealClip>
@@ -301,14 +301,14 @@ export default function CompanyPage() {
               <div className="mt-10 flex flex-wrap gap-3">
                 <Link
                   href="/contact"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center gap-2 bg-neutral-950 px-6 text-[11px] text-white transition-opacity hover:opacity-85"
+                  className="type-button btn-pill btn-shine btn-solid"
                 >
                   <span aria-hidden>↗</span>
                   Get In Touch
                 </Link>
                 <Link
                   href="/projects"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center gap-2 border border-neutral-900 px-6 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white"
+                  className="type-button btn-pill btn-shine btn-outline"
                 >
                   View Projects
                 </Link>

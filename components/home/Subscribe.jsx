@@ -37,10 +37,10 @@ export default function Subscribe() {
           <p className="type-label mb-3 text-[11px] text-neutral-400 sm:text-[12px]">
             — Stay Updated
           </p>
-          <h2 className="type-heading text-[28px] uppercase tracking-[-0.03em] text-neutral-950 sm:text-[36px]">
+          <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px]">
             {HOME.subscribeTitle}
           </h2>
-          <p className="type-body mx-auto mt-4 max-w-[40ch] text-[15px] text-neutral-600 sm:text-[16px]">
+          <p className="type-body mx-auto mt-4 max-w-[40ch] text-[15px] sm:text-[16px]">
             {HOME.subscribeBody}
           </p>
 
@@ -62,7 +62,7 @@ export default function Subscribe() {
             />
             <button
               type="submit"
-              className="type-button btn-pill btn-shine inline-flex h-12 shrink-0 items-center justify-center bg-neutral-950 px-8 text-[11px] text-white transition-opacity hover:opacity-85"
+              className="type-button btn-pill btn-shine btn-solid shrink-0"
             >
               {HOME.subscribeCta}
             </button>

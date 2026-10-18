@@ -126,7 +126,7 @@ export default function ProjectsIndex() {
         <Reveal className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <div className="max-w-xl">
             <SectionEyebrow className="mb-4">Visit Us</SectionEyebrow>
-            <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+            <h2 className="type-heading text-[clamp(1.75rem,4vw,2.75rem)] text-[#0a0a0a]">
               Looking for your next home?
             </h2>
             <p className="mt-4 text-base leading-relaxed text-neutral-600">
@@ -136,7 +136,7 @@ export default function ProjectsIndex() {
           </div>
           <Link
             href="/contact"
-            className="type-button btn-pill btn-shine inline-flex h-11 items-center gap-2 border border-neutral-900 bg-transparent px-6 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white"
+            className="type-button btn-pill btn-shine btn-outline"
           >
             <span aria-hidden>↗</span>
             Start A Conversation

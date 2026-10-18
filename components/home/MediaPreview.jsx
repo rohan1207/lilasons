@@ -24,7 +24,6 @@ function buildGalleryItems() {
     };
   });
 
-  // Multiple frames per project so the ring feels fuller
   const fromProjects = PROJECTS.flatMap((project) => {
     const shots = (project.gallery?.length ? project.gallery : [project.image]).slice(
       0,
@@ -82,38 +81,39 @@ export default function MediaPreview() {
   return (
     <section
       id="media-preview"
-      className="relative z-10 border-t border-neutral-200/80 bg-[#f7f7f7]"
+      className="relative z-10 flex h-dvh max-h-dvh flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7]"
       aria-label="Media gallery preview"
     >
-      <div className="mx-auto max-w-[1500px] px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/about/expand-story-hero.jpg"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.22]"
+        />
+        <div className="absolute inset-0 bg-[#f7f7f7]/45" />
+      </div>
+
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1500px] flex-col px-5 pt-20 sm:px-8 sm:pt-24 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 0.65, ease }}
-          className="mb-8 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between"
+          className="shrink-0"
         >
-          <div>
-            <p className="type-label mb-2 text-[11px] text-neutral-400 sm:text-[12px]">
-              — Media
-            </p>
-            <h2 className="type-heading max-w-[16ch] text-[28px] uppercase leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:text-[36px] lg:text-[42px]">
-              Life at Lilasons
-            </h2>
-            <p className="type-body mt-3 max-w-[42ch] text-[14px] text-neutral-600 sm:text-[15px]">
-              {MEDIA.title}
-            </p>
-          </div>
-
-          <Link
-            href="/media"
-            className="type-button btn-pill btn-shine inline-flex h-11 w-fit shrink-0 items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:px-6"
-          >
-            <span aria-hidden className="text-[13px] leading-none">
-              ↗
-            </span>
-            View Gallery
-          </Link>
+          <p className="type-label mb-2 text-[11px] text-neutral-400 sm:text-[12px]">
+            — Media
+          </p>
+          <h2 className="type-heading max-w-[16ch] text-[28px] text-neutral-950 sm:text-[36px] lg:text-[42px]">
+            Life at Lilasons
+          </h2>
+          <p className="type-body mt-2 max-w-[42ch] text-[14px] sm:text-[15px]">
+            {MEDIA.title}
+          </p>
         </motion.div>
 
         <motion.div
@@ -121,7 +121,7 @@ export default function MediaPreview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.75, delay: 0.06, ease }}
-          className="relative h-[480px] w-full text-neutral-950 sm:h-[560px] lg:h-[640px]"
+          className="relative min-h-0 w-full flex-1 text-neutral-950"
         >
           <CircularCarousel
             items={GALLERY_ITEMS}
@@ -134,7 +134,6 @@ export default function MediaPreview() {
             autoplay="drift"
             scrollLinked
             momentum={0.75}
-            captions
             fadeColor="#f7f7f7"
             depthFade={0.42}
             cornerRadius={10}
@@ -142,6 +141,18 @@ export default function MediaPreview() {
             draggable
           />
         </motion.div>
+
+        <div className="flex shrink-0 justify-center pb-6 pt-2 sm:pb-8">
+          <Link
+            href="/media"
+            className="type-button btn-pill btn-shine btn-outline w-fit"
+          >
+            <span aria-hidden className="text-[13px] leading-none">
+              ↗
+            </span>
+            View Gallery
+          </Link>
+        </div>
       </div>
     </section>
   );

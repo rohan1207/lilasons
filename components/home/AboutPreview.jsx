@@ -162,7 +162,7 @@ export default function AboutPreview() {
           </div>
 
           <Reveal delay={0.18} y={18} className="mt-5 lg:mt-0">
-            <p className="type-heading text-[30px] uppercase leading-none tracking-[-0.04em] text-neutral-950 sm:text-[38px] lg:text-[44px] xl:text-[50px]">
+            <p className="type-heading text-[30px] text-neutral-950 sm:text-[38px] lg:text-[44px] xl:text-[50px]">
               {ABOUT.wordmark}
             </p>
           </Reveal>
@@ -201,7 +201,7 @@ export default function AboutPreview() {
           </div>
 
           <Reveal delay={0.2} y={24} className="relative z-[2] mt-10 max-w-[24ch] lg:mt-12">
-            <h3 className="type-heading text-[20px] uppercase leading-[1.12] tracking-[-0.03em] text-neutral-950 sm:text-[26px] lg:text-[28px] xl:text-[32px]">
+            <h3 className="type-heading text-[20px] text-neutral-950 sm:text-[26px] lg:text-[28px] xl:text-[32px]">
               Building your foundation.
               <br />
               Building your environment.
@@ -234,7 +234,7 @@ export default function AboutPreview() {
           <Reveal delay={0.42} y={14} className="mt-6 flex justify-start lg:mt-0 lg:justify-end">
             <Link
               href={ABOUT.ctaHref}
-              className="type-button btn-pill btn-shine inline-flex h-10 items-center justify-center bg-neutral-950 px-5 text-[11px] text-white transition-opacity hover:opacity-85 sm:px-6"
+              className="type-button btn-pill btn-shine btn-solid !h-10 sm:!h-10"
             >
               {ABOUT.cta}
             </Link>

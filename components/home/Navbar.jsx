@@ -97,7 +97,7 @@ export default function Navbar({ forceSolid = false }) {
                   className={`type-label whitespace-nowrap text-[11px] transition-colors xl:text-[12px] ${
                     isActive(link.href)
                       ? "text-[#3b6ea5]"
-                      : "text-neutral-500 hover:text-neutral-950"
+                      : "text-neutral-700 hover:text-neutral-950"
                   }`}
                 >
                   {link.label}
@@ -133,7 +133,7 @@ export default function Navbar({ forceSolid = false }) {
           <div className="relative z-20 flex items-center gap-3 sm:gap-4">
             <Link
               href={CONTACT.href}
-              className="type-button btn-pill btn-shine inline-flex h-10 items-center justify-center bg-neutral-950 px-5 text-[11px] text-white transition-opacity hover:opacity-85 sm:px-6"
+              className="type-button btn-pill btn-shine btn-solid !h-10 sm:!h-10"
             >
               {CONTACT.label}
             </Link>
@@ -143,7 +143,7 @@ export default function Navbar({ forceSolid = false }) {
               aria-label="Open menu"
               aria-expanded={megaOpen}
               onClick={() => setMegaOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/40 transition-colors hover:border-neutral-900 hover:bg-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/55 transition-colors hover:border-neutral-900 hover:bg-white"
             >
               <span className="flex flex-col gap-[5px]">
                 <span className="block h-px w-4 bg-neutral-900" />
@@ -231,7 +231,7 @@ export default function Navbar({ forceSolid = false }) {
                     <Link
                       href={CONTACT.href}
                       onClick={closeMega}
-                      className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center bg-neutral-950 px-8 text-[11px] text-white transition-opacity hover:opacity-85"
+                      className="type-button btn-pill btn-shine btn-solid"
                     >
                       Contact Us
                     </Link>

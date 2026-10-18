@@ -29,7 +29,7 @@ function DomainTile({ domain, className }) {
         <p className="mb-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-white/85 sm:mb-1 sm:text-[10px] md:text-[11px]">
           {domain.label}
         </p>
-        <h3 className="text-[18px] font-bold leading-[1.08] tracking-[-0.03em] text-white sm:text-[22px] md:text-[26px] lg:text-[30px]">
+        <h3 className="type-heading text-[18px] text-white sm:text-[22px] md:text-[26px] lg:text-[30px]">
           {domain.title}
         </h3>
       </div>
@@ -69,7 +69,7 @@ export default function Domains() {
 
           <Link
             href="/projects"
-            className="type-button btn-pill btn-shine inline-flex h-10 w-fit shrink-0 items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-11 sm:px-6 sm:text-[12px]"
+            className="type-button btn-pill btn-shine btn-outline w-fit shrink-0"
           >
             <span aria-hidden className="text-[13px] leading-none">
               ↗

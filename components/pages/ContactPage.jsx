@@ -69,7 +69,7 @@ export default function ContactPage() {
             <p className="type-label mb-3 text-[11px] text-neutral-400">
               — Get in touch
             </p>
-            <h1 className="type-heading text-[40px] uppercase leading-[1.02] tracking-[-0.04em] text-neutral-950 sm:text-[56px]">
+            <h1 className="type-heading text-[40px] text-neutral-950 sm:text-[56px]">
               {CONTACT.title}
             </h1>
             <p className="mt-4 text-[18px] font-medium tracking-[-0.015em] text-neutral-700">
@@ -81,7 +81,7 @@ export default function ContactPage() {
 
             <div className="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-[#f7f7f7] p-6 sm:p-7">
               <div>
-                <h2 className="type-heading text-[18px] uppercase tracking-[-0.025em] text-neutral-950">
+                <h2 className="type-heading text-[18px] text-neutral-950">
                   {BRAND.name}
                 </h2>
                 <p className="mt-2 text-[14px] leading-relaxed text-neutral-600">
@@ -122,7 +122,7 @@ export default function ContactPage() {
                   href={BRAND.whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center bg-neutral-950 px-6 text-[11px] text-white transition-opacity hover:opacity-85"
+                  className="type-button btn-pill btn-shine btn-solid"
                 >
                   {CONTACT.whatsappLabel}
                 </a>
@@ -130,7 +130,7 @@ export default function ContactPage() {
                   href={mapsHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center border border-neutral-900 px-6 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white"
+                  className="type-button btn-pill btn-shine btn-outline"
                 >
                   Get directions
                 </a>
@@ -148,7 +148,7 @@ export default function ContactPage() {
               <p className="type-label mb-2 text-[11px] text-neutral-400">
                 — Enquiry
               </p>
-              <h2 className="type-heading text-[24px] uppercase tracking-[-0.03em] text-neutral-950 sm:text-[28px]">
+              <h2 className="type-heading text-[24px] text-neutral-950 sm:text-[28px]">
                 Send us a message
               </h2>
               <p className="type-body mt-2 max-w-[42ch] text-[14px] text-neutral-600">
@@ -266,7 +266,7 @@ export default function ContactPage() {
                 <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
                   <button
                     type="submit"
-                    className="type-button btn-pill btn-shine inline-flex h-12 items-center justify-center bg-neutral-950 px-8 text-[11px] text-white transition-opacity hover:opacity-85"
+                    className="type-button btn-pill btn-shine btn-solid"
                   >
                     Send enquiry
                   </button>

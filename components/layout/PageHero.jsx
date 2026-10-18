@@ -61,9 +61,9 @@ export default function PageHero({
         )}
 
         <motion.h1
-          className={`font-display max-w-[14ch] font-medium uppercase leading-[0.9] tracking-[-0.03em] ${
+          className={`type-heading max-w-[14ch] leading-[0.9] ${
             isCenter ? "text-center" : ""
-          } text-[clamp(2.25rem,8vw,6.75rem)]`}
+          } text-[clamp(2.25rem,8vw,6.75rem)] ${dark ? "text-white" : ""}`}
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
@@ -73,8 +73,8 @@ export default function PageHero({
 
         {subtitle && (
           <motion.p
-            className={`mt-4 max-w-2xl text-[clamp(14px,1.2vw,18px)] font-normal leading-relaxed tracking-[-0.01em] md:mt-6 ${
-              dark ? "text-white/65" : "text-[#3a3a3a]"
+            className={`type-body mt-4 max-w-2xl text-[clamp(14px,1.2vw,18px)] md:mt-6 ${
+              dark ? "text-white/65" : ""
             } ${isCenter ? "text-center" : ""}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

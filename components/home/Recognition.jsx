@@ -9,47 +9,64 @@ export default function Recognition() {
   return (
     <section
       id="recognition"
-      className="relative z-10 bg-white"
-      aria-label={RECOGNITION.title}
+      className="relative z-10 overflow-hidden border-t border-neutral-200/80 bg-[#f4f4f2]"
+      aria-label={RECOGNITION.title.replace("\n", " ")}
     >
       <div className="mx-auto max-w-[1500px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.65, ease }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f4d4a] sm:text-[12px]">
-            {RECOGNITION.eyebrow}
-          </p>
-          <h2 className="font-display text-[32px] font-medium leading-[1.15] tracking-[-0.02em] text-neutral-950 sm:text-[40px] md:text-[46px]">
-            {RECOGNITION.title}
-          </h2>
-        </motion.div>
+        <div className="flex flex-col gap-8 sm:gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={{ duration: 0.7, ease }}
+            className="max-w-xl"
+          >
+            <p className="type-label mb-2 text-[11px] sm:mb-3 sm:text-[12px]">
+              {RECOGNITION.eyebrow}
+            </p>
+            <h2 className="type-heading whitespace-pre-line text-[32px] text-neutral-950 sm:text-[40px] md:text-[48px]">
+              {RECOGNITION.title}
+            </h2>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={{ duration: 0.7, delay: 0.08, ease }}
+            className="type-body max-w-[34ch] text-[14px] sm:text-[15px] lg:pb-1.5"
+          >
+            {RECOGNITION.body}
+          </motion.p>
+        </div>
 
         <motion.ul
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7, delay: 0.08, ease }}
-          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:mt-14 sm:grid-cols-3 lg:mt-16 lg:grid-cols-6 lg:gap-x-5 xl:gap-x-8"
+          transition={{ duration: 0.75, delay: 0.12, ease }}
+          className="mt-12 grid grid-cols-2 divide-x divide-y divide-neutral-300/90 border border-neutral-300/90 sm:mt-14 sm:grid-cols-3 lg:mt-16 lg:grid-cols-6 lg:divide-y-0"
         >
-          {RECOGNITION.items.map((item) => (
+          {RECOGNITION.items.map((item, i) => (
             <li
               key={item.alt}
-              className="flex flex-col items-center text-center"
+              className="group relative flex flex-col items-center justify-center px-4 py-8 text-center sm:px-5 sm:py-10"
             >
-              <div className="flex h-12 w-full items-center justify-center sm:h-14">
+              <span className="type-label absolute left-3 top-3 text-[9px] text-neutral-400 sm:left-4 sm:top-4">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <div className="flex h-11 w-full items-center justify-center transition-transform duration-500 ease-out group-hover:scale-[1.04] sm:h-12">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.logo}
                   alt={item.alt}
-                  className="h-10 w-auto max-w-[140px] object-contain object-center sm:h-11"
+                  className="h-9 w-auto max-w-[120px] object-contain object-center opacity-80 transition-opacity duration-400 group-hover:opacity-100 sm:h-10 sm:max-w-[132px]"
                   draggable={false}
                 />
               </div>
-              <p className="mt-3 max-w-[14ch] text-[9px] font-semibold uppercase leading-snug tracking-[0.12em] text-[#7a8a96] sm:mt-4 sm:text-[10px]">
+
+              <p className="type-label mt-4 max-w-[12ch] text-[9px] leading-snug text-neutral-500 sm:mt-5 sm:text-[10px]">
                 {item.text}
               </p>
             </li>

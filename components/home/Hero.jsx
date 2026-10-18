@@ -12,6 +12,7 @@ import {
   subscribeFramePreload,
 } from "@/lib/framePreloader";
 import { BRAND } from "@/lib/brand";
+import HeroClouds from "@/components/home/HeroClouds";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,9 +35,16 @@ const FRAME_PROGRESS_END = SEQUENCE_VH / TOTAL_VH;
 const SCROLL_SCRUB_SMOOTH_SEC = 0.28;
 const FRAME_LERP = 0.22;
 
-const COPY_LAST_FRAME = 60;
-const COPY_FADE_START = 42;
-const SLIDE_PX = 56;
+const COPY_LAST_FRAME = 68;
+const COPY_FADE_START = 38;
+/** Split exit distance — heading left, body/CTA right */
+const SLIDE_HEADING_PX = 96;
+const SLIDE_REST_PX = 72;
+
+function smoothstep(t) {
+  const x = Math.min(1, Math.max(0, t));
+  return x * x * (3 - 2 * x);
+}
 
 function frameLerpFactor(delta) {
   const d = Math.abs(delta);
@@ -78,8 +86,10 @@ export default function Hero() {
   const blockRef = useRef(null);
   const canvasRef = useRef(null);
   const canvasWrapRef = useRef(null);
-  const topLeftRef = useRef(null);
-  const bottomRightRef = useRef(null);
+  const headingRef = useRef(null);
+  const restRef = useRef(null);
+  const cloudsRef = useRef(null);
+  const scrollHintRef = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -100,22 +110,38 @@ export default function Hero() {
     const lastCorner = { current: -1 };
 
     const syncCopy = (frame) => {
-      const topLeft = topLeftRef.current;
-      const bottomRight = bottomRightRef.current;
-      if (!topLeft || !bottomRight) return;
+      const heading = headingRef.current;
+      const rest = restRef.current;
+      if (!heading || !rest) return;
 
       const cornerVis = cornerVisibility(frame);
       if (Math.abs(cornerVis - lastCorner.current) < 0.002) return;
       lastCorner.current = cornerVis;
 
-      const t = 1 - cornerVis;
-      topLeft.style.opacity = String(cornerVis);
-      topLeft.style.transform = `translate3d(${-t * SLIDE_PX}px, 0, 0)`;
-      bottomRight.style.opacity = String(cornerVis);
-      bottomRight.style.transform = `translate3d(${t * SLIDE_PX}px, 0, 0)`;
+      // Controlled split exit: heading ← left, sub + CTA → right
+      const leave = smoothstep(1 - cornerVis);
+      const headOpacity = Math.pow(cornerVis, 0.85);
+      const restOpacity = Math.pow(cornerVis, 1.05);
+
+      heading.style.opacity = String(headOpacity);
+      heading.style.transform = `translate3d(${-leave * SLIDE_HEADING_PX}px, ${leave * 10}px, 0)`;
+      rest.style.opacity = String(restOpacity);
+      rest.style.transform = `translate3d(${leave * SLIDE_REST_PX}px, ${leave * 14}px, 0)`;
+
+      const clouds = cloudsRef.current;
+      if (clouds) {
+        clouds.style.opacity = String(cornerVis);
+        clouds.style.visibility = cornerVis < 0.04 ? "hidden" : "visible";
+      }
+      const hint = scrollHintRef.current;
+      if (hint) {
+        hint.style.opacity = String(cornerVis);
+        hint.style.visibility = cornerVis < 0.04 ? "hidden" : "visible";
+      }
+
       const hidden = cornerVis < 0.05;
-      topLeft.setAttribute("aria-hidden", hidden ? "true" : "false");
-      bottomRight.setAttribute("aria-hidden", hidden ? "true" : "false");
+      heading.setAttribute("aria-hidden", hidden ? "true" : "false");
+      rest.setAttribute("aria-hidden", hidden ? "true" : "false");
     };
 
     const syncCanvasSize = () => {
@@ -259,79 +285,64 @@ export default function Hero() {
       >
         <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 
-        {/* Top left */}
-        <div
-          ref={topLeftRef}
-          className="pointer-events-none absolute left-5 top-24 z-10 max-w-[20rem] text-left will-change-transform sm:left-10 sm:top-28 sm:max-w-md md:left-14 md:top-32 md:max-w-lg"
-          style={{ opacity: 1 }}
-        >
-          <p className="type-label mb-3 text-[11px] sm:text-[12px] md:text-[13px]">
-            Lilasons · Aurangabad
-          </p>
-          <h2 className="type-display text-[1.85rem] text-neutral-950 sm:text-[2.35rem] md:text-[2.85rem]">
-            Excellency
-            <br />
-            redefined
-          </h2>
-          <p className="type-body mt-5 text-[14px] sm:text-[15px] md:text-[16px]">
-            {BRAND.tagline} — thoughtfully crafted homes and commercial spaces
-            across Aurangabad.
-          </p>
-          <div className="type-label mt-6 flex flex-col gap-1.5 text-[11px] text-neutral-500 sm:text-[12px]">
-            <span>Residences · Row Houses · Commercial · Plots</span>
-            <span>Trusted since the Lilasons Group, 1971</span>
+        {/* Realistic mist banks — visible with intro copy, fades with it */}
+        <HeroClouds ref={cloudsRef} />
+
+        {/* Centered intro — one tight stack: title → sub → CTA */}
+        <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(6.75rem,17vh)]">
+          <div
+            ref={headingRef}
+            className="will-change-transform"
+            style={{ opacity: 1 }}
+          >
+            <p className="type-label mb-3 text-[11px] text-neutral-600 sm:mb-4 sm:text-[12px] lg:mb-5 lg:text-[13px]">
+              Lilasons · Aurangabad
+            </p>
+            <h1 className="type-heading mx-auto max-w-[12ch] text-[clamp(2.75rem,8.2vw,7rem)] leading-[0.9] text-neutral-950">
+              {BRAND.headline}
+            </h1>
           </div>
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link
-              href="/projects"
-              className="type-button btn-pill btn-shine pointer-events-auto inline-flex h-11 items-center justify-center bg-neutral-950 px-7 text-[11px] text-white transition-opacity hover:opacity-85 sm:h-12 sm:px-8 sm:text-[12px]"
-            >
-              Our Projects
-            </Link>
-            <Link
-              href="/contact"
-              className="type-button btn-pill btn-shine pointer-events-auto inline-flex h-11 items-center justify-center border border-neutral-900/25 px-6 text-[11px] text-neutral-950 transition-colors hover:border-neutral-950 sm:h-12 sm:px-7 sm:text-[12px]"
-            >
-              Contact Us
-            </Link>
+
+          <div
+            ref={restRef}
+            className="mt-5 flex max-w-[34rem] flex-col items-center will-change-transform sm:mt-6 lg:mt-7 lg:max-w-[40rem]"
+            style={{ opacity: 1 }}
+          >
+            <p className="type-kicker max-w-[36ch] text-[12px] text-neutral-600 sm:text-[13px] lg:text-[14px]">
+              {BRAND.tagline}
+            </p>
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-8 sm:gap-4 lg:mt-9">
+              <Link
+                href="/projects"
+                className="type-button btn-pill btn-shine btn-solid pointer-events-auto"
+              >
+                Our Projects
+              </Link>
+              <Link
+                href="/contact"
+                className="type-button btn-pill btn-shine btn-outline pointer-events-auto border-neutral-900/30 bg-white/75 backdrop-blur-sm"
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Bottom right */}
+        {/* Scroll hint — dark on mist; fades with clouds + copy */}
         <div
-          ref={bottomRightRef}
-          className="pointer-events-none absolute bottom-24 right-5 z-10 max-w-[20rem] text-right will-change-transform sm:bottom-28 sm:right-10 sm:max-w-md md:right-14 md:max-w-lg"
+          ref={scrollHintRef}
+          className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9"
           style={{ opacity: 1 }}
         >
-          <p className="type-label mb-2 text-[11px] sm:text-[12px] md:text-[13px]">
-            {BRAND.name}
-          </p>
-          <h3 className="type-display mb-4 text-[1.55rem] text-neutral-950 sm:text-[1.95rem] md:text-[2.25rem]">
-            Homes built
-            <br />
-            with trust
-          </h3>
-          <p className="type-body mb-3 text-[14px] sm:text-[15px] md:text-[16px]">
-            From Amrut Sai Gold Star to Lilasons Golden Estate — spaces designed
-            for modern families and lasting value.
-          </p>
-          <p className="type-body text-[13px] text-neutral-500 sm:text-[14px]">
-            State-of-the-art design, RERA-registered projects, and a legacy of
-            care across Chhatrapati Sambhaji Nagar.
-          </p>
-        </div>
-
-        {/* Scroll hint — full sequence */}
-        <div className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-950 sm:text-[11px]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
             Scroll to explore
           </p>
           <motion.div
-            className="flex h-9 w-5 items-start justify-center rounded-full border border-neutral-900/40 pt-1.5"
+            className="flex h-9 w-5 items-start justify-center rounded-full border border-neutral-800/45 pt-1.5"
             aria-hidden="true"
           >
             <motion.span
-              className="block h-1.5 w-1 rounded-full bg-neutral-950"
+              className="block h-1.5 w-1 rounded-full bg-neutral-900"
               animate={{ y: [0, 11, 0] }}
               transition={{
                 duration: 1.6,
@@ -341,7 +352,7 @@ export default function Hero() {
             />
           </motion.div>
           <motion.div
-            className="h-4 w-px origin-top bg-neutral-950/50"
+            className="h-4 w-px origin-top bg-neutral-800/50"
             animate={{ scaleY: [0.65, 1, 0.65], opacity: [0.4, 1, 0.4] }}
             transition={{
               duration: 1.6,

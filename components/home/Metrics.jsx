@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { METRICS } from "@/lib/brand";
+import { BRANDS, METRICS } from "@/lib/brand";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -45,277 +46,147 @@ function formatNumber(n) {
   return n.toLocaleString("en-IN");
 }
 
-function ChartPanel({ children }) {
-  return (
-    <div className="relative mt-auto overflow-hidden rounded-xl bg-[#f4f4f2] px-3.5 py-3.5 sm:rounded-[14px] sm:px-4 sm:py-4">
-      {children}
-    </div>
-  );
-}
-
-/** Cap-top column chart — growth over decades */
-function VizBars({ series, active, delay = 0 }) {
-  return (
-    <ChartPanel>
-      <div className="mb-2.5 flex items-center justify-between">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
-          Legacy growth
-        </p>
-        <motion.p
-          className="text-[10px] font-semibold text-neutral-500"
-          initial={{ opacity: 0 }}
-          animate={active ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: delay + 0.9, duration: 0.4 }}
-        >
-          Since 1971
-        </motion.p>
-      </div>
-      <div className="flex h-[76px] items-end gap-[5px] sm:h-[84px] sm:gap-1.5" aria-hidden>
-        {series.map((h, i) => {
-          const isLast = i === series.length - 1;
-          return (
-            <div key={i} className="relative flex h-full flex-1 items-end">
-              <motion.div
-                className="relative w-full overflow-hidden rounded-sm bg-neutral-300/80"
-                initial={{ height: "6%" }}
-                animate={
-                  active
-                    ? isLast
-                      ? {
-                          height: [
-                            "6%",
-                            `${h}%`,
-                            `${Math.max(8, h - 4)}%`,
-                            `${h}%`,
-                          ],
-                        }
-                      : { height: `${h}%` }
-                    : { height: "6%" }
-                }
-                transition={
-                  isLast && active
-                    ? {
-                        duration: 2.8,
-                        delay: delay + i * 0.04,
-                        ease,
-                        times: [0, 0.35, 0.7, 1],
-                        repeat: Infinity,
-                        repeatDelay: 1.6,
-                      }
-                    : { duration: 0.9, delay: delay + i * 0.045, ease }
-                }
-              >
-                <span className="absolute inset-x-0 top-0 h-[2.5px] bg-neutral-950" />
-              </motion.div>
-            </div>
-          );
-        })}
-      </div>
-    </ChartPanel>
-  );
-}
-
-/** Horizontal composition meters — clear professional breakdown */
-function VizMeters({ meters, active, delay = 0 }) {
-  return (
-    <ChartPanel>
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
-        Portfolio mix
-      </p>
-      <div className="flex flex-col gap-2.5" aria-hidden>
-        {meters.map((row, i) => (
-          <div key={row.label}>
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <span className="text-[11px] font-medium text-neutral-600">
-                {row.label}
-              </span>
-              <motion.span
-                className="type-stat text-[11px] !font-semibold text-neutral-950"
-                initial={{ opacity: 0 }}
-                animate={active ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ delay: delay + 0.35 + i * 0.12, duration: 0.4 }}
-              >
-                {row.value}%
-              </motion.span>
-            </div>
-            <div className="h-[7px] overflow-hidden rounded-full bg-neutral-200/90">
-              <motion.div
-                className="relative h-full rounded-full bg-neutral-950"
-                initial={{ width: "0%" }}
-                animate={active ? { width: `${row.value}%` } : { width: "0%" }}
-                transition={{
-                  duration: 1.15,
-                  delay: delay + i * 0.14,
-                  ease,
-                }}
-              >
-                {active && (
-                  <motion.span
-                    className="absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-                    animate={{ left: ["-20%", "120%"] }}
-                    transition={{
-                      duration: 1.8,
-                      delay: delay + 1.1 + i * 0.25,
-                      repeat: Infinity,
-                      repeatDelay: 2.4,
-                      ease: "easeInOut",
-                    }}
-                  />
-                )}
-              </motion.div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </ChartPanel>
-  );
-}
-
-/** Project tile grid — six live cells */
-function VizGrid({ projects, active, delay = 0 }) {
-  return (
-    <ChartPanel>
-      <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
-        Live pipeline
-      </p>
-      <div className="grid grid-cols-3 gap-2" aria-hidden>
-        {projects.map((name, i) => (
-          <motion.div
-            key={name}
-            className="relative flex aspect-[1.15] flex-col justify-between overflow-hidden rounded-lg border border-black/[0.06] bg-white px-2 py-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={
-              active
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: 10 }
-            }
-            transition={{ duration: 0.5, delay: delay + i * 0.07, ease }}
-          >
-            <span className="type-stat text-[10px] !font-semibold text-neutral-400">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="truncate text-[10px] font-semibold leading-tight tracking-[-0.01em] text-neutral-900 sm:text-[11px]">
-              {name}
-            </span>
-            {active && (
-              <motion.span
-                className="absolute inset-x-0 bottom-0 h-[2px] bg-neutral-950"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: [0, 1, 1, 0.35, 1] }}
-                transition={{
-                  duration: 3.2,
-                  delay: delay + 0.6 + i * 0.12,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                style={{ originX: 0 }}
-              />
-            )}
-          </motion.div>
-        ))}
-      </div>
-    </ChartPanel>
-  );
-}
-
-function MetricVisual({ card, active, delay }) {
-  if (card.viz === "bars") {
-    return <VizBars series={card.series} active={active} delay={delay} />;
-  }
-  if (card.viz === "meters") {
-    return <VizMeters meters={card.meters} active={active} delay={delay} />;
-  }
-  if (card.viz === "grid") {
-    return <VizGrid projects={card.projects} active={active} delay={delay} />;
-  }
-  return null;
-}
-
-function MetricCard({ card, index, sectionInView }) {
+function MetricTile({ card, index, active }) {
   const duration = card.value >= 100 ? 2200 : card.value >= 20 ? 1700 : 1300;
-  const delay = 120 + index * 140;
-  const count = useCountUp(card.value, sectionInView, duration, delay);
+  const count = useCountUp(card.value, active, duration, 140 + index * 120);
 
   return (
     <motion.article
-      className="flex min-h-[300px] flex-col rounded-2xl border border-black/[0.05] bg-white p-5 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.35)] sm:min-h-[320px] sm:rounded-[1.25rem] sm:p-6"
-      initial={{ opacity: 0, y: 22 }}
-      animate={
-        sectionInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 22 }
-      }
-      transition={{ duration: 0.7, delay: index * 0.08, ease }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={{ duration: 0.65, delay: 0.12 + index * 0.08, ease }}
+      className="flex min-h-0 flex-col justify-between overflow-hidden rounded-[1.35rem] border border-black/[0.06] bg-white p-4 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.35)] sm:rounded-[1.5rem] sm:p-5 dark:border-white/10 dark:bg-[#161616] dark:shadow-none"
     >
-      <p className="text-[13px] font-medium tracking-[-0.01em] text-neutral-400 sm:text-[14px]">
+      <p className="text-[11px] font-medium tracking-[-0.01em] text-neutral-400 sm:text-[12px] dark:text-white/45">
         {card.label}
       </p>
       <p
-        className="mt-3 text-[clamp(2.4rem,5vw,3.25rem)] font-semibold leading-none tracking-[-0.035em] text-neutral-950 tabular-nums"
-        style={{
-          fontFamily:
-            'var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif',
-          fontVariantNumeric: "tabular-nums",
-        }}
+        className="type-stat mt-3 text-[clamp(1.85rem,3.2vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-neutral-950 tabular-nums dark:text-white"
       >
         {formatNumber(count)}
         {card.suffix}
       </p>
-      <div className="mt-6 flex-1">
-        <MetricVisual
-          card={card}
-          active={sectionInView}
-          delay={0.22 + index * 0.08}
-        />
-      </div>
     </motion.article>
   );
 }
 
 export default function Metrics() {
   const ref = useRef(null);
+  const videoRef = useRef(null);
   const inView = useInView(ref, {
     once: true,
     amount: 0.35,
     margin: "0px 0px -8% 0px",
   });
 
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return undefined;
+
+    if (inView) {
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
+  }, [inView]);
+
   return (
     <section
       ref={ref}
       id="metrics"
-      className="relative z-10 border-t border-neutral-200/70 bg-[#efefed]"
-      aria-label="Company metrics"
+      className="relative z-10 flex h-dvh max-h-dvh overflow-hidden border-t border-neutral-200/80 bg-[#f4f4f2] text-neutral-950 dark:border-white/10 dark:bg-[#0a0a0a] dark:text-white"
+      aria-label="Decades of trust"
     >
-      <div className="mx-auto max-w-[1500px] px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-        <div className="mb-10 grid grid-cols-1 gap-6 lg:mb-12 lg:grid-cols-12 lg:items-start lg:gap-10">
-          <motion.h2
-            className="font-display max-w-[18ch] text-[clamp(1.75rem,3.6vw,2.75rem)] font-medium leading-[1.12] tracking-[-0.03em] text-neutral-950 lg:col-span-7"
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-            transition={{ duration: 0.7, ease }}
-          >
-            {METRICS.title}
-          </motion.h2>
-          <motion.div
-            className="space-y-3 text-[14px] leading-relaxed text-neutral-500 sm:text-[15px] lg:col-span-5 lg:pt-1"
-            initial={{ opacity: 0, y: 18 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-            transition={{ duration: 0.7, delay: 0.08, ease }}
-          >
-            {METRICS.body.map((p) => (
-              <p key={p.slice(0, 36)}>{p}</p>
-            ))}
-          </motion.div>
-        </div>
+      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col gap-6 px-5 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-10 xl:gap-14">
+        {/* Left — brand story */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.7, ease }}
+          className="flex w-full shrink-0 flex-col justify-center lg:w-[40%] lg:max-w-[520px]"
+        >
+          <span className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-black/10 bg-white px-3.5 py-1.5 text-[11px] font-semibold tracking-[-0.01em] text-neutral-800 shadow-sm dark:border-white/15 dark:bg-white/10 dark:text-white/90">
+            <span
+              className="text-[10px] leading-none text-[var(--accent)]"
+              aria-hidden
+            >
+              ✦
+            </span>
+            {METRICS.badge}
+          </span>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5 lg:gap-6">
-          {METRICS.cards.map((card, i) => (
-            <MetricCard
-              key={card.id}
-              card={card}
-              index={i}
-              sectionInView={inView}
+          <h2 className="type-heading max-w-[16ch] text-[28px] text-neutral-950 sm:text-[36px] lg:text-[42px] xl:text-[46px] dark:text-white">
+            {METRICS.title}
+          </h2>
+
+          <p className="type-body mt-4 max-w-[40ch] text-[14px] sm:mt-5 sm:text-[15px] dark:text-white/55">
+            {METRICS.body}
+          </p>
+
+          <ul className="mt-6 space-y-3 sm:mt-7">
+            {BRANDS.map((brand, i) => (
+              <li
+                key={brand.name}
+                className="flex items-baseline gap-3 border-t border-black/[0.06] pt-3 first:border-t-0 first:pt-0 dark:border-white/10"
+              >
+                <span className="type-label shrink-0 text-[10px] text-neutral-400 dark:text-white/35">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-semibold tracking-[-0.02em] text-neutral-900 sm:text-[14px] dark:text-white">
+                    {brand.name}
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-neutral-400 dark:text-white/40">
+                    {brand.role}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href={METRICS.ctaHref}
+            className="type-button btn-pill btn-shine btn-solid mt-7 w-fit sm:mt-8 dark:bg-white dark:text-neutral-950"
+          >
+            {METRICS.cta}
+          </Link>
+        </motion.div>
+
+        {/* Right — video + metrics */}
+        <div className="flex min-h-0 w-full flex-1 flex-col gap-3 sm:gap-3.5 lg:h-[min(78vh,720px)]">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+            transition={{ duration: 0.7, delay: 0.06, ease }}
+            className="relative min-h-0 flex-[1.55] overflow-hidden rounded-[1.5rem] bg-neutral-200 sm:rounded-[1.75rem] dark:bg-neutral-800"
+          >
+            <video
+              ref={videoRef}
+              src={METRICS.video}
+              poster={METRICS.videoPoster}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
+              aria-label="Lilasons Developers property walkthrough"
             />
-          ))}
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent dark:from-black/40"
+              aria-hidden
+            />
+          </motion.div>
+
+          <div className="grid min-h-[110px] flex-[0.85] grid-cols-3 gap-3 sm:min-h-[130px] sm:gap-3.5">
+            {METRICS.cards.map((card, i) => (
+              <MetricTile
+                key={card.id}
+                card={card}
+                index={i}
+                active={inView}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

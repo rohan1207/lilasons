@@ -35,7 +35,7 @@ export default function MobileGate({ children }) {
         <p className="type-label mb-3 text-[11px] text-neutral-400">
           Lilasons Developers
         </p>
-        <h1 className="type-heading max-w-[16ch] text-[28px] leading-[1.1] tracking-[-0.03em] text-neutral-950">
+        <h1 className="type-heading max-w-[16ch] text-[28px] text-neutral-950">
           Phone screen is in progress
         </h1>
         <p className="type-body mt-4 max-w-[28ch] text-[14px] text-neutral-500">

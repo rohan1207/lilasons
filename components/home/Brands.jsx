@@ -22,7 +22,7 @@ export default function Brands() {
           <p className="type-label mb-2 text-[11px] text-neutral-400 sm:text-[12px]">
             — Our Brands
           </p>
-          <h2 className="type-heading text-[28px] uppercase tracking-[-0.03em] text-neutral-950 sm:text-[36px] lg:text-[44px]">
+          <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px] lg:text-[44px]">
             Under the Lilasons Group
           </h2>
         </motion.div>
@@ -40,10 +40,10 @@ export default function Brands() {
               <p className="type-label mb-4 text-[10px] text-neutral-400">
                 {String(i + 1).padStart(2, "0")}
               </p>
-              <h3 className="type-heading text-[18px] uppercase leading-[1.15] tracking-[-0.025em] text-neutral-950 sm:text-[20px] lg:text-[22px]">
+              <h3 className="type-heading text-[18px] text-neutral-950 sm:text-[20px] lg:text-[22px]">
                 {brand.name}
               </h3>
-              <p className="type-body mt-4 text-[14px] leading-relaxed text-neutral-600 sm:text-[15px]">
+              <p className="type-body mt-4 text-[14px] sm:text-[15px]">
                 {brand.body}
               </p>
             </motion.article>

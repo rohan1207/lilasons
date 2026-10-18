@@ -138,7 +138,7 @@ export default function SelectedProjects() {
             <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:text-[12px]">
               — Our Projects
             </p>
-            <h2 className="type-heading text-[28px] uppercase leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:text-[34px] lg:text-[38px]">
+            <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
               Selected Work
             </h2>
           </header>
@@ -162,22 +162,22 @@ export default function SelectedProjects() {
                     {project.category} · {project.indexLabel}
                   </p>
 
-                  <h3 className="type-heading mt-3 text-[26px] leading-[1.05] tracking-[-0.035em] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
+                  <h3 className="type-heading mt-3 text-[26px] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
                     {project.title}
                   </h3>
 
-                  <p className="type-label mt-2.5 text-[11px] text-neutral-500 sm:mt-3 sm:text-[12px]">
+                  <p className="type-kicker mt-2.5 text-[11px] sm:mt-3 sm:text-[12px]">
                     {project.placeLine}
                   </p>
 
-                  <p className="type-body mt-4 max-w-[40ch] text-[13px] leading-relaxed text-neutral-600 sm:mt-5 sm:text-[14px] md:text-[15px]">
+                  <p className="type-body mt-4 max-w-[40ch] text-[13px] sm:mt-5 sm:text-[14px] md:text-[15px]">
                     {project.summary}
                   </p>
 
                   <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 border-t border-neutral-200 pt-5 sm:mt-6 sm:gap-y-4 sm:pt-6">
                     {project.meta.slice(0, 4).map((item) => (
                       <div key={item.label}>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-400 sm:text-[11px]">
+                        <p className="type-label text-[10px] sm:text-[11px]">
                           {item.label}
                         </p>
                         <p className="mt-1 text-[13px] font-medium tracking-[-0.01em] text-neutral-900 sm:text-[14px]">
@@ -195,7 +195,7 @@ export default function SelectedProjects() {
           <div className="mt-5 flex shrink-0 flex-col gap-4 border-t border-neutral-200 pt-5 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
             <Link
               href={PROJECTS[active].href}
-              className="type-button btn-pill btn-shine inline-flex h-10 w-fit items-center gap-2.5 border border-neutral-900 bg-transparent px-5 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-11 sm:px-6 sm:text-[12px]"
+              className="type-button btn-pill btn-shine btn-outline w-fit"
             >
               <span aria-hidden className="text-[13px] leading-none">
                 ↗

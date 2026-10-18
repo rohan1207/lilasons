@@ -3,18 +3,19 @@
 :root {
   --background: #f7f7f7;
   --foreground: #0a0a0a;
-  --muted: #6b6b6b;
+  --muted: #737373;
   --tick: #d6d6d6;
   --tick-active: #1a1a1a;
   --accent: #c5e24a;
 
-  /* Premium tight display type — matches reference */
-  --tracking-display: -0.04em;
+  /* Showcase-aligned type scale — sitewide source of truth */
+  --tracking-display: -0.03em;
   --tracking-heading: -0.03em;
   --tracking-body: -0.01em;
-  --tracking-label: 0.08em;
-  --leading-display: 1.02;
-  --leading-heading: 1.08;
+  --tracking-label: 0.12em;
+  --leading-display: 0.96;
+  --leading-heading: 0.96;
+  --leading-body: 1.65;
 }
 
 @theme inline {
@@ -57,47 +58,48 @@ body {
   overscroll-behavior-y: none;
 }
 
-/* ——— Typography system ——— */
+/* ——— Typography system (Showcase-aligned) ——— */
 
-.type-display {
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  line-height: var(--leading-display);
-  text-transform: uppercase;
-  color: var(--foreground);
-}
-
-.type-heading {
-  font-weight: 700;
+.type-display,
+.type-heading,
+.type-heading-upper {
+  font-family: var(--font-lilasons-display), "Times New Roman", Georgia, serif;
+  font-weight: 500;
   letter-spacing: var(--tracking-heading);
   line-height: var(--leading-heading);
-  color: var(--foreground);
+  text-transform: uppercase;
 }
 
-.type-heading-upper {
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  line-height: var(--leading-heading);
+/* Short supporting line under a display title */
+.type-kicker {
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  line-height: 1.55;
   text-transform: uppercase;
-  color: var(--foreground);
+  color: #737373;
 }
 
 .type-body {
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   letter-spacing: var(--tracking-body);
-  line-height: 1.55;
-  color: #3d3d3d;
+  line-height: var(--leading-body);
+  color: #525252;
 }
 
+/* Section eyebrows / micro labels */
 .type-label {
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 600;
   letter-spacing: var(--tracking-label);
   line-height: 1.2;
   text-transform: uppercase;
-  color: #6b6b6b;
+  color: #a3a3a3;
 }
 
 .type-button {
+  font-family: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -149,6 +151,58 @@ textarea {
   border-radius: 9999px !important;
 }
 
+/* Solid primary CTA — matches Showcase “Book a viewing” */
+.btn-solid {
+  display: inline-flex;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background-color: #0a0a0a;
+  color: #fff;
+  font-size: 11px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-solid:hover {
+  opacity: 0.85;
+}
+
+/* Outline secondary CTA */
+.btn-outline {
+  display: inline-flex;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  border: 1px solid #171717;
+  background-color: transparent;
+  color: #0a0a0a;
+  font-size: 11px;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: #0a0a0a;
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .btn-solid,
+  .btn-outline {
+    height: 3rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+}
+
 .btn-shine {
   position: relative;
   overflow: hidden;
@@ -183,4 +237,45 @@ textarea {
 ::selection {
   background: var(--accent);
   color: #111;
+}
+
+/* ——— Offer marquee (RTL scroll) ——— */
+
+.offer-strip-mask {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+}
+
+.offer-strip-row {
+  animation: offer-strip-rtl 38s linear infinite;
+  will-change: transform;
+  color: #fff;
+}
+
+.offer-strip-row .type-heading {
+  color: #fff;
+}
+
+.offer-strip-row:hover {
+  animation-play-state: paused;
+}
+
+@keyframes offer-strip-rtl {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offer-strip-row {
+    animation: none;
+  }
 }

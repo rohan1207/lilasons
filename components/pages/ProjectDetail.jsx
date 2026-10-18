@@ -55,7 +55,7 @@ export default function ProjectDetail({ project }) {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <SectionEyebrow className="mb-5">{project.category}</SectionEyebrow>
-            <h1 className="font-display max-w-[16ch] text-[clamp(2rem,7.5vw,5.5rem)] font-medium uppercase leading-[0.92] tracking-[-0.03em] text-[#0a0a0a]">
+            <h1 className="type-heading max-w-[16ch] text-[clamp(2rem,7.5vw,5.5rem)] leading-[0.92] text-[#0a0a0a]">
               {project.title}
             </h1>
             <p className="mt-4 text-[clamp(13px,1.1vw,16px)] font-normal tracking-wide text-neutral-600">
@@ -175,7 +175,7 @@ export default function ProjectDetail({ project }) {
                     href={BRAND.whatsappUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center gap-2 bg-neutral-950 px-6 text-[11px] text-white transition-opacity hover:opacity-85"
+                    className="type-button btn-pill btn-shine btn-solid"
                   >
                     <span aria-hidden>↗</span>
                     {CONTACT.whatsappLabel}
@@ -185,13 +185,13 @@ export default function ProjectDetail({ project }) {
                   href={mapsHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center gap-2 border border-neutral-900 px-6 text-[11px] text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white"
+                  className="type-button btn-pill btn-shine btn-outline"
                 >
                   Get Directions
                 </a>
                 <Link
                   href="/contact"
-                  className="type-button btn-pill btn-shine inline-flex h-11 items-center justify-center gap-2 border border-black/15 px-6 text-[11px] text-neutral-700 transition-colors hover:border-neutral-950 hover:text-neutral-950"
+                  className="type-button btn-pill btn-shine btn-outline border-black/15 text-neutral-700"
                 >
                   Discuss This Project
                 </Link>
@@ -206,7 +206,7 @@ export default function ProjectDetail({ project }) {
           <div className="mx-auto max-w-[1600px]">
             <Reveal className="mb-8 md:mb-10">
               <SectionEyebrow className="mb-4">Gallery</SectionEyebrow>
-              <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+              <h2 className="type-heading text-[clamp(1.5rem,3vw,2.25rem)] text-[#0a0a0a]">
                 Project Gallery
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-neutral-600 md:text-base">
@@ -258,7 +258,7 @@ export default function ProjectDetail({ project }) {
           <div className="mx-auto max-w-[1600px]">
             <Reveal className="mb-10">
               <SectionEyebrow className="mb-4">Related Work</SectionEyebrow>
-              <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-medium tracking-[-0.03em] text-[#0a0a0a]">
+              <h2 className="type-heading text-[clamp(1.5rem,3vw,2.25rem)] text-[#0a0a0a]">
                 More Projects
               </h2>
             </Reveal>

@@ -19,7 +19,7 @@ export default function MediaPage() {
             <p className="type-label mb-3 text-[11px] text-neutral-400">
               — Media
             </p>
-            <h1 className="type-heading max-w-[18ch] text-[36px] uppercase leading-[1.05] tracking-[-0.04em] text-neutral-950 sm:text-[48px] lg:text-[56px]">
+            <h1 className="type-heading max-w-[18ch] text-[36px] text-neutral-950 sm:text-[48px] lg:text-[56px]">
               {MEDIA.title}
             </h1>
           </motion.div>
@@ -37,7 +37,7 @@ export default function MediaPage() {
         </div>
 
         <div className="mx-auto max-w-[1500px] px-5 pb-6 sm:px-8 lg:px-12">
-          <h2 className="type-heading text-[24px] uppercase tracking-[-0.03em] text-neutral-950 sm:text-[28px]">
+          <h2 className="type-heading text-[24px] text-neutral-950 sm:text-[28px]">
             {MEDIA.beyondTitle}
           </h2>
         </div>
