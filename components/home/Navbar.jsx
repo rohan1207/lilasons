@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import BrandMark from "@/components/BrandMark";
-import { BRAND, NAV_PRIMARY, PROJECT_NAV } from "@/lib/brand";
+import { BRAND, NAV_PRIMARY, NAV_RESOURCES, PROJECT_NAV } from "@/lib/brand";
 
 const CONTACT = { label: "Contact", href: "/contact" };
 const ease = [0.22, 1, 0.36, 1];
@@ -97,12 +97,12 @@ export default function Navbar({ forceSolid = false }) {
                   className={`type-label whitespace-nowrap text-[11px] transition-colors xl:text-[12px] ${
                     isActive(link.href)
                       ? "text-[#3b6ea5]"
-                      : "text-neutral-700 hover:text-neutral-950"
+                      : "text-neutral-900 hover:text-neutral-950"
                   }`}
                 >
                   {link.label}
                   {link.children ? (
-                    <span className="ml-1 inline-block text-[10px] opacity-60">
+                    <span className="ml-1 inline-block text-[10px] text-neutral-700">
                       ›
                     </span>
                   ) : null}
@@ -116,7 +116,7 @@ export default function Navbar({ forceSolid = false }) {
                           <li key={item.href}>
                             <Link
                               href={item.href}
-                              className="block text-[13px] font-medium tracking-[-0.01em] text-neutral-700 transition-colors hover:text-neutral-950"
+                              className="block text-[13px] font-medium tracking-[-0.01em] text-neutral-900 transition-colors hover:text-neutral-950"
                             >
                               {item.label}
                             </Link>
@@ -187,7 +187,7 @@ export default function Navbar({ forceSolid = false }) {
                         className={`block py-2.5 text-[22px] font-medium tracking-[-0.02em] transition-colors sm:text-[26px] ${
                           isActive(link.href)
                             ? "text-[#3b6ea5]"
-                            : "text-neutral-500 hover:text-neutral-950"
+                            : "text-neutral-800 hover:text-neutral-950"
                         }`}
                       >
                         {link.label}
@@ -197,7 +197,7 @@ export default function Navbar({ forceSolid = false }) {
                 </ul>
 
                 <div className="w-full bg-[#ebebeb]/60 px-0 py-8 lg:flex-1 lg:px-10 lg:py-2">
-                  <p className="type-label mb-4 text-[11px] text-neutral-400">
+                  <p className="type-label mb-4 text-[11px] text-neutral-700">
                     Our Projects
                   </p>
                   <ul className="space-y-3">
@@ -209,7 +209,7 @@ export default function Navbar({ forceSolid = false }) {
                           className={`block text-[16px] font-medium tracking-[-0.015em] transition-colors sm:text-[18px] ${
                             isActive(item.href)
                               ? "text-[#3b6ea5]"
-                              : "text-neutral-600 hover:text-neutral-950"
+                              : "text-neutral-800 hover:text-neutral-950"
                           }`}
                         >
                           {item.label}
@@ -218,8 +218,31 @@ export default function Navbar({ forceSolid = false }) {
                     ))}
                   </ul>
 
+                  <div className="mt-10 border-t border-neutral-300/70 pt-8">
+                    <p className="type-label mb-4 text-[11px] text-neutral-700">
+                      Resources
+                    </p>
+                    <ul className="space-y-3">
+                      {NAV_RESOURCES.map((item) => (
+                        <li key={item.href}>
+                          <Link
+                            href={item.href}
+                            onClick={closeMega}
+                            className={`block text-[16px] font-medium tracking-[-0.015em] transition-colors sm:text-[18px] ${
+                              isActive(item.href)
+                                ? "text-[#3b6ea5]"
+                                : "text-neutral-800 hover:text-neutral-950"
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
                   <div className="mt-10 space-y-3 border-t border-neutral-300/70 pt-8">
-                    <p className="type-label text-[11px] text-neutral-400">
+                    <p className="type-label text-[11px] text-neutral-700">
                       {BRAND.address.short}
                     </p>
                     <a

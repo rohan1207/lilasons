@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import PageShell from "@/components/layout/PageShell";
-import Subscribe from "@/components/home/Subscribe";
 import { BRAND, CONTACT } from "@/lib/brand";
 
 const ease = [0.22, 1, 0.36, 1];
@@ -18,6 +18,20 @@ const INTERESTS = [
 
 const fieldClass =
   "h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-950";
+
+function FadeUp({ children, className = "", delay = 0 }) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 22 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.75, delay, ease }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function ContactPage() {
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${BRAND.mapsQuery}`;
@@ -58,41 +72,100 @@ export default function ContactPage() {
 
   return (
     <PageShell>
-      <section className="bg-white pt-28 sm:pt-32">
-        <div className="mx-auto grid max-w-[1500px] gap-12 px-5 pb-16 sm:px-8 sm:pb-20 lg:grid-cols-12 lg:gap-16 lg:px-12 lg:pb-24">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease }}
-            className="lg:col-span-5"
-          >
-            <p className="type-label mb-3 text-[11px] text-neutral-400">
-              — Get in touch
+      {/* Full-viewport map hero */}
+      <section className="relative flex h-dvh max-h-dvh min-h-dvh overflow-hidden bg-neutral-200">
+        <iframe
+          title="Lilasons Developers office location"
+          src={CONTACT.mapEmbed}
+          className="absolute inset-0 h-full w-full border-0"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          allowFullScreen
+        />
+
+        {/* Soft scrim so type stays readable over the map */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/15"
+          aria-hidden
+        />
+
+        <div className="pointer-events-none relative z-10 mx-auto flex h-full w-full max-w-[1500px] flex-col justify-end px-5 pb-12 pt-[calc(5rem+1.5rem)] sm:px-8 sm:pb-14 sm:pt-[calc(6rem+1.75rem)] lg:px-12 lg:pb-16">
+          <div className="pointer-events-auto max-w-xl">
+            <FadeUp delay={0.05}>
+              <p className="type-label mb-3 text-[11px] text-white/75 sm:mb-4 sm:text-[12px]">
+                {CONTACT.eyebrow}
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.12}>
+              <p className="type-kicker mb-3 text-[12px] text-white/80 sm:text-[13px]">
+                {CONTACT.kicker}
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.18}>
+              <h1 className="type-heading text-[clamp(2.5rem,7vw,5.5rem)] text-white">
+                {CONTACT.title}
+              </h1>
+            </FadeUp>
+            <FadeUp delay={0.26}>
+              <p
+                className="mt-4 max-w-[40ch] text-[14px] font-medium leading-[1.65] text-white sm:mt-5 sm:text-[16px]"
+                style={{ textShadow: "0 1px 16px rgba(0,0,0,0.45)" }}
+              >
+                {CONTACT.heroBody}
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-3 sm:mt-8">
+              <a
+                href={mapsHref}
+                target="_blank"
+                rel="noreferrer"
+                className="type-button btn-pill btn-shine btn-solid !bg-white !text-neutral-950 hover:!opacity-90"
+              >
+                Get directions
+              </a>
+              <a
+                href={BRAND.whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="type-button btn-pill btn-shine btn-outline !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950"
+              >
+                {CONTACT.whatsappLabel}
+              </a>
+            </FadeUp>
+          </div>
+        </div>
+      </section>
+
+      {/* Details + form */}
+      <section className="relative z-10 border-t border-neutral-200/80 bg-[#f7f7f7]">
+        <div className="mx-auto grid max-w-[1500px] gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-12 lg:gap-12 lg:px-12 lg:py-24">
+          <FadeUp className="lg:col-span-5">
+            <p className="type-label mb-2 text-[11px] sm:text-[12px]">
+              — Office
             </p>
-            <h1 className="type-heading text-[40px] text-neutral-950 sm:text-[56px]">
-              {CONTACT.title}
-            </h1>
-            <p className="mt-4 text-[18px] font-medium tracking-[-0.015em] text-neutral-700">
+            <h2 className="type-heading text-[clamp(1.75rem,3.5vw,2.75rem)] text-neutral-950">
               {CONTACT.intro}
-            </p>
-            <p className="type-body mt-2 max-w-[40ch] text-[15px] text-neutral-600">
+            </h2>
+            <p className="type-body mt-4 max-w-[40ch] text-[14px] sm:text-[15px]">
               {CONTACT.body}
             </p>
 
-            <div className="mt-10 space-y-6 rounded-2xl border border-neutral-200 bg-[#f7f7f7] p-6 sm:p-7">
+            <div className="mt-8 space-y-6 border-t border-neutral-200 pt-8">
               <div>
-                <h2 className="type-heading text-[18px] text-neutral-950">
+                <p className="type-label text-[10px]">Headquarters</p>
+                <p className="mt-2 text-[15px] font-medium tracking-[-0.02em] text-neutral-950">
                   {BRAND.name}
-                </h2>
-                <p className="mt-2 text-[14px] leading-relaxed text-neutral-600">
+                </p>
+                <p className="type-body mt-1 max-w-[34ch] text-[13px] sm:text-[14px]">
                   {BRAND.address.full}
                 </p>
               </div>
 
-              <div className="space-y-2 text-[14px]">
+              <div>
+                <p className="type-label text-[10px]">Reach us</p>
                 <a
                   href={`mailto:${BRAND.email}`}
-                  className="block font-medium text-neutral-800 transition-colors hover:text-neutral-950"
+                  className="mt-2 block text-[14px] font-medium text-neutral-950 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-950"
                 >
                   {BRAND.email}
                 </a>
@@ -100,7 +173,7 @@ export default function ContactPage() {
                   <a
                     key={phone}
                     href={`tel:${phone.replace(/\s/g, "")}`}
-                    className="block font-medium text-neutral-800 transition-colors hover:text-neutral-950"
+                    className="mt-1 block text-[14px] font-medium text-neutral-800 transition-colors hover:text-neutral-950"
                   >
                     {phone}
                   </a>
@@ -108,52 +181,25 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <p className="type-label mb-1 text-[10px] text-neutral-400">
-                  Hours
-                </p>
-                <p className="text-[14px] font-medium text-neutral-800">
+                <p className="type-label text-[10px]">Hours</p>
+                <p className="mt-2 text-[15px] font-medium text-neutral-950">
                   {BRAND.hours.days}
                 </p>
-                <p className="text-[14px] text-neutral-600">{BRAND.hours.time}</p>
-              </div>
-
-              <div className="flex flex-wrap gap-3 pt-1">
-                <a
-                  href={BRAND.whatsappUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="type-button btn-pill btn-shine btn-solid"
-                >
-                  {CONTACT.whatsappLabel}
-                </a>
-                <a
-                  href={mapsHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="type-button btn-pill btn-shine btn-outline"
-                >
-                  Get directions
-                </a>
+                <p className="type-body mt-0.5 text-[13px]">{BRAND.hours.time}</p>
               </div>
             </div>
-          </motion.div>
+          </FadeUp>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.08, ease }}
-            className="lg:col-span-7"
-          >
-            <div className="rounded-2xl border border-neutral-200 bg-[#f7f7f7] p-6 sm:p-8 lg:p-10">
-              <p className="type-label mb-2 text-[11px] text-neutral-400">
+          <FadeUp delay={0.08} className="lg:col-span-7">
+            <div className="rounded-[1.35rem] border border-neutral-200 bg-white p-6 sm:p-8 lg:p-10">
+              <p className="type-label mb-2 text-[11px] sm:text-[12px]">
                 — Enquiry
               </p>
               <h2 className="type-heading text-[24px] text-neutral-950 sm:text-[28px]">
-                Send us a message
+                {CONTACT.formTitle}
               </h2>
-              <p className="type-body mt-2 max-w-[42ch] text-[14px] text-neutral-600">
-                Tell us what you&apos;re looking for — we&apos;ll get back
-                shortly during business hours.
+              <p className="type-body mt-2 max-w-[42ch] text-[14px]">
+                {CONTACT.formBody}
               </p>
 
               <form onSubmit={onSubmit} className="mt-8 space-y-4">
@@ -161,7 +207,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="contact-name"
-                      className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500"
+                      className="type-label mb-2 block text-[10px]"
                     >
                       Full name
                     </label>
@@ -180,7 +226,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="contact-phone"
-                      className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500"
+                      className="type-label mb-2 block text-[10px]"
                     >
                       Phone
                     </label>
@@ -200,7 +246,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="contact-email"
-                    className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500"
+                    className="type-label mb-2 block text-[10px]"
                   >
                     Email
                   </label>
@@ -218,9 +264,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                    Interest
-                  </p>
+                  <p className="type-label mb-2 text-[10px]">Interest</p>
                   <div className="flex flex-wrap gap-2">
                     {INTERESTS.map((item) => {
                       const active = form.interest === item;
@@ -247,7 +291,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="contact-message"
-                    className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500"
+                    className="type-label mb-2 block text-[10px]"
                   >
                     Message
                   </label>
@@ -278,11 +322,27 @@ export default function ContactPage() {
                 </div>
               </form>
             </div>
-          </motion.div>
+          </FadeUp>
         </div>
       </section>
 
-      <Subscribe />
+      {/* Quick links */}
+      <section className="relative z-10 border-t border-neutral-200/80 bg-white">
+        <div className="mx-auto flex max-w-[1500px] flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-12">
+          <p className="type-body max-w-[40ch] text-[14px]">
+            Looking for a specific development? Browse projects or tour a
+            walkthrough first.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/projects" className="type-button btn-pill btn-shine btn-outline">
+              Our Projects
+            </Link>
+            <Link href="/walkthrough" className="type-button btn-pill btn-shine btn-outline">
+              Walkthroughs
+            </Link>
+          </div>
+        </div>
+      </section>
     </PageShell>
   );
 }

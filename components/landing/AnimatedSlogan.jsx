@@ -1,38 +1,45 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const WORDS = ["build", "deliver", "care", "create", "thrive"];
+const LINES = [
+  { lead: "We", word: "craft." },
+  { lead: "We", word: "build." },
+  { lead: "We", word: "elevate." },
+  { lead: "We", word: "belong." },
+  { lead: "We", word: "endure." },
+];
+
+const ease = [0.22, 1, 0.36, 1];
 
 export default function AnimatedSlogan() {
   const [index, setIndex] = useState(0);
-  const [show, setShow] = useState(true);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setShow(false);
-      window.setTimeout(() => {
-        setIndex((prev) => (prev + 1) % WORDS.length);
-        setShow(true);
-      }, 320);
-    }, 2400);
+      setIndex((prev) => (prev + 1) % LINES.length);
+    }, 2200);
     return () => clearInterval(id);
   }, []);
 
+  const line = LINES[index];
+
   return (
-    <p className="type-heading-upper mt-8 text-center text-[clamp(0.95rem,2.8vw,1.2rem)] text-neutral-800">
-      we{" "}
-      <motion.span
-        className="inline"
-        animate={{
-          opacity: show ? 1 : 0,
-          filter: show ? "blur(0px)" : "blur(8px)",
-        }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {WORDS[index]}
-      </motion.span>
-    </p>
+    <div className="mt-8 flex min-h-[1.15em] items-center justify-center text-center sm:mt-10">
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={line.word}
+          initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+          transition={{ duration: 0.45, ease }}
+          className="type-heading text-[clamp(1.75rem,5.5vw,3.25rem)] text-neutral-950"
+        >
+          <span className="text-neutral-400">{line.lead}</span>{" "}
+          <span>{line.word}</span>
+        </motion.p>
+      </AnimatePresence>
+    </div>
   );
 }

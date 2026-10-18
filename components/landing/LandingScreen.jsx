@@ -38,7 +38,6 @@ export default function LandingScreen({ onComplete }) {
 
       if (completed.current) return;
       completed.current = true;
-      // Same frame as 100% — no setTimeout, no router delay
       onComplete?.();
     };
 
@@ -53,54 +52,48 @@ export default function LandingScreen({ onComplete }) {
   const percent = Math.round(progress * 100);
 
   return (
-    <main className="relative flex min-h-dvh w-full flex-col items-center justify-center overflow-hidden bg-[#f7f7f7] px-6">
+    <main className="relative flex h-dvh max-h-dvh min-h-dvh w-full flex-col items-center justify-center overflow-hidden bg-[#f7f7f7] px-5">
       <div
-        className="pointer-events-none absolute inset-0 scale-105 bg-cover bg-center opacity-[0.1]"
+        className="pointer-events-none absolute inset-0 scale-105 bg-cover bg-center opacity-[0.08]"
         style={{ backgroundImage: `url(${LANDING_BG_SRC})` }}
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#f7f7f7]/85 via-[#f7f7f7]/55 to-[#f7f7f7]/92"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#f7f7f7]/90 via-[#f7f7f7]/70 to-[#f7f7f7]"
         aria-hidden="true"
       />
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 flex w-full max-w-xl flex-col items-center text-center"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 flex w-full flex-col items-center"
       >
-        <Compass progress={progress} />
-
-        <div className="mt-12 flex justify-center">
+        <Compass progress={progress}>
           <BrandMark
             asLink={false}
-            imgClassName="h-[4.75rem] w-auto max-w-[380px] object-contain sm:h-20 sm:max-w-[440px] md:h-24 md:max-w-[520px]"
+            className="justify-center"
+            imgClassName="h-auto w-[72%] max-w-[200px] object-contain sm:max-w-[240px] md:max-w-[280px]"
+            textClassName="type-logo text-[1.4rem] tracking-[-0.02em] text-neutral-950 sm:text-[1.7rem]"
           />
-        </div>
+        </Compass>
 
         <AnimatedSlogan />
-
-        <div className="mt-10 flex flex-col items-center gap-2.5">
-          <p className="type-label text-[11px] text-neutral-500 sm:text-[12px]">
-            Loading your experience
-          </p>
-          <p className="type-stat text-[2rem] text-neutral-950 sm:text-[2.25rem]">
-            {percent}
-            <span className="ml-0.5 text-[0.9rem] font-semibold text-neutral-400">
-              %
-            </span>
-          </p>
-          <div className="mt-1 h-px w-28 overflow-hidden bg-neutral-300">
-            <motion.div
-              className="h-full bg-neutral-950"
-              initial={false}
-              animate={{ width: `${percent}%` }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-            />
-          </div>
-        </div>
       </motion.div>
+
+      {/* Bottom-right loading % only */}
+      <div className="absolute bottom-6 right-6 z-10 sm:bottom-8 sm:right-8 lg:bottom-10 lg:right-10">
+        <p
+          className="type-stat tabular-nums text-[1.35rem] text-neutral-950 sm:text-[1.6rem]"
+          aria-live="polite"
+          aria-label={`Loading ${percent} percent`}
+        >
+          {percent}
+          <span className="ml-0.5 text-[0.75rem] font-semibold text-neutral-400 sm:text-[0.85rem]">
+            %
+          </span>
+        </p>
+      </div>
     </main>
   );
 }
