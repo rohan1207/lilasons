@@ -58,7 +58,7 @@ export default function Subscribe() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={HOME.subscribePlaceholder}
-              className="h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950 sm:max-w-sm"
+              className="h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-500 focus:border-neutral-950 sm:max-w-sm"
             />
             <button
               type="submit"

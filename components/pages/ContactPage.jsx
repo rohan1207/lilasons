@@ -17,7 +17,7 @@ const INTERESTS = [
 ];
 
 const fieldClass =
-  "h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950";
+  "h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-500 focus:border-neutral-950";
 
 function FadeUp({ children, className = "", delay = 0 }) {
   return (
@@ -303,7 +303,7 @@ export default function ContactPage() {
                     value={form.message}
                     onChange={onChange}
                     placeholder="Share a few details about your requirement…"
-                    className="w-full resize-y rounded-[1.25rem] border border-neutral-300 bg-white px-5 py-4 text-[14px] leading-relaxed text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950"
+                    className="w-full resize-y rounded-[1.25rem] border border-neutral-300 bg-white px-5 py-4 text-[14px] leading-relaxed text-neutral-950 outline-none transition-colors placeholder:text-neutral-500 focus:border-neutral-950"
                   />
                 </div>
 

@@ -78,7 +78,7 @@ export default function ExpandStory() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={HOME.subscribePlaceholder}
-              className="h-12 w-full rounded-full border border-white/35 bg-white/95 px-5 text-[14px] text-neutral-950 outline-none backdrop-blur-sm transition-colors placeholder:text-neutral-700 focus:border-white sm:max-w-[16rem]"
+              className="h-12 w-full rounded-full border border-white/35 bg-white/95 px-5 text-[14px] text-neutral-950 outline-none backdrop-blur-sm transition-colors placeholder:text-neutral-500 focus:border-white sm:max-w-[16rem]"
             />
             <button
               type="submit"
