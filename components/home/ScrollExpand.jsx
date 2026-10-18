@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import "./ScrollExpand.css";
+import { isPhoneViewport } from "@/lib/mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,9 +130,14 @@ export default function ScrollExpand({
     };
 
     layoutStage();
-    applyProgress(propsRef.current.enabled ? 0 : 1);
 
-    if (!propsRef.current.enabled) return undefined;
+    // Phone: skip pin + scrub — already expanded, no scroll hijack
+    if (isPhoneViewport() || !propsRef.current.enabled) {
+      applyProgress(1);
+      return undefined;
+    }
+
+    applyProgress(0);
 
     const expandShare = () => {
       const c = propsRef.current;

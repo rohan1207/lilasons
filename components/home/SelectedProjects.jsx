@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { PROJECTS } from "@/lib/projects";
+import { isPhoneViewport } from "@/lib/mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +23,6 @@ function indexFromProgress(progress, total) {
 }
 
 function lerpFactor(distance) {
-  // Soft catch-up: far = a bit quicker, near = silk
   if (distance > 0.4) return 0.14;
   if (distance > 0.2) return 0.1;
   if (distance > 0.08) return 0.075;
@@ -39,13 +39,31 @@ export default function SelectedProjects() {
   const barRef = useRef(null);
 
   const [active, setActive] = useState(0);
+  const [phone, setPhone] = useState(false);
 
   const total = PROJECTS.length;
+
+  useEffect(() => {
+    const sync = () => setPhone(isPhoneViewport());
+    sync();
+    const mq = window.matchMedia("(max-width: 767px)");
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
     const stage = stageRef.current;
     if (!root || !stage) return;
+
+    // Phone: no ScrollTrigger pin — pins + momentum scroll hang/jitter on iOS
+    if (isPhoneViewport()) {
+      stage.style.height = "";
+      if (barRef.current) {
+        barRef.current.style.width = `${((activeRef.current + 1) / total) * 100}%`;
+      }
+      return undefined;
+    }
 
     const layout = () => {
       const nav = readNavOffset();
@@ -91,7 +109,6 @@ export default function SelectedProjects() {
       start: () => `top top+=${readNavOffset()}`,
       end: () => {
         const h = Math.max(320, window.innerHeight - readNavOffset());
-        // ~1 viewport per project — calm pacing without feeling endless
         return `+=${Math.round(h * total)}`;
       },
       pin: true,
@@ -118,7 +135,21 @@ export default function SelectedProjects() {
       window.removeEventListener("resize", refresh);
       st.kill();
     };
-  }, [total]);
+  }, [total, phone]);
+
+  useEffect(() => {
+    activeRef.current = active;
+    if (phone && barRef.current) {
+      barRef.current.style.width = `${((active + 1) / total) * 100}%`;
+    }
+  }, [active, phone, total]);
+
+  const go = (dir) => {
+    setActive((prev) => {
+      const next = (prev + dir + total) % total;
+      return next;
+    });
+  };
 
   return (
     <section
@@ -131,7 +162,6 @@ export default function SelectedProjects() {
         ref={stageRef}
         className="relative flex w-full flex-col overflow-hidden lg:flex-row"
       >
-        {/* Copy panel */}
         <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-5 sm:px-8 sm:py-9 lg:order-1 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
           <header className="shrink-0 pb-3 sm:pb-6">
             <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:text-[12px]">
@@ -142,18 +172,30 @@ export default function SelectedProjects() {
             </h2>
           </header>
 
-          <div className="relative min-h-0 flex-1 overflow-hidden">
+          <div
+            className={`relative min-h-0 overflow-hidden ${
+              phone ? "min-h-[280px]" : "flex-1"
+            }`}
+          >
             {PROJECTS.map((project, i) => {
               const on = i === active;
               return (
                 <div
                   key={project.id}
-                  className="absolute inset-0 flex flex-col transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  style={{
-                    opacity: on ? 1 : 0,
-                    transform: on ? "translateY(0)" : "translateY(10px)",
-                    pointerEvents: on ? "auto" : "none",
-                  }}
+                  className={`${
+                    phone ? "relative" : "absolute inset-0"
+                  } flex flex-col transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    phone && !on ? "hidden" : ""
+                  }`}
+                  style={
+                    phone
+                      ? undefined
+                      : {
+                          opacity: on ? 1 : 0,
+                          transform: on ? "translateY(0)" : "translateY(10px)",
+                          pointerEvents: on ? "auto" : "none",
+                        }
+                  }
                   aria-hidden={!on}
                 >
                   <p className="type-label text-[11px] text-neutral-700 sm:text-[12px]">
@@ -202,13 +244,40 @@ export default function SelectedProjects() {
 
             <div className="min-w-[140px] sm:max-w-[200px] sm:flex-1 sm:text-right">
               <div className="flex items-center justify-between gap-3 sm:justify-end sm:gap-4">
-                <p className="type-label text-[11px] tabular-nums text-neutral-700">
-                  {String(active + 1).padStart(2, "0")} /{" "}
-                  {String(total).padStart(2, "0")}
-                </p>
-                <p className="type-label text-[10px] text-neutral-700 sm:text-[11px]">
-                  Scroll
-                </p>
+                {phone ? (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      aria-label="Previous project"
+                      onClick={() => go(-1)}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
+                    >
+                      ‹
+                    </button>
+                    <p className="type-label text-[11px] tabular-nums text-neutral-700">
+                      {String(active + 1).padStart(2, "0")} /{" "}
+                      {String(total).padStart(2, "0")}
+                    </p>
+                    <button
+                      type="button"
+                      aria-label="Next project"
+                      onClick={() => go(1)}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
+                    >
+                      ›
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <p className="type-label text-[11px] tabular-nums text-neutral-700">
+                      {String(active + 1).padStart(2, "0")} /{" "}
+                      {String(total).padStart(2, "0")}
+                    </p>
+                    <p className="type-label text-[10px] text-neutral-700 sm:text-[11px]">
+                      Scroll
+                    </p>
+                  </>
+                )}
               </div>
               <div className="mt-2.5 h-px w-full bg-neutral-200 sm:ml-auto sm:max-w-[200px]">
                 <div
@@ -220,7 +289,6 @@ export default function SelectedProjects() {
           </div>
         </div>
 
-        {/* Image — first on phone, right on desktop */}
         <div className="relative order-1 min-h-[34vh] w-full shrink-0 overflow-hidden bg-neutral-200 lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
           {PROJECTS.map((project, i) => {
             const on = i === active;
@@ -231,7 +299,7 @@ export default function SelectedProjects() {
                 src={project.gallery?.[0] || project.image}
                 alt={project.alt}
                 draggable={false}
-                className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                 style={{
                   opacity: on ? 1 : 0,
                   transform: on ? "scale(1)" : "scale(1.03)",

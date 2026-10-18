@@ -4,22 +4,33 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { shouldUseNativeScroll } from "@/lib/mobile";
 
 import "lenis/dist/lenis.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Site-wide calm scroll — dampens wheel flings so sections aren't skipped,
- * and keeps GSAP ScrollTrigger (hero + expand) in sync.
+ * Desktop: calm Lenis + ScrollTrigger sync.
+ * Phone / coarse touch: native scroll only — Lenis causes jitter & hangs on iOS.
  */
 export default function SmoothScroll({ children }) {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return undefined;
+    if (reduce || shouldUseNativeScroll()) {
+      window.__tskLenis = null;
+      // Keep ScrollTrigger on native scroll events
+      const onScroll = () => ScrollTrigger.update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      const onResize = () => ScrollTrigger.refresh();
+      window.addEventListener("resize", onResize);
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onResize);
+      };
+    }
 
     const lenis = new Lenis({
-      // Heavier, premium feel — less distance per wheel tick
       lerp: 0.068,
       wheelMultiplier: 0.52,
       touchMultiplier: 0.72,
@@ -31,7 +42,6 @@ export default function SmoothScroll({ children }) {
     lenis.on("scroll", ScrollTrigger.update);
     window.__tskLenis = lenis;
 
-    // Drive Lenis from GSAP ticker so scrub/pin stay locked to the same clock
     const onTick = (time) => {
       lenis.raf(time * 1000);
     };

@@ -68,6 +68,18 @@ body {
   }
 }
 
+/* Phone scroll: native momentum, no rubber-band fight with scrolljacking */
+@media (max-width: 767px) {
+  html {
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 /* ——— Typography system (Showcase-aligned) ——— */
 
 .type-display,

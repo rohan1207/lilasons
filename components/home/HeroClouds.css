@@ -133,3 +133,56 @@
       transparent 50%
     );
 }
+
+/*
+ * Phone: SVG feTurbulence mist is too heavy (often dropped / invisible)
+ * and thrashs scroll. Use CSS-only cloud banks instead.
+ */
+@media (max-width: 767px) {
+  .hero-clouds__layer {
+    display: none !important;
+  }
+
+  .hero-clouds__haze {
+    opacity: 1;
+    background:
+      radial-gradient(
+        ellipse 95% 70% at 18% 22%,
+        rgba(255, 255, 255, 0.72) 0%,
+        rgba(255, 255, 255, 0.28) 38%,
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 90% 65% at 86% 68%,
+        rgba(255, 255, 255, 0.62) 0%,
+        rgba(255, 255, 255, 0.22) 40%,
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 100% 48% at 50% 100%,
+        rgba(236, 242, 248, 0.5) 0%,
+        transparent 58%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(248, 250, 252, 0.42) 0%,
+        transparent 32%,
+        transparent 62%,
+        rgba(230, 236, 242, 0.35) 100%
+      );
+  }
+
+  .hero-clouds__veil {
+    background:
+      radial-gradient(
+        ellipse at top center,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse at bottom right,
+        rgba(255, 255, 255, 0.28) 0%,
+        transparent 50%
+      );
+  }
+}

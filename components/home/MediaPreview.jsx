@@ -80,13 +80,17 @@ const GALLERY_ITEMS = buildGalleryItems();
 
 export default function MediaPreview() {
   const [cardWidth, setCardWidth] = useState(220);
+  const [phone, setPhone] = useState(false);
 
   useEffect(() => {
     const sync = () => {
       const w = window.innerWidth;
-      if (w < 400) setCardWidth(150);
-      else if (w < 640) setCardWidth(180);
-      else if (w < 1024) setCardWidth(220);
+      const isPhone = w < 768;
+      setPhone(isPhone);
+      if (isPhone) {
+        // Wide cards for the vertical wheel — fill most of the phone width
+        setCardWidth(Math.round(Math.min(w * 0.72, 300)));
+      } else if (w < 1024) setCardWidth(220);
       else setCardWidth(260);
     };
     sync();
@@ -94,10 +98,16 @@ export default function MediaPreview() {
     return () => window.removeEventListener("resize", sync);
   }, []);
 
+  const carouselItems = phone ? GALLERY_ITEMS.slice(0, 8) : GALLERY_ITEMS;
+
   return (
     <section
       id="media-preview"
-      className="relative z-10 flex h-[100dvh] max-h-[100dvh] flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7]"
+      className={`relative z-10 flex flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7] ${
+        phone
+          ? "h-[min(100dvh,820px)] max-h-[100dvh]"
+          : "h-[100dvh] max-h-[100dvh]"
+      }`}
       aria-label="Media gallery preview"
     >
       <div
@@ -140,20 +150,23 @@ export default function MediaPreview() {
           className="relative min-h-0 w-full flex-1 text-neutral-950"
         >
           <CircularCarousel
-            items={GALLERY_ITEMS}
-            preset="cylinder"
-            intro="rise"
+            items={carouselItems}
+            preset={phone ? "wheel" : "cylinder"}
+            intro={phone ? "none" : "rise"}
             cardWidth={cardWidth}
-            aspectRatio={1}
-            gap={cardWidth < 200 ? 18 : 32}
-            speed={7}
+            aspectRatio={phone ? 4 / 3 : 1}
+            gap={phone ? 10 : 32}
+            curve={phone ? 0.85 : 1}
+            perspective={phone ? 1300 : undefined}
+            tilt={phone ? 0 : undefined}
+            speed={phone ? 3.2 : 7}
             autoplay="drift"
-            scrollLinked
-            momentum={0.75}
+            scrollLinked={!phone}
+            momentum={phone ? 0.35 : 0.75}
             fadeColor="#f7f7f7"
-            depthFade={0.42}
-            cornerRadius={10}
-            pauseOnHover
+            depthFade={phone ? 0.22 : 0.42}
+            cornerRadius={phone ? 14 : 10}
+            pauseOnHover={!phone}
             draggable
           />
         </motion.div>

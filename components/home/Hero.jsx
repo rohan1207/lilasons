@@ -13,27 +13,18 @@ import {
 } from "@/lib/framePreloader";
 import { BRAND } from "@/lib/brand";
 import HeroClouds from "@/components/home/HeroClouds";
+import { isPhoneViewport } from "@/lib/mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Drip/Trex model (what made 700 frames feel silk):
- * - NO GSAP pin — tall scroll block + FIXED canvas
- * - scrub: 0.42s (eased playhead, not raw true)
- * - dedicated rAF lerp loop (FRAME_LERP)
- * - nearest loaded-frame fallback (never blank / never stuck on null)
- *
- * Our old model lagged because of pin + short runway + missing-frame hold.
+ * Desktop: tall runway + fixed canvas + scrubbed frame sequence.
+ * Phone: short runway + sticky canvas + immediate scrub — fixed layers +
+ * long ScrollTriggers hang / jitter hard on iOS momentum scroll.
  */
 
-const SEQUENCE_VH = 1000; // scroll runway for frames (~Drip desktop scale)
-const HOLD_VH = 120; // last-frame hold before content below takes over
-const TOTAL_VH = SEQUENCE_VH + HOLD_VH;
-const FRAME_PROGRESS_END = SEQUENCE_VH / TOTAL_VH;
-
-/** Light scrub — heavy scrub + slow lerp = skipped frames on wheel flings */
-const SCROLL_SCRUB_SMOOTH_SEC = 0.28;
-const FRAME_LERP = 0.22;
+const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
+const PHONE = { sequence: 220, hold: 36, scrub: true, lerp: 0.45 };
 
 const COPY_LAST_FRAME = 68;
 const COPY_FADE_START = 38;
@@ -46,12 +37,12 @@ function smoothstep(t) {
   return x * x * (3 - 2 * x);
 }
 
-function frameLerpFactor(delta) {
+function frameLerpFactor(delta, baseLerp) {
   const d = Math.abs(delta);
-  if (d > 48) return 0.72;
-  if (d > 24) return 0.48;
-  if (d > 10) return 0.32;
-  return FRAME_LERP;
+  if (d > 48) return 0.85;
+  if (d > 24) return 0.55;
+  if (d > 10) return 0.38;
+  return baseLerp;
 }
 
 function cornerVisibility(frame) {
@@ -91,6 +82,15 @@ export default function Hero() {
   const cloudsRef = useRef(null);
   const scrollHintRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const [phone, setPhone] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setPhone(isPhoneViewport());
+    sync();
+    const mq = window.matchMedia("(max-width: 767px)");
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const block = blockRef.current;
@@ -101,9 +101,16 @@ export default function Hero() {
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
+    const cfg = isPhoneViewport() ? PHONE : DESKTOP;
+    const totalVh = cfg.sequence + cfg.hold;
+    const frameProgressEnd = cfg.sequence / totalVh;
+    block.style.height = `${totalVh}vh`;
+
     let cancelled = false;
     let rafId = 0;
     let lastDrawn = -1;
+    let scrolling = false;
+    let scrollIdleTimer = 0;
 
     const targetFrameRef = { current: 0 };
     const currentFrameRef = { current: 0 };
@@ -147,7 +154,10 @@ export default function Hero() {
     const syncCanvasSize = () => {
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Phone: 1x canvas — half the fill/draw cost
+      const dpr = isPhoneViewport()
+        ? 1
+        : Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;
@@ -161,7 +171,6 @@ export default function Hero() {
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
 
-      // Soft fill — never flash empty / transparent
       ctx.fillStyle = "#0a0a0a";
       ctx.fillRect(0, 0, w, h);
       if (!found) return;
@@ -181,13 +190,13 @@ export default function Hero() {
       const target = targetFrameRef.current;
       const current = currentFrameRef.current;
       const delta = target - current;
-      let next = current + delta * frameLerpFactor(delta);
-      if (Math.abs(target - next) < 0.05) next = target;
+      let next = current + delta * frameLerpFactor(delta, cfg.lerp);
+      if (Math.abs(target - next) < 0.08) next = target;
       currentFrameRef.current = next;
 
       const display = Math.max(
         0,
-        Math.min(FRAME_COUNT - 1, Math.round(next))
+        Math.min(FRAME_COUNT - 1, Math.round(next)),
       );
       if (display !== lastDrawn) {
         drawFrame(display);
@@ -195,7 +204,23 @@ export default function Hero() {
         syncCopy(display);
       }
 
+      // Phone: pause rAF when idle — stops battery + jank during page rest
+      if (isPhoneViewport() && !scrolling && Math.abs(target - next) < 0.08) {
+        rafId = 0;
+        return;
+      }
+
       rafId = requestAnimationFrame(renderLoop);
+    };
+
+    const kickRender = () => {
+      if (cancelled) return;
+      scrolling = true;
+      window.clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = window.setTimeout(() => {
+        scrolling = false;
+      }, 140);
+      if (!rafId) rafId = requestAnimationFrame(renderLoop);
     };
 
     startFramePreload();
@@ -224,24 +249,27 @@ export default function Hero() {
         trigger: block,
         start: "top top",
         end: "bottom top",
-        scrub: SCROLL_SCRUB_SMOOTH_SEC,
+        scrub: cfg.scrub,
         invalidateOnRefresh: true,
         fastScrollEnd: true,
         onUpdate: (self) => {
-          // Frames play through first portion; remainder holds last frame
-          const play = Math.min(1, self.progress / FRAME_PROGRESS_END);
+          const play = Math.min(1, self.progress / frameProgressEnd);
           targetFrameRef.current = play * (FRAME_COUNT - 1);
+          kickRender();
 
-          // Park fixed canvas once sequence is past — stops ghosting into later sections
+          // Sticky on phone unpins naturally; fixed on desktop needs hide
           const past = self.progress >= 0.998;
-          wrap.style.visibility = past ? "hidden" : "visible";
+          if (!isPhoneViewport()) {
+            wrap.style.visibility = past ? "hidden" : "visible";
+          } else {
+            wrap.style.visibility = "visible";
+          }
           wrap.style.pointerEvents = "none";
         },
       });
       ScrollTrigger.refresh();
     };
 
-    // Double rAF like Drip — layout ready before measuring
     let bootA = requestAnimationFrame(() => {
       bootA = requestAnimationFrame(() => {
         attachST();
@@ -250,19 +278,25 @@ export default function Hero() {
     });
 
     const onResize = () => {
+      const next = isPhoneViewport() ? PHONE : DESKTOP;
+      block.style.height = `${next.sequence + next.hold}vh`;
       syncCanvasSize();
       drawFrame(Math.round(currentFrameRef.current));
       ScrollTrigger.refresh();
     };
     window.addEventListener("resize", onResize);
 
-    const ro = new ResizeObserver(onResize);
+    const ro = new ResizeObserver(() => {
+      syncCanvasSize();
+      drawFrame(Math.round(currentFrameRef.current));
+    });
     ro.observe(wrap);
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafId);
       cancelAnimationFrame(bootA);
+      window.clearTimeout(scrollIdleTimer);
       unsub();
       window.removeEventListener("resize", onResize);
       ro.disconnect();
@@ -275,13 +309,15 @@ export default function Hero() {
       id="home"
       ref={blockRef}
       className="relative w-full"
-      style={{ height: `${TOTAL_VH}vh` }}
+      style={{ height: phone ? `${PHONE.sequence + PHONE.hold}vh` : `${DESKTOP.sequence + DESKTOP.hold}vh` }}
       aria-label="Hero sequence"
     >
-      {/* Fixed canvas layer — Drip pattern (not GSAP pin) */}
+      {/* Desktop: fixed. Phone: sticky — fixed+tall runway jitters on iOS */}
       <div
         ref={canvasWrapRef}
-        className="pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
+        className={`pointer-events-none z-[1] h-dvh w-full overflow-hidden bg-neutral-950 ${
+          phone ? "sticky top-0" : "fixed inset-0"
+        }`}
       >
         <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 
