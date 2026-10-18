@@ -94,13 +94,13 @@ export default function Compass({ progress = 0, children, className = "" }) {
       <span className="absolute left-1/2 top-[12%] -translate-x-1/2 text-[12px] font-semibold tracking-[0.22em] text-[var(--accent)] sm:text-[13px]">
         N
       </span>
-      <span className="absolute right-[12%] top-1/2 -translate-y-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-400 sm:text-[13px]">
+      <span className="absolute right-[12%] top-1/2 -translate-y-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-700 sm:text-[13px]">
         E
       </span>
-      <span className="absolute bottom-[12%] left-1/2 -translate-x-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-400 sm:text-[13px]">
+      <span className="absolute bottom-[12%] left-1/2 -translate-x-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-700 sm:text-[13px]">
         S
       </span>
-      <span className="absolute left-[12%] top-1/2 -translate-y-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-400 sm:text-[13px]">
+      <span className="absolute left-[12%] top-1/2 -translate-y-1/2 text-[12px] font-semibold tracking-[0.22em] text-neutral-700 sm:text-[13px]">
         W
       </span>
 

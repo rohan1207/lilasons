@@ -105,7 +105,7 @@ export default function AboutPreview() {
   return (
     <section
       id="about"
-      className="relative z-10 flex h-auto flex-col overflow-hidden bg-[#fbfbfb] pt-24 sm:h-dvh sm:max-h-dvh sm:pt-28 md:pt-32"
+      className="relative z-10 flex h-auto flex-col overflow-hidden bg-[#fbfbfb] pt-24 pb-10 sm:h-dvh sm:max-h-dvh sm:pb-0 sm:pt-28 md:pt-32"
       aria-label="About Lilasons Developers"
     >
       {/* Soft architectural grid */}
@@ -125,13 +125,13 @@ export default function AboutPreview() {
 
       <div className="relative mx-auto flex h-full min-h-0 w-full max-w-[1500px] flex-1 flex-col px-5 pb-8 sm:px-8 sm:pb-5 lg:px-12 lg:pb-6">
         <Reveal delay={0.02} y={16} className="mb-5 shrink-0 sm:mb-6 lg:mb-7">
-          <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:mb-2 sm:text-[12px]">
+          <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:mb-2 sm:text-[12px]">
             {ABOUT.eyebrow}
           </p>
           <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px] md:text-[42px] lg:text-[46px]">
             {ABOUT.subtitle}
           </h2>
-          <p className="type-body mt-2 max-w-[48ch] text-[13px] text-neutral-500 sm:mt-2.5 sm:text-[14px] md:text-[15px]">
+          <p className="type-body mt-2 max-w-[48ch] text-[13px] text-neutral-700 sm:mt-2.5 sm:text-[14px] md:text-[15px]">
             {ABOUT.body}
           </p>
         </Reveal>
@@ -206,7 +206,7 @@ export default function AboutPreview() {
               <br />
               Building your environment.
             </h3>
-            <p className="type-body mt-3 max-w-[32ch] text-[13px] text-neutral-500 sm:text-[14px]">
+            <p className="type-body mt-3 max-w-[32ch] text-[13px] text-neutral-700 sm:text-[14px]">
               {ABOUT.detail}
             </p>
           </Reveal>

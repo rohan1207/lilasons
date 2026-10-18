@@ -295,7 +295,7 @@ export default function Hero() {
             className="will-change-transform"
             style={{ opacity: 1 }}
           >
-            <p className="type-label mb-3 text-[11px] text-neutral-800 sm:mb-4 sm:text-[12px] lg:mb-5 lg:text-[13px]">
+            <p className="type-label mb-3 text-[11px] !text-neutral-950 sm:mb-4 sm:text-[12px] lg:mb-5 lg:text-[13px]">
               Lilasons · Aurangabad
             </p>
             <h1 className="type-heading mx-auto max-w-[12ch] text-[clamp(2.75rem,8.2vw,7rem)] leading-[0.9] text-neutral-950">
@@ -308,19 +308,19 @@ export default function Hero() {
             className="mt-5 flex max-w-[34rem] flex-col items-center will-change-transform sm:mt-6 lg:mt-7 lg:max-w-[40rem]"
             style={{ opacity: 1 }}
           >
-            <p className="type-kicker max-w-[36ch] text-[12px] text-neutral-800 sm:text-[13px] lg:text-[14px]">
+            <p className="type-kicker max-w-[36ch] text-[12px] !text-neutral-950 sm:text-[13px] lg:text-[14px]">
               {BRAND.tagline}
             </p>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-8 sm:gap-4 lg:mt-9">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:mt-8 sm:gap-4 lg:mt-9">
               <Link
                 href="/projects"
-                className="type-button btn-pill btn-shine btn-solid pointer-events-auto"
+                className="type-button btn-pill btn-shine btn-solid pointer-events-auto !h-10 !px-5 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 Our Projects
               </Link>
               <Link
                 href="/contact"
-                className="type-button btn-pill btn-shine btn-outline pointer-events-auto border-neutral-900/30 bg-white/75 backdrop-blur-sm"
+                className="type-button btn-pill btn-shine btn-outline pointer-events-auto border-neutral-900/30 bg-white/75 backdrop-blur-sm !h-10 !px-5 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 Contact Us
               </Link>
@@ -334,7 +334,7 @@ export default function Hero() {
           className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9"
           style={{ opacity: 1 }}
         >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-800 sm:text-[11px]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-950 sm:text-[11px]">
             Scroll to explore
           </p>
           <motion.div

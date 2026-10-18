@@ -6,7 +6,7 @@ import { BRAND, FOOTER } from "@/lib/brand";
 
 function FooterLink({ href, children, external = false }) {
   const className =
-    "type-label text-[11px] text-neutral-500 transition-colors hover:text-neutral-950 sm:text-[12px]";
+    "type-label text-[11px] text-neutral-700 transition-colors hover:text-neutral-950 sm:text-[12px]";
 
   if (external) {
     return (
@@ -34,12 +34,12 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="relative z-10 flex h-[calc(100dvh-5rem)] max-h-[calc(100dvh-5rem)] flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7] text-neutral-950 sm:h-[calc(100dvh-6rem)] sm:max-h-[calc(100dvh-6rem)]"
+      className="relative z-10 flex h-auto min-h-0 flex-col overflow-visible border-t border-neutral-200/80 bg-[#f7f7f7] text-neutral-950 lg:h-[calc(100dvh-6rem)] lg:max-h-[calc(100dvh-6rem)] lg:overflow-hidden"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col px-5 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
+      <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col px-5 py-8 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
         {/* Large CTA — single line */}
-        <div className="flex shrink-0 items-center justify-between gap-4 border-b border-neutral-300/80 pb-5 sm:gap-6 sm:pb-6 lg:pb-7">
-          <h2 className="type-heading text-[clamp(1.25rem,3.6vw,3.25rem)] text-neutral-950 sm:whitespace-nowrap">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-300/80 pb-5 sm:gap-6 sm:pb-6 lg:pb-7">
+          <h2 className="type-heading max-w-[18ch] text-[clamp(1.35rem,5.5vw,3.25rem)] leading-[1.05] text-neutral-950 sm:max-w-none sm:whitespace-nowrap">
             {FOOTER.cta}
           </h2>
 
@@ -55,7 +55,7 @@ export default function Footer() {
         </div>
 
         {/* Columns — fill middle */}
-        <div className="grid min-h-0 flex-1 grid-cols-2 content-center gap-x-6 gap-y-8 py-6 sm:grid-cols-2 sm:gap-x-10 sm:py-7 lg:grid-cols-12 lg:gap-8 lg:py-8">
+        <div className="grid min-h-0 flex-1 grid-cols-2 content-start gap-x-5 gap-y-8 py-7 sm:grid-cols-2 sm:content-center sm:gap-x-10 sm:py-7 lg:grid-cols-12 lg:gap-8 lg:py-8">
           <div className="col-span-2 sm:col-span-1 lg:col-span-3">
             <Link
               href={FOOTER.workHref}
@@ -82,7 +82,7 @@ export default function Footer() {
               href={mapsHref}
               target="_blank"
               rel="noreferrer"
-              className="type-body mt-3 block max-w-[28ch] text-[12px] text-neutral-500 transition-colors hover:text-neutral-800 sm:text-[13px]"
+              className="type-body mt-3 block max-w-[28ch] text-[12px] text-neutral-700 transition-colors hover:text-neutral-800 sm:text-[13px]"
             >
               {BRAND.address.line1}
               <br />
@@ -106,7 +106,7 @@ export default function Footer() {
             <p className="type-heading mt-5 text-[13px] text-neutral-950 sm:mt-6 sm:text-[14px]">
               {FOOTER.hoursLabel}
             </p>
-            <p className="type-body mt-1.5 text-[12px] text-neutral-500 sm:text-[13px]">
+            <p className="type-body mt-1.5 text-[12px] text-neutral-700 sm:text-[13px]">
               {BRAND.hours.days}
               <br />
               {BRAND.hours.time}
@@ -153,7 +153,7 @@ export default function Footer() {
             textClassName="type-logo text-[0.95rem] tracking-[-0.02em] text-neutral-950"
           />
 
-          <p className="type-label order-last text-[10px] text-neutral-400 sm:order-none sm:text-center sm:text-[11px]">
+          <p className="type-label order-last text-[10px] text-neutral-700 sm:order-none sm:text-center sm:text-[11px]">
             {FOOTER.copyright.replace("{year}", String(year))}
           </p>
 

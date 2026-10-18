@@ -65,13 +65,13 @@ export default function IdCard() {
           transition={{ duration: 0.8, ease }}
           className="mb-10 text-center sm:mb-12"
         >
-          <p className="type-label mb-2 text-[11px] text-neutral-400 sm:text-[12px]">
+          <p className="type-label mb-2 text-[11px] text-neutral-700 sm:text-[12px]">
             — Resident Access
           </p>
           <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px] md:text-[42px]">
             Your Lilasons Card
           </h2>
-          <p className="type-body mx-auto mt-2 max-w-[40ch] text-[13px] text-neutral-500 sm:text-[14px]">
+          <p className="type-body mx-auto mt-2 max-w-[40ch] text-[13px] text-neutral-700 sm:text-[14px]">
             Drag gently to explore — a quiet signature of belonging.
           </p>
         </motion.div>
@@ -187,7 +187,7 @@ export default function IdCard() {
           </motion.div>
         </div>
 
-        <p className="type-label mt-2 text-[10px] text-neutral-400 sm:text-[11px]">
+        <p className="type-label mt-2 text-[10px] text-neutral-700 sm:text-[11px]">
           {engaged ? "Release to settle" : "Drag to explore"}
         </p>
       </div>

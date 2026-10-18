@@ -44,7 +44,7 @@ export default function ProjectDetail({ project }) {
         <div className="mx-auto max-w-[1600px] px-5 pb-8 pt-[max(7.5rem,calc(env(safe-area-inset-top,0px)+6.75rem))] sm:px-8 md:px-12 md:pb-12 lg:px-14">
           <Link
             href="/projects"
-            className="mb-8 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition hover:text-[#0a0a0a]"
+            className="mb-8 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition hover:text-[#0a0a0a]"
           >
             <span aria-hidden>←</span> All Projects
           </Link>
@@ -141,7 +141,7 @@ export default function ProjectDetail({ project }) {
                     key={item.label}
                     className="grid grid-cols-[minmax(0,38%)_1fr] gap-4"
                   >
-                    <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
+                    <dt className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700">
                       {item.label}
                     </dt>
                     <dd className="text-sm leading-snug text-[#0a0a0a]">
@@ -152,7 +152,7 @@ export default function ProjectDetail({ project }) {
               </dl>
 
               <div className="mt-8 space-y-2 border-t border-black/10 pt-6 text-sm">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700">
                   {CONTACT.title}
                 </p>
                 <a
@@ -169,13 +169,13 @@ export default function ProjectDetail({ project }) {
                 </a>
               </div>
 
-              <div className="mt-8 flex flex-col gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">
                 {project.whatsapp && (
                   <a
                     href={BRAND.whatsappUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="type-button btn-pill btn-shine btn-solid"
+                    className="type-button btn-pill btn-shine btn-solid w-full justify-center sm:w-auto lg:w-full"
                   >
                     <span aria-hidden>↗</span>
                     {CONTACT.whatsappLabel}
@@ -185,13 +185,13 @@ export default function ProjectDetail({ project }) {
                   href={mapsHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="type-button btn-pill btn-shine btn-outline"
+                  className="type-button btn-pill btn-shine btn-outline w-full justify-center sm:w-auto lg:w-full"
                 >
                   Get Directions
                 </a>
                 <Link
                   href="/contact"
-                  className="type-button btn-pill btn-shine btn-outline border-black/15 text-neutral-700"
+                  className="type-button btn-pill btn-shine btn-outline w-full justify-center border-black/15 text-neutral-700 sm:w-auto lg:w-full"
                 >
                   Discuss This Project
                 </Link>
@@ -226,7 +226,7 @@ export default function ProjectDetail({ project }) {
                 href={prev.href}
                 className="group flex max-w-md flex-col gap-1 rounded-2xl border border-black/10 bg-[#f5f5f3] px-5 py-4 transition hover:border-black/25"
               >
-                <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-700">
                   Previous
                 </span>
                 <span className="text-base font-medium tracking-[-0.02em] text-[#0a0a0a] group-hover:opacity-70">
@@ -241,7 +241,7 @@ export default function ProjectDetail({ project }) {
                 href={next.href}
                 className="group flex max-w-md flex-col gap-1 rounded-2xl border border-black/10 bg-[#f5f5f3] px-5 py-4 text-left transition hover:border-black/25 sm:ml-auto sm:text-right"
               >
-                <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-neutral-700">
                   Next
                 </span>
                 <span className="text-base font-medium tracking-[-0.02em] text-[#0a0a0a] group-hover:opacity-70">
@@ -276,7 +276,7 @@ export default function ProjectDetail({ project }) {
                     />
                   </div>
                   <div className="pt-3 md:pt-5">
-                    <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-400 md:text-[10px]">
+                    <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-700 md:text-[10px]">
                       {item.category}
                     </p>
                     <h3 className="text-sm font-medium leading-snug tracking-[-0.02em] text-[#0a0a0a] md:text-lg">

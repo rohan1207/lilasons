@@ -13,7 +13,7 @@ function ParallaxPanel({ panel, index, scrollYProgress }) {
   );
 
   return (
-    <article className="relative aspect-[3/4] overflow-hidden bg-neutral-200 sm:aspect-[3/4] lg:min-h-[min(72vh,760px)] lg:aspect-auto">
+    <article className="relative aspect-[3/4] overflow-hidden bg-neutral-200 lg:min-h-[min(72vh,760px)] lg:aspect-auto">
       <motion.div className="absolute inset-[-12%] will-change-transform" style={{ y }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -66,7 +66,7 @@ export default function Welcome() {
         ref={mediaRef}
         className="relative mx-auto mt-0 max-w-[1500px] px-0 sm:px-8 lg:px-12"
       >
-        <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 sm:gap-[2px]">
+        <div className="grid grid-cols-2 gap-[2px]">
           {panels.map((panel, index) => (
             <ParallaxPanel
               key={panel.label}

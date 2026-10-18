@@ -50,9 +50,9 @@ export default function Recognition() {
           {RECOGNITION.items.map((item, i) => (
             <li
               key={item.alt}
-              className="group relative flex flex-col items-center justify-center px-4 py-8 text-center sm:px-5 sm:py-10"
+              className="group relative flex flex-col items-center justify-center px-3 py-6 text-center sm:px-5 sm:py-10"
             >
-              <span className="type-label absolute left-3 top-3 text-[9px] text-neutral-400 sm:left-4 sm:top-4">
+              <span className="type-label absolute left-3 top-3 text-[9px] text-neutral-700 sm:left-4 sm:top-4">
                 {String(i + 1).padStart(2, "0")}
               </span>
 
@@ -66,7 +66,7 @@ export default function Recognition() {
                 />
               </div>
 
-              <p className="type-label mt-4 max-w-[12ch] text-[9px] leading-snug text-neutral-500 sm:mt-5 sm:text-[10px]">
+              <p className="type-label mt-4 max-w-[12ch] text-[9px] leading-snug text-neutral-700 sm:mt-5 sm:text-[10px]">
                 {item.text}
               </p>
             </li>

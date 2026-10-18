@@ -23,7 +23,7 @@ export default function BlogDetail({ post }) {
             >
               <Link
                 href="/blogs"
-                className="type-label text-[11px] text-neutral-500 transition-colors hover:text-neutral-950"
+                className="type-label text-[11px] text-neutral-700 transition-colors hover:text-neutral-950"
               >
                 ← All blogs
               </Link>
@@ -36,7 +36,7 @@ export default function BlogDetail({ post }) {
               <p className="type-body mt-4 max-w-[52ch] text-[15px] sm:text-[16px]">
                 {post.excerpt}
               </p>
-              <p className="type-label mt-5 text-[10px] text-neutral-400">
+              <p className="type-label mt-5 text-[10px] text-neutral-700">
                 {post.author} · {post.dateLabel}
               </p>
             </motion.div>
@@ -95,7 +95,7 @@ export default function BlogDetail({ post }) {
                 href={`/blogs/${prev.slug}`}
                 className="bg-[#f7f7f7] px-5 py-8 transition-colors hover:bg-white sm:px-8"
               >
-                <p className="type-label text-[10px] text-neutral-400">Previous</p>
+                <p className="type-label text-[10px] text-neutral-700">Previous</p>
                 <p className="type-heading mt-2 text-[16px] text-neutral-950 sm:text-[18px]">
                   {prev.title}
                 </p>
@@ -108,7 +108,7 @@ export default function BlogDetail({ post }) {
                 href={`/blogs/${next.slug}`}
                 className="bg-[#f7f7f7] px-5 py-8 text-left transition-colors hover:bg-white sm:px-8 sm:text-right"
               >
-                <p className="type-label text-[10px] text-neutral-400">Next</p>
+                <p className="type-label text-[10px] text-neutral-700">Next</p>
                 <p className="type-heading mt-2 text-[16px] text-neutral-950 sm:text-[18px]">
                   {next.title}
                 </p>
@@ -129,7 +129,7 @@ export default function BlogDetail({ post }) {
               <h2 className="type-heading text-[clamp(1.5rem,3vw,2.25rem)] text-neutral-950">
                 Recommended reading
               </h2>
-              <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6">
+              <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6">
                 {related.map((item) => (
                   <Link
                     key={item.slug}
@@ -144,11 +144,11 @@ export default function BlogDetail({ post }) {
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                       />
                     </div>
-                    <div className="p-5">
-                      <p className="type-label text-[9px] text-neutral-400">
+                    <div className="p-3 sm:p-5">
+                      <p className="type-label text-[8px] text-neutral-700 sm:text-[9px]">
                         {item.category}
                       </p>
-                      <h3 className="type-heading mt-2 text-[16px] text-neutral-950 sm:text-[17px]">
+                      <h3 className="type-heading mt-1.5 text-[13px] text-neutral-950 sm:mt-2 sm:text-[17px]">
                         {item.title}
                       </h3>
                     </div>

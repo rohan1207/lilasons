@@ -66,16 +66,16 @@ export default function WalkthroughPage() {
               {WALKTHROUGH_PAGE.body}
             </p>
           </FadeUp>
-          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-3 sm:mt-8">
+          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href={WALKTHROUGH_PAGE.ctaHref}
-              className="type-button btn-pill btn-shine btn-solid !bg-white !text-neutral-950 hover:!opacity-90"
+              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {WALKTHROUGH_PAGE.cta}
             </Link>
             <Link
               href={WALKTHROUGH_PAGE.ctaSecondaryHref}
-              className="type-button btn-pill btn-shine btn-outline !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950"
+              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {WALKTHROUGH_PAGE.ctaSecondary}
             </Link>
@@ -95,12 +95,16 @@ export default function WalkthroughPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 lg:gap-6">
             {WALKTHROUGHS.map((item, i) => (
               <FadeUp
                 key={item.id}
                 delay={i * 0.08}
-                className="group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-neutral-200 bg-white shadow-[0_18px_40px_-32px_rgba(0,0,0,0.35)]"
+                className={`group flex h-full flex-col overflow-hidden rounded-[1.15rem] border border-neutral-200 bg-white shadow-[0_18px_40px_-32px_rgba(0,0,0,0.35)] sm:rounded-[1.35rem] ${
+                  i === WALKTHROUGHS.length - 1 && WALKTHROUGHS.length % 2 === 1
+                    ? "col-span-2 lg:col-span-1"
+                    : ""
+                }`}
               >
                 <div
                   id={item.id}
@@ -120,28 +124,28 @@ export default function WalkthroughPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <p className="type-label text-[10px] text-neutral-400">
+                <div className="flex flex-1 flex-col p-3.5 sm:p-6">
+                  <p className="type-label text-[9px] text-neutral-700 sm:text-[10px]">
                     {String(i + 1).padStart(2, "0")} · {item.role}
                   </p>
-                  <h3 className="type-heading mt-2 text-[20px] text-neutral-950 sm:text-[22px]">
+                  <h3 className="type-heading mt-1.5 text-[15px] text-neutral-950 sm:mt-2 sm:text-[22px]">
                     {item.title}
                   </h3>
-                  <p className="type-body mt-3 flex-1 text-[13px] sm:text-[14px]">
+                  <p className="type-body mt-2 line-clamp-3 flex-1 text-[11px] sm:mt-3 sm:line-clamp-none sm:text-[14px]">
                     {item.body}
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-4 flex flex-col gap-2 sm:mt-6 sm:flex-row sm:flex-wrap sm:gap-3">
                     {item.projectHref && (
                       <Link
                         href={item.projectHref}
-                        className="type-button btn-pill btn-shine btn-solid !h-10"
+                        className="type-button btn-pill btn-shine btn-solid !h-9 !px-4 text-[10px] sm:!h-10 sm:!px-6 sm:text-[11px]"
                       >
                         View Project
                       </Link>
                     )}
                     <Link
                       href="/contact"
-                      className="type-button btn-pill btn-shine btn-outline !h-10"
+                      className="type-button btn-pill btn-shine btn-outline !h-9 !px-4 text-[10px] sm:!h-10 sm:!px-6 sm:text-[11px]"
                     >
                       Enquire
                     </Link>
@@ -165,20 +169,25 @@ export default function WalkthroughPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid grid-cols-1 gap-px overflow-hidden border border-neutral-300/90 bg-neutral-300/90 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-px overflow-hidden border border-neutral-300/90 bg-neutral-300/90 sm:grid-cols-3">
             {WALKTHROUGH_PAGE.features.map((feature, i) => (
               <FadeUp
                 key={feature.index}
                 delay={i * 0.06}
-                className="bg-white p-6 sm:p-8"
+                className={`bg-white p-4 sm:p-8 ${
+                  i === WALKTHROUGH_PAGE.features.length - 1 &&
+                  WALKTHROUGH_PAGE.features.length % 2 === 1
+                    ? "col-span-2 sm:col-span-1"
+                    : ""
+                }`}
               >
-                <p className="type-label text-[10px] text-neutral-400">
+                <p className="type-label text-[9px] text-neutral-700 sm:text-[10px]">
                   {feature.index}
                 </p>
-                <h3 className="type-heading mt-4 text-[18px] text-neutral-950 sm:text-[20px]">
+                <h3 className="type-heading mt-3 text-[15px] text-neutral-950 sm:mt-4 sm:text-[20px]">
                   {feature.title}
                 </h3>
-                <p className="type-body mt-3 text-[13px] sm:text-[14px]">
+                <p className="type-body mt-2 text-[12px] sm:mt-3 sm:text-[14px]">
                   {feature.body}
                 </p>
               </FadeUp>
@@ -210,7 +219,7 @@ export default function WalkthroughPage() {
               </FadeUp>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6">
               {moreProjects.map((project, i) => (
                 <FadeUp key={project.id} delay={i * 0.07}>
                   <Link
@@ -226,7 +235,7 @@ export default function WalkthroughPage() {
                       />
                     </div>
                     <div className="p-5">
-                      <p className="type-label text-[10px] text-neutral-400">
+                      <p className="type-label text-[10px] text-neutral-700">
                         {project.category} · {project.locationLabel}
                       </p>
                       <h3 className="type-heading mt-2 text-[18px] text-neutral-950 sm:text-[20px]">

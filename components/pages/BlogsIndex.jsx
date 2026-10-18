@@ -45,12 +45,12 @@ export default function BlogsIndex() {
 
       <section className="bg-[#f7f7f7]">
         <div className="mx-auto max-w-[1500px] px-5 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4 lg:gap-6">
             {BLOGS.map((post, i) => (
               <FadeUp key={post.slug} delay={i * 0.05}>
                 <Link
                   href={`/blogs/${post.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-neutral-200 bg-white shadow-[0_16px_36px_-28px_rgba(0,0,0,0.35)] transition-shadow hover:shadow-[0_22px_44px_-26px_rgba(0,0,0,0.4)]"
+                  className="group flex h-full flex-col overflow-hidden rounded-[1.15rem] border border-neutral-200 bg-white shadow-[0_16px_36px_-28px_rgba(0,0,0,0.35)] transition-shadow hover:shadow-[0_22px_44px_-26px_rgba(0,0,0,0.4)] sm:rounded-[1.25rem]"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-neutral-200">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -61,17 +61,17 @@ export default function BlogsIndex() {
                       draggable={false}
                     />
                   </div>
-                  <div className="flex flex-1 flex-col p-4 sm:p-5">
-                    <p className="type-label text-[9px] text-neutral-400 sm:text-[10px]">
+                  <div className="flex flex-1 flex-col p-3 sm:p-5">
+                    <p className="type-label text-[8px] text-neutral-700 sm:text-[10px]">
                       {post.category} · {post.readTime}
                     </p>
-                    <h2 className="type-heading mt-2 text-[15px] leading-[1.2] text-neutral-950 sm:text-[16px] lg:text-[17px]">
+                    <h2 className="type-heading mt-1.5 text-[13px] leading-[1.2] text-neutral-950 sm:mt-2 sm:text-[16px] lg:text-[17px]">
                       {post.title}
                     </h2>
-                    <p className="type-body mt-2 line-clamp-3 flex-1 text-[12px] sm:text-[13px]">
+                    <p className="type-body mt-1.5 line-clamp-2 flex-1 text-[11px] sm:mt-2 sm:line-clamp-3 sm:text-[13px]">
                       {post.excerpt}
                     </p>
-                    <p className="type-label mt-4 text-[9px] text-neutral-400">
+                    <p className="type-label mt-3 text-[8px] text-neutral-700 sm:mt-4 sm:text-[9px]">
                       {post.dateLabel}
                     </p>
                   </div>

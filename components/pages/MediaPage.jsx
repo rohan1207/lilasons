@@ -16,7 +16,7 @@ export default function MediaPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease }}
           >
-            <p className="type-label mb-3 text-[11px] text-neutral-400">
+            <p className="type-label mb-3 text-[11px] text-neutral-700">
               — Media
             </p>
             <h1 className="type-heading max-w-[18ch] text-[36px] text-neutral-950 sm:text-[48px] lg:text-[56px]">
@@ -42,7 +42,7 @@ export default function MediaPage() {
           </h2>
         </div>
 
-        <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-2 px-5 pb-16 sm:grid-cols-2 sm:px-8 sm:pb-20 lg:grid-cols-3 lg:px-12">
+        <div className="mx-auto grid max-w-[1500px] grid-cols-2 gap-2 px-5 pb-16 sm:px-8 sm:pb-20 lg:grid-cols-3 lg:px-12">
           {MEDIA.gallery.map((src, i) => (
             <motion.div
               key={`${src}-${i}`}

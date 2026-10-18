@@ -55,13 +55,13 @@ function MetricTile({ card, index, active }) {
       initial={{ opacity: 0, y: 16 }}
       animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
       transition={{ duration: 0.65, delay: 0.12 + index * 0.08, ease }}
-      className="flex min-h-0 flex-col justify-between overflow-hidden rounded-[1.35rem] border border-black/[0.06] bg-white p-4 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.35)] sm:rounded-[1.5rem] sm:p-5 dark:border-white/10 dark:bg-[#161616] dark:shadow-none"
+      className="flex min-h-0 flex-col justify-between overflow-hidden rounded-[1.15rem] border border-black/[0.06] bg-white p-3 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.35)] sm:rounded-[1.5rem] sm:p-5 dark:border-white/10 dark:bg-[#161616] dark:shadow-none"
     >
-      <p className="text-[11px] font-medium tracking-[-0.01em] text-neutral-400 sm:text-[12px] dark:text-white/45">
+      <p className="text-[9px] font-medium tracking-[-0.01em] text-neutral-700 sm:text-[12px] dark:text-white/45">
         {card.label}
       </p>
       <p
-        className="type-stat mt-3 text-[clamp(1.85rem,3.2vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-neutral-950 tabular-nums dark:text-white"
+        className="type-stat mt-2 text-[clamp(1.35rem,5.5vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-neutral-950 tabular-nums sm:mt-3 dark:text-white"
       >
         {formatNumber(count)}
         {card.suffix}
@@ -94,10 +94,10 @@ export default function Metrics() {
     <section
       ref={ref}
       id="metrics"
-      className="relative z-10 flex h-dvh max-h-dvh overflow-hidden border-t border-neutral-200/80 bg-[#f4f4f2] text-neutral-950 dark:border-white/10 dark:bg-[#0a0a0a] dark:text-white"
+      className="relative z-10 flex h-auto max-h-none overflow-visible border-t border-neutral-200/80 bg-[#f4f4f2] text-neutral-950 lg:h-dvh lg:max-h-dvh lg:overflow-hidden dark:border-white/10 dark:bg-[#0a0a0a] dark:text-white"
       aria-label="Decades of trust"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col gap-6 px-5 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-10 xl:gap-14">
+      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col gap-6 px-5 py-14 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-10 xl:gap-14">
         {/* Left — brand story */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -129,14 +129,14 @@ export default function Metrics() {
                 key={brand.name}
                 className="flex items-baseline gap-3 border-t border-black/[0.06] pt-3 first:border-t-0 first:pt-0 dark:border-white/10"
               >
-                <span className="type-label shrink-0 text-[10px] text-neutral-400 dark:text-white/35">
+                <span className="type-label shrink-0 text-[10px] text-neutral-700 dark:text-white/35">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="min-w-0">
                   <p className="truncate text-[13px] font-semibold tracking-[-0.02em] text-neutral-900 sm:text-[14px] dark:text-white">
                     {brand.name}
                   </p>
-                  <p className="mt-0.5 text-[11px] text-neutral-400 dark:text-white/40">
+                  <p className="mt-0.5 text-[11px] text-neutral-700 dark:text-white/40">
                     {brand.role}
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export default function Metrics() {
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
             transition={{ duration: 0.7, delay: 0.06, ease }}
-            className="relative min-h-0 flex-[1.55] overflow-hidden rounded-[1.5rem] bg-neutral-200 sm:rounded-[1.75rem] dark:bg-neutral-800"
+            className="relative min-h-[220px] flex-[1.55] overflow-hidden rounded-[1.5rem] bg-neutral-200 sm:min-h-0 sm:rounded-[1.75rem] dark:bg-neutral-800"
           >
             <video
               ref={videoRef}
@@ -177,7 +177,7 @@ export default function Metrics() {
             />
           </motion.div>
 
-          <div className="grid min-h-[110px] flex-[0.85] grid-cols-3 gap-3 sm:min-h-[130px] sm:gap-3.5">
+          <div className="grid min-h-[100px] flex-[0.85] grid-cols-3 gap-2 sm:min-h-[130px] sm:gap-3.5">
             {METRICS.cards.map((card, i) => (
               <MetricTile
                 key={card.id}

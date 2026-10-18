@@ -25,11 +25,11 @@ function DomainTile({ domain, className }) {
         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent"
         aria-hidden
       />
-      <div className="absolute inset-x-0 bottom-0 z-10 p-3 sm:p-4 md:p-5">
-        <p className="mb-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-white/85 sm:mb-1 sm:text-[10px] md:text-[11px]">
+      <div className="absolute inset-x-0 bottom-0 z-10 p-2.5 sm:p-4 md:p-5">
+        <p className="mb-0.5 text-[8px] font-semibold uppercase tracking-[0.08em] text-white/85 sm:mb-1 sm:text-[10px] md:text-[11px]">
           {domain.label}
         </p>
-        <h3 className="type-heading text-[18px] text-white sm:text-[22px] md:text-[26px] lg:text-[30px]">
+        <h3 className="type-heading text-[15px] text-white sm:text-[22px] md:text-[26px] lg:text-[30px]">
           {domain.title}
         </h3>
       </div>
@@ -59,7 +59,7 @@ export default function Domains() {
       <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
         <div className="mb-5 flex shrink-0 flex-col gap-3 sm:mb-5 sm:flex-row sm:items-end sm:justify-between md:mb-6">
           <div>
-            <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:mb-2 sm:text-[12px]">
+            <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:mb-2 sm:text-[12px]">
               — What We Build
             </p>
             <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px] md:text-[44px] lg:text-[48px]">
@@ -83,22 +83,22 @@ export default function Domains() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="grid min-h-0 flex-1 grid-cols-1 gap-[2px] sm:grid-cols-3 sm:grid-rows-[1fr_1.2fr]"
+          className="grid min-h-0 flex-1 grid-cols-2 gap-[2px] sm:grid-cols-3 sm:grid-rows-[1fr_1.2fr]"
         >
           {top.map((domain) => (
             <DomainTile
               key={domain.title}
               domain={domain}
-              className="aspect-[4/3] sm:aspect-auto sm:h-full sm:min-h-0"
+              className="aspect-[4/5] sm:aspect-auto sm:h-full sm:min-h-0"
             />
           ))}
           <DomainTile
             domain={wide}
-            className="aspect-[16/9] sm:col-span-2 sm:aspect-auto sm:h-full sm:min-h-0"
+            className="col-span-2 aspect-[16/9] sm:col-span-2 sm:aspect-auto sm:h-full sm:min-h-0"
           />
           <DomainTile
             domain={narrow}
-            className="aspect-[3/4] sm:aspect-auto sm:h-full sm:min-h-0"
+            className="col-span-2 aspect-[16/10] sm:col-span-1 sm:aspect-auto sm:h-full sm:min-h-0"
           />
         </motion.div>
       </div>

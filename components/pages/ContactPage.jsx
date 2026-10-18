@@ -17,7 +17,7 @@ const INTERESTS = [
 ];
 
 const fieldClass =
-  "h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-950";
+  "h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950";
 
 function FadeUp({ children, className = "", delay = 0 }) {
   return (
@@ -114,12 +114,12 @@ export default function ContactPage() {
                 {CONTACT.heroBody}
               </p>
             </FadeUp>
-            <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-3 sm:mt-8">
+            <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
               <a
                 href={mapsHref}
                 target="_blank"
                 rel="noreferrer"
-                className="type-button btn-pill btn-shine btn-solid !bg-white !text-neutral-950 hover:!opacity-90"
+                className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 Get directions
               </a>
@@ -127,7 +127,7 @@ export default function ContactPage() {
                 href={BRAND.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="type-button btn-pill btn-shine btn-outline !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950"
+                className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 {CONTACT.whatsappLabel}
               </a>
@@ -275,7 +275,7 @@ export default function ContactPage() {
                           onClick={() =>
                             setForm((prev) => ({ ...prev, interest: item }))
                           }
-                          className={`chip rounded-full border px-4 py-2 text-[12px] font-medium transition-colors ${
+                          className={`chip rounded-full border px-3 py-1.5 text-[11px] font-medium transition-colors sm:px-4 sm:py-2 sm:text-[12px] ${
                             active
                               ? "border-neutral-950 bg-neutral-950 text-white"
                               : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-500"
@@ -303,19 +303,19 @@ export default function ContactPage() {
                     value={form.message}
                     onChange={onChange}
                     placeholder="Share a few details about your requirement…"
-                    className="w-full resize-y rounded-[1.25rem] border border-neutral-300 bg-white px-5 py-4 text-[14px] leading-relaxed text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-950"
+                    className="w-full resize-y rounded-[1.25rem] border border-neutral-300 bg-white px-5 py-4 text-[14px] leading-relaxed text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950"
                   />
                 </div>
 
                 <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
                   <button
                     type="submit"
-                    className="type-button btn-pill btn-shine btn-solid"
+                    className="type-button btn-pill btn-shine btn-solid w-full sm:w-auto"
                   >
                     Send enquiry
                   </button>
                   {sent && (
-                    <p className="text-[13px] text-neutral-500">
+                    <p className="text-[13px] text-neutral-700">
                       Opening your email client to reach {BRAND.email}…
                     </p>
                   )}

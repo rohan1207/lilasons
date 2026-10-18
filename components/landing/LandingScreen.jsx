@@ -89,7 +89,7 @@ export default function LandingScreen({ onComplete }) {
           aria-label={`Loading ${percent} percent`}
         >
           {percent}
-          <span className="ml-0.5 text-[0.75rem] font-semibold text-neutral-400 sm:text-[0.85rem]">
+          <span className="ml-0.5 text-[0.75rem] font-semibold text-neutral-700 sm:text-[0.85rem]">
             %
           </span>
         </p>

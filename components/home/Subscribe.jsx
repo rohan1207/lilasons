@@ -34,7 +34,7 @@ export default function Subscribe() {
           transition={{ duration: 0.65, ease }}
           className="mx-auto max-w-2xl text-center"
         >
-          <p className="type-label mb-3 text-[11px] text-neutral-400 sm:text-[12px]">
+          <p className="type-label mb-3 text-[11px] text-neutral-700 sm:text-[12px]">
             — Stay Updated
           </p>
           <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[36px]">
@@ -58,7 +58,7 @@ export default function Subscribe() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={HOME.subscribePlaceholder}
-              className="h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-950 sm:max-w-sm"
+              className="h-12 w-full rounded-full border border-neutral-300 bg-white px-5 text-[14px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-700 focus:border-neutral-950 sm:max-w-sm"
             />
             <button
               type="submit"
@@ -68,7 +68,7 @@ export default function Subscribe() {
             </button>
           </form>
           {sent && (
-            <p className="mt-4 text-[13px] text-neutral-500">
+            <p className="mt-4 text-[13px] text-neutral-700">
               Opening your email client to reach {BRAND.email}…
             </p>
           )}

@@ -67,16 +67,16 @@ export default function CompanyPage() {
               {ABOUT.heroBody}
             </p>
           </FadeUp>
-          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-3 sm:mt-8">
+          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href={ABOUT.heroCtaHref}
-              className="type-button btn-pill btn-shine btn-solid !bg-white !text-neutral-950 hover:!opacity-90"
+              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {ABOUT.heroCta}
             </Link>
             <Link
               href={ABOUT.heroCtaSecondaryHref}
-              className="type-button btn-pill btn-shine btn-outline !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950"
+              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {ABOUT.heroCtaSecondary}
             </Link>
@@ -124,7 +124,7 @@ export default function CompanyPage() {
                   delay={0.1 + i * 0.06}
                   className="flex flex-col gap-3 border border-neutral-300/90 bg-white p-5 sm:border-0 sm:p-6 lg:flex-row lg:items-start lg:gap-8 lg:p-7"
                 >
-                  <span className="type-label shrink-0 text-[11px] text-neutral-400">
+                  <span className="type-label shrink-0 text-[11px] text-neutral-700">
                     {chapter.index}
                   </span>
                   <div className="min-w-0">
@@ -179,12 +179,16 @@ export default function CompanyPage() {
             </FadeUp>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 lg:gap-7">
             {BRANDS.map((item, i) => (
               <FadeUp
                 key={item.name}
                 delay={i * 0.08}
-                className="group flex h-full flex-col overflow-hidden rounded-[1.35rem] border border-neutral-200 bg-white shadow-[0_18px_40px_-32px_rgba(0,0,0,0.35)]"
+                className={`group flex h-full flex-col overflow-hidden rounded-[1.15rem] border border-neutral-200 bg-white shadow-[0_18px_40px_-32px_rgba(0,0,0,0.35)] sm:rounded-[1.35rem] ${
+                  i === BRANDS.length - 1 && BRANDS.length % 2 === 1
+                    ? "col-span-2 lg:col-span-1"
+                    : ""
+                }`}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-200">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -196,21 +200,21 @@ export default function CompanyPage() {
                   />
                 </div>
 
-                <div className="flex flex-1 flex-col p-5 sm:p-6 lg:p-7">
-                  <p className="type-label text-[10px] text-neutral-400 sm:text-[11px]">
+                <div className="flex flex-1 flex-col p-3.5 sm:p-6 lg:p-7">
+                  <p className="type-label text-[9px] text-neutral-700 sm:text-[11px]">
                     {String(i + 1).padStart(2, "0")} · {item.role}
                   </p>
-                  <h3 className="type-heading mt-2 text-[18px] text-neutral-950 sm:text-[20px] lg:text-[22px]">
+                  <h3 className="type-heading mt-1.5 text-[15px] text-neutral-950 sm:mt-2 sm:text-[20px] lg:text-[22px]">
                     {item.name}
                   </h3>
-                  <p className="type-body mt-3 flex-1 text-[13px] sm:text-[14px]">
+                  <p className="type-body mt-2 line-clamp-4 flex-1 text-[12px] sm:mt-3 sm:line-clamp-none sm:text-[14px]">
                     {item.body}
                   </p>
-                  <ul className="mt-5 flex flex-wrap gap-2">
+                  <ul className="mt-4 flex flex-wrap gap-1.5 sm:mt-5 sm:gap-2">
                     {item.focus.map((tag) => (
                       <li
                         key={tag}
-                        className="rounded-full border border-neutral-200 bg-[#f7f7f7] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-600"
+                        className="rounded-full border border-neutral-200 bg-[#f7f7f7] px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.12em] text-neutral-600 sm:px-3 sm:py-1.5 sm:text-[10px]"
                       >
                         {tag}
                       </li>
@@ -235,20 +239,20 @@ export default function CompanyPage() {
             </h2>
           </FadeUp>
 
-          <div className="grid grid-cols-1 gap-px overflow-hidden border border-neutral-300/90 bg-neutral-300/90 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px overflow-hidden border border-neutral-300/90 bg-neutral-300/90 lg:grid-cols-4">
             {ABOUT.values.map((value, i) => (
               <FadeUp
                 key={value.title}
                 delay={i * 0.06}
-                className="group bg-[#f4f4f2] p-6 transition-colors duration-400 hover:bg-white sm:p-8"
+                className="group bg-[#f4f4f2] p-4 transition-colors duration-400 hover:bg-white sm:p-8"
               >
-                <p className="type-label text-[10px] text-neutral-400">
+                <p className="type-label text-[9px] text-neutral-700 sm:text-[10px]">
                   {String(i + 1).padStart(2, "0")}
                 </p>
-                <h3 className="type-heading mt-4 text-[18px] text-neutral-950 sm:text-[20px]">
+                <h3 className="type-heading mt-3 text-[15px] text-neutral-950 sm:mt-4 sm:text-[20px]">
                   {value.title}
                 </h3>
-                <p className="type-body mt-3 text-[13px] sm:text-[14px]">{value.body}</p>
+                <p className="type-body mt-2 text-[12px] sm:mt-3 sm:text-[14px]">{value.body}</p>
               </FadeUp>
             ))}
           </div>
@@ -286,14 +290,14 @@ export default function CompanyPage() {
                     >
                       <span
                         className={`type-stat text-[clamp(1.35rem,2.4vw,1.85rem)] transition-colors ${
-                          on ? "text-neutral-950" : "text-neutral-400"
+                          on ? "text-neutral-950" : "text-neutral-700"
                         }`}
                       >
                         {m.year}
                       </span>
                       <span
                         className={`type-body text-[14px] transition-colors sm:text-[15px] ${
-                          on ? "text-neutral-800" : "text-neutral-500"
+                          on ? "text-neutral-800" : "text-neutral-700"
                         }`}
                       >
                         {m.label}
@@ -322,7 +326,7 @@ export default function CompanyPage() {
                       className="aspect-[3/4] h-auto w-full object-cover"
                       draggable={false}
                     />
-                    <figcaption className="type-label border-t border-neutral-200 bg-white px-4 py-3 text-[10px] text-neutral-500">
+                    <figcaption className="type-label border-t border-neutral-200 bg-white px-4 py-3 text-[10px] text-neutral-700">
                       {activeMilestone.year}
                     </figcaption>
                   </motion.figure>
@@ -358,7 +362,7 @@ export default function CompanyPage() {
       {/* ——— Design + Cares ——— */}
       <section className="relative z-10 border-t border-neutral-200/80 bg-[#f4f4f2]">
         <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-4 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-5 lg:px-12 lg:py-24">
-          <FadeUp className="relative min-h-[420px] overflow-hidden bg-neutral-900 sm:min-h-[480px]">
+          <FadeUp className="relative min-h-[320px] overflow-hidden bg-neutral-900 sm:min-h-[480px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ABOUT.sideImage}
@@ -383,7 +387,7 @@ export default function CompanyPage() {
             </div>
           </FadeUp>
 
-          <FadeUp delay={0.08} className="flex min-h-[420px] flex-col justify-between border border-neutral-300/90 bg-white p-6 sm:min-h-[480px] sm:p-8 lg:p-10">
+          <FadeUp delay={0.08} className="flex min-h-[320px] flex-col justify-between border border-neutral-300/90 bg-white p-5 sm:min-h-[480px] sm:p-8 lg:p-10">
             <div>
               <p className="type-label mb-2 text-[11px] sm:text-[12px]">— Community</p>
               <h3 className="type-heading text-[28px] text-neutral-950 sm:text-[34px]">
@@ -459,7 +463,7 @@ export default function CompanyPage() {
             </div>
           </FadeUp>
 
-          <FadeUp delay={0.1} className="relative min-h-[360px] lg:col-span-7 lg:min-h-[520px]">
+          <FadeUp delay={0.1} className="relative min-h-[260px] sm:min-h-[360px] lg:col-span-7 lg:min-h-[520px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ABOUT.presenceImage}

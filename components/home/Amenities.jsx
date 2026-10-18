@@ -23,7 +23,7 @@ export default function Amenities() {
           transition={{ duration: 0.65, ease }}
           className="mb-8 sm:mb-10 md:mb-12"
         >
-          <p className="type-label mb-1.5 text-[11px] text-neutral-500 sm:mb-2 sm:text-[12px]">
+          <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:mb-2 sm:text-[12px]">
             {AMENITIES.eyebrow}
           </p>
           <h2 className="type-heading whitespace-pre-line text-[28px] text-neutral-950 sm:text-[36px] md:text-[44px] lg:text-[48px]">
@@ -80,12 +80,12 @@ export default function Amenities() {
           })}
         </div>
 
-        {/* Mobile: stacked cards */}
-        <div className="flex flex-col gap-3 sm:hidden">
+        {/* Mobile: 2-column cards */}
+        <div className="grid grid-cols-2 gap-2.5 sm:hidden">
           {AMENITIES.items.map((item) => (
             <article
               key={item.id}
-              className="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-neutral-200"
+              className="relative aspect-[3/4] overflow-hidden rounded-[1.15rem] bg-neutral-200"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -97,7 +97,7 @@ export default function Amenities() {
                 className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent"
                 aria-hidden
               />
-              <p className="absolute inset-x-0 bottom-0 z-10 px-4 pb-5 text-center text-[12px] font-semibold uppercase tracking-[0.22em] text-white">
+              <p className="absolute inset-x-0 bottom-0 z-10 px-2 pb-3 text-center text-[9px] font-semibold uppercase tracking-[0.16em] text-white sm:text-[12px]">
                 {item.label}
               </p>
             </article>
@@ -111,7 +111,7 @@ export default function Amenities() {
           transition={{ duration: 0.55, delay: 0.1, ease }}
           className="mt-8 flex flex-col items-center gap-4 sm:mt-10"
         >
-          <p className="type-label text-[12px] text-neutral-500 sm:text-[13px]">
+          <p className="type-label text-[12px] text-neutral-700 sm:text-[13px]">
             {AMENITIES.moreLabel}
           </p>
           <Link

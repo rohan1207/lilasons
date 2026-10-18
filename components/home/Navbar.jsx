@@ -96,13 +96,13 @@ export default function Navbar({ forceSolid = false }) {
                   href={link.href}
                   className={`type-label whitespace-nowrap text-[11px] transition-colors xl:text-[12px] ${
                     isActive(link.href)
-                      ? "text-[#3b6ea5]"
-                      : "text-neutral-900 hover:text-neutral-950"
+                      ? "!text-[#3b6ea5]"
+                      : "!text-neutral-950 hover:!text-black"
                   }`}
                 >
                   {link.label}
                   {link.children ? (
-                    <span className="ml-1 inline-block text-[10px] text-neutral-700">
+                    <span className="ml-1 inline-block text-[10px] !text-neutral-800">
                       ›
                     </span>
                   ) : null}
@@ -116,7 +116,7 @@ export default function Navbar({ forceSolid = false }) {
                           <li key={item.href}>
                             <Link
                               href={item.href}
-                              className="block text-[13px] font-medium tracking-[-0.01em] text-neutral-900 transition-colors hover:text-neutral-950"
+                              className="block text-[13px] font-medium tracking-[-0.01em] text-neutral-950 transition-colors hover:text-black"
                             >
                               {item.label}
                             </Link>
@@ -130,10 +130,10 @@ export default function Navbar({ forceSolid = false }) {
             ))}
           </ul>
 
-          <div className="relative z-20 flex items-center gap-3 sm:gap-4">
+          <div className="relative z-20 flex shrink-0 items-center gap-2 sm:gap-4">
             <Link
               href={CONTACT.href}
-              className="type-button btn-pill btn-shine btn-solid !h-10 sm:!h-10"
+              className="type-button btn-pill btn-shine btn-solid !h-9 !px-4 text-[10px] sm:!h-10 sm:!px-6 sm:text-[11px]"
             >
               {CONTACT.label}
             </Link>
@@ -143,7 +143,7 @@ export default function Navbar({ forceSolid = false }) {
               aria-label="Open menu"
               aria-expanded={megaOpen}
               onClick={() => setMegaOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300/80 bg-white/55 transition-colors hover:border-neutral-900 hover:bg-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300/80 bg-white/55 transition-colors hover:border-neutral-900 hover:bg-white sm:h-10 sm:w-10"
             >
               <span className="flex flex-col gap-[5px]">
                 <span className="block h-px w-4 bg-neutral-900" />
@@ -163,31 +163,31 @@ export default function Navbar({ forceSolid = false }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35, ease }}
           >
-            <div className="mx-auto flex h-full max-w-[1600px] flex-col px-5 py-6 sm:px-8 lg:px-10">
-              <div className="flex items-center justify-between">
+            <div className="mx-auto flex h-full max-w-[1600px] flex-col overflow-y-auto px-5 py-5 sm:px-8 sm:py-6 lg:px-10">
+              <div className="flex shrink-0 items-center justify-between">
                 <BrandMark />
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={closeMega}
-                  className="group relative flex h-11 w-11 items-center justify-center rounded-full border border-neutral-300 transition-colors hover:border-neutral-900"
+                  className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 transition-colors hover:border-neutral-900 sm:h-11 sm:w-11"
                 >
                   <span className="absolute h-px w-4 rotate-45 bg-neutral-900" />
                   <span className="absolute h-px w-4 -rotate-45 bg-neutral-900" />
                 </button>
               </div>
 
-              <div className="mt-8 flex min-h-0 flex-1 flex-col overflow-auto pb-8 lg:mt-10 lg:flex-row">
-                <ul className="w-full space-y-1 border-b border-neutral-200 pb-8 lg:w-[42%] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-10">
+              <div className="mt-6 flex min-h-0 flex-1 flex-col pb-8 sm:mt-8 lg:mt-10 lg:flex-row">
+                <ul className="w-full space-y-0.5 border-b border-neutral-200 pb-6 sm:space-y-1 sm:pb-8 lg:w-[42%] lg:border-b-0 lg:border-r lg:pb-0 lg:pr-10">
                   {NAV_PRIMARY.map((link) => (
                     <li key={link.href + link.label}>
                       <Link
                         href={link.href}
                         onClick={closeMega}
-                        className={`block py-2.5 text-[22px] font-medium tracking-[-0.02em] transition-colors sm:text-[26px] ${
+                        className={`block py-2 text-[20px] font-medium tracking-[-0.02em] transition-colors sm:py-2.5 sm:text-[26px] ${
                           isActive(link.href)
                             ? "text-[#3b6ea5]"
-                            : "text-neutral-800 hover:text-neutral-950"
+                            : "text-neutral-950 hover:text-black"
                         }`}
                       >
                         {link.label}
@@ -196,8 +196,8 @@ export default function Navbar({ forceSolid = false }) {
                   ))}
                 </ul>
 
-                <div className="w-full bg-[#ebebeb]/60 px-0 py-8 lg:flex-1 lg:px-10 lg:py-2">
-                  <p className="type-label mb-4 text-[11px] text-neutral-700">
+                <div className="w-full bg-[#ebebeb]/60 px-0 py-6 sm:py-8 lg:flex-1 lg:px-10 lg:py-2">
+                  <p className="type-label mb-4 text-[11px] !text-neutral-900">
                     Our Projects
                   </p>
                   <ul className="space-y-3">
@@ -209,7 +209,7 @@ export default function Navbar({ forceSolid = false }) {
                           className={`block text-[16px] font-medium tracking-[-0.015em] transition-colors sm:text-[18px] ${
                             isActive(item.href)
                               ? "text-[#3b6ea5]"
-                              : "text-neutral-800 hover:text-neutral-950"
+                              : "text-neutral-950 hover:text-black"
                           }`}
                         >
                           {item.label}
@@ -219,7 +219,7 @@ export default function Navbar({ forceSolid = false }) {
                   </ul>
 
                   <div className="mt-10 border-t border-neutral-300/70 pt-8">
-                    <p className="type-label mb-4 text-[11px] text-neutral-700">
+                    <p className="type-label mb-4 text-[11px] !text-neutral-900">
                       Resources
                     </p>
                     <ul className="space-y-3">
@@ -231,7 +231,7 @@ export default function Navbar({ forceSolid = false }) {
                             className={`block text-[16px] font-medium tracking-[-0.015em] transition-colors sm:text-[18px] ${
                               isActive(item.href)
                                 ? "text-[#3b6ea5]"
-                                : "text-neutral-800 hover:text-neutral-950"
+                                : "text-neutral-950 hover:text-black"
                             }`}
                           >
                             {item.label}
@@ -242,12 +242,12 @@ export default function Navbar({ forceSolid = false }) {
                   </div>
 
                   <div className="mt-10 space-y-3 border-t border-neutral-300/70 pt-8">
-                    <p className="type-label text-[11px] text-neutral-700">
+                    <p className="type-label text-[11px] !text-neutral-900">
                       {BRAND.address.short}
                     </p>
                     <a
                       href={`mailto:${BRAND.email}`}
-                      className="block text-[14px] font-medium text-neutral-800"
+                      className="block text-[14px] font-medium text-neutral-950"
                     >
                       {BRAND.email}
                     </a>

@@ -36,7 +36,7 @@ export default function AnimatedSlogan() {
           transition={{ duration: 0.45, ease }}
           className="type-heading text-[clamp(1.75rem,5.5vw,3.25rem)] text-neutral-950"
         >
-          <span className="text-neutral-400">{line.lead}</span>{" "}
+          <span className="text-neutral-700">{line.lead}</span>{" "}
           <span>{line.word}</span>
         </motion.p>
       </AnimatePresence>

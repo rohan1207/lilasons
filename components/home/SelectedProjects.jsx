@@ -131,19 +131,17 @@ export default function SelectedProjects() {
         ref={stageRef}
         className="relative flex w-full flex-col overflow-hidden lg:flex-row"
       >
-        {/* Left panel */}
-        <div className="relative flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-7 sm:px-8 sm:py-9 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
-          {/* Heading */}
-          <header className="shrink-0 pb-5 sm:pb-6">
-            <p className="type-label mb-1.5 text-[11px] text-neutral-400 sm:text-[12px]">
+        {/* Copy panel */}
+        <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-5 sm:px-8 sm:py-9 lg:order-1 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
+          <header className="shrink-0 pb-3 sm:pb-6">
+            <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:text-[12px]">
               — Our Projects
             </p>
-            <h2 className="type-heading text-[28px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
+            <h2 className="type-heading text-[24px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
               Selected Work
             </h2>
           </header>
 
-          {/* Project copy — stacked fades, no remount jitter */}
           <div className="relative min-h-0 flex-1 overflow-hidden">
             {PROJECTS.map((project, i) => {
               const on = i === active;
@@ -158,29 +156,29 @@ export default function SelectedProjects() {
                   }}
                   aria-hidden={!on}
                 >
-                  <p className="type-label text-[11px] text-neutral-400 sm:text-[12px]">
+                  <p className="type-label text-[11px] text-neutral-700 sm:text-[12px]">
                     {project.category} · {project.indexLabel}
                   </p>
 
-                  <h3 className="type-heading mt-3 text-[26px] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
+                  <h3 className="type-heading mt-2 text-[22px] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
                     {project.title}
                   </h3>
 
-                  <p className="type-kicker mt-2.5 text-[11px] sm:mt-3 sm:text-[12px]">
+                  <p className="type-kicker mt-2 text-[11px] sm:mt-3 sm:text-[12px]">
                     {project.placeLine}
                   </p>
 
-                  <p className="type-body mt-4 max-w-[40ch] text-[13px] sm:mt-5 sm:text-[14px] md:text-[15px]">
+                  <p className="type-body mt-3 line-clamp-3 max-w-[40ch] text-[12px] sm:mt-5 sm:line-clamp-none sm:text-[14px] md:text-[15px]">
                     {project.summary}
                   </p>
 
-                  <div className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 border-t border-neutral-200 pt-5 sm:mt-6 sm:gap-y-4 sm:pt-6">
+                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-neutral-200 pt-4 sm:mt-6 sm:gap-y-4 sm:pt-6">
                     {project.meta.slice(0, 4).map((item) => (
                       <div key={item.label}>
-                        <p className="type-label text-[10px] sm:text-[11px]">
+                        <p className="type-label text-[9px] sm:text-[11px]">
                           {item.label}
                         </p>
-                        <p className="mt-1 text-[13px] font-medium tracking-[-0.01em] text-neutral-900 sm:text-[14px]">
+                        <p className="mt-0.5 text-[12px] font-medium tracking-[-0.01em] text-neutral-900 sm:mt-1 sm:text-[14px]">
                           {item.value}
                         </p>
                       </div>
@@ -191,11 +189,10 @@ export default function SelectedProjects() {
             })}
           </div>
 
-          {/* Footer: CTA + tracker on one row — never overlaps */}
-          <div className="mt-5 flex shrink-0 flex-col gap-4 border-t border-neutral-200 pt-5 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
+          <div className="mt-4 flex shrink-0 flex-col gap-3 border-t border-neutral-200 pt-4 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
             <Link
               href={PROJECTS[active].href}
-              className="type-button btn-pill btn-shine btn-outline w-fit"
+              className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               <span aria-hidden className="text-[13px] leading-none">
                 ↗
@@ -205,11 +202,11 @@ export default function SelectedProjects() {
 
             <div className="min-w-[140px] sm:max-w-[200px] sm:flex-1 sm:text-right">
               <div className="flex items-center justify-between gap-3 sm:justify-end sm:gap-4">
-                <p className="type-label text-[11px] tabular-nums text-neutral-500">
+                <p className="type-label text-[11px] tabular-nums text-neutral-700">
                   {String(active + 1).padStart(2, "0")} /{" "}
                   {String(total).padStart(2, "0")}
                 </p>
-                <p className="type-label text-[10px] text-neutral-400 sm:text-[11px]">
+                <p className="type-label text-[10px] text-neutral-700 sm:text-[11px]">
                   Scroll
                 </p>
               </div>
@@ -223,8 +220,8 @@ export default function SelectedProjects() {
           </div>
         </div>
 
-        {/* Right image — stacked crossfade */}
-        <div className="relative min-h-[42vh] w-full flex-1 overflow-hidden bg-neutral-200 lg:min-h-0 lg:w-[54%]">
+        {/* Image — first on phone, right on desktop */}
+        <div className="relative order-1 min-h-[34vh] w-full shrink-0 overflow-hidden bg-neutral-200 lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
           {PROJECTS.map((project, i) => {
             const on = i === active;
             return (

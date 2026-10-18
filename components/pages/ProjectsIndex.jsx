@@ -75,16 +75,16 @@ export default function ProjectsIndex() {
               {PROJECTS_PAGE.body}
             </p>
           </FadeUp>
-          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-3 sm:mt-8">
+          <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href={PROJECTS_PAGE.ctaHref}
-              className="type-button btn-pill btn-shine btn-solid !bg-white !text-neutral-950 hover:!opacity-90"
+              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {PROJECTS_PAGE.cta}
             </Link>
             <Link
               href={PROJECTS_PAGE.ctaSecondaryHref}
-              className="type-button btn-pill btn-shine btn-outline !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950"
+              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {PROJECTS_PAGE.ctaSecondary}
             </Link>
@@ -103,13 +103,13 @@ export default function ProjectsIndex() {
               </h2>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {PROJECT_CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setActive(cat)}
-                  className={`rounded-full border px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${
+                  className={`rounded-full border px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] transition-all duration-300 sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.16em] ${
                     active === cat
                       ? "border-[#0a0a0a] bg-[#0a0a0a] text-white"
                       : "border-black/20 bg-transparent text-[#0a0a0a] hover:border-black/40"
@@ -153,8 +153,8 @@ export default function ProjectsIndex() {
                         }}
                       />
                       <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/[0.08]" />
-                      <div className="absolute bottom-0 left-0 right-0 translate-y-2 p-5 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-white/80">
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/55 to-transparent p-3 translate-y-0 opacity-100 transition-all duration-500 sm:translate-y-2 sm:from-transparent sm:p-5 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-hover:from-black/55">
+                        <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-white/90 sm:text-[11px] sm:text-white/80">
                           {project.locationLabel}
                           {project.rera ? ` — RERA ${project.rera}` : ""}
                         </p>
@@ -162,13 +162,13 @@ export default function ProjectsIndex() {
                     </div>
 
                     <div className="pt-3 md:pt-5">
-                      <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-400 md:mb-2 md:text-[10px] md:tracking-[0.22em]">
+                      <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-700 md:mb-2 md:text-[10px] md:tracking-[0.22em]">
                         {project.category}
                       </p>
                       <h3 className="mb-1 text-sm font-medium leading-snug tracking-[-0.02em] text-[#0a0a0a] md:mb-2 md:text-[clamp(1.1rem,1.8vw,1.35rem)]">
                         {project.title}
                       </h3>
-                      <p className="hidden line-clamp-2 text-sm leading-relaxed text-neutral-500 md:block">
+                      <p className="hidden line-clamp-2 text-sm leading-relaxed text-neutral-700 md:block">
                         {project.summary}
                       </p>
                     </div>

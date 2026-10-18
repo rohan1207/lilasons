@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MEDIA } from "@/lib/brand";
 import { PROJECTS } from "@/lib/projects";
@@ -78,10 +79,25 @@ function buildGalleryItems() {
 const GALLERY_ITEMS = buildGalleryItems();
 
 export default function MediaPreview() {
+  const [cardWidth, setCardWidth] = useState(220);
+
+  useEffect(() => {
+    const sync = () => {
+      const w = window.innerWidth;
+      if (w < 400) setCardWidth(150);
+      else if (w < 640) setCardWidth(180);
+      else if (w < 1024) setCardWidth(220);
+      else setCardWidth(260);
+    };
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
   return (
     <section
       id="media-preview"
-      className="relative z-10 flex h-dvh max-h-dvh flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7]"
+      className="relative z-10 flex h-[100dvh] max-h-[100dvh] flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7]"
       aria-label="Media gallery preview"
     >
       <div
@@ -105,13 +121,13 @@ export default function MediaPreview() {
           transition={{ duration: 0.65, ease }}
           className="shrink-0"
         >
-          <p className="type-label mb-2 text-[11px] text-neutral-400 sm:text-[12px]">
+          <p className="type-label mb-2 text-[11px] text-neutral-700 sm:text-[12px]">
             — Media
           </p>
-          <h2 className="type-heading max-w-[16ch] text-[28px] text-neutral-950 sm:text-[36px] lg:text-[42px]">
+          <h2 className="type-heading max-w-[16ch] text-[24px] text-neutral-950 sm:text-[36px] lg:text-[42px]">
             Life at Lilasons
           </h2>
-          <p className="type-body mt-2 max-w-[42ch] text-[14px] sm:text-[15px]">
+          <p className="type-body mt-2 max-w-[42ch] text-[13px] sm:text-[15px]">
             {MEDIA.title}
           </p>
         </motion.div>
@@ -127,9 +143,9 @@ export default function MediaPreview() {
             items={GALLERY_ITEMS}
             preset="cylinder"
             intro="rise"
-            cardWidth={260}
+            cardWidth={cardWidth}
             aspectRatio={1}
-            gap={32}
+            gap={cardWidth < 200 ? 18 : 32}
             speed={7}
             autoplay="drift"
             scrollLinked
@@ -142,10 +158,10 @@ export default function MediaPreview() {
           />
         </motion.div>
 
-        <div className="flex shrink-0 justify-center pb-6 pt-2 sm:pb-8">
+        <div className="flex shrink-0 justify-center pb-5 pt-1 sm:pb-8 sm:pt-2">
           <Link
             href="/media"
-            className="type-button btn-pill btn-shine btn-outline w-fit"
+            className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
           >
             <span aria-hidden className="text-[13px] leading-none">
               ↗
