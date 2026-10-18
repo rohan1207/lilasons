@@ -52,10 +52,11 @@ export default function ExperienceGate() {
             if (phase !== "exiting") return;
             setPhase("done");
             window.history.replaceState(null, "", "/home");
-            // Recalc pins + nudge phone hero native-scroll driver
+            // Unlock scroll layout + wake phone hero scrub
             requestAnimationFrame(() => {
               ScrollTrigger.refresh();
               window.dispatchEvent(new Event("scroll"));
+              window.dispatchEvent(new Event("lilasons:landing-done"));
             });
           }}
         >

@@ -6,16 +6,10 @@ import Compass from "./Compass";
 import AnimatedSlogan from "./AnimatedSlogan";
 import BrandMark from "@/components/BrandMark";
 import {
-  countLoadedPhoneScrubFrames,
   LANDING_BG_SRC,
   LANDING_LOAD_MS,
   startFramePreload,
 } from "@/lib/framePreloader";
-import { isPhoneViewport } from "@/lib/mobile";
-
-/** Phone: don't dismiss loader until we have enough frames to scrub. */
-const PHONE_MIN_SCRUB_FRAMES = 28;
-const PHONE_EXTRA_WAIT_MS = 4000;
 
 /**
  * @param {{ onComplete?: () => void }} props
@@ -30,29 +24,14 @@ export default function LandingScreen({ onComplete }) {
     let cancelled = false;
     let raf = 0;
     const start = performance.now();
-    const phone = isPhoneViewport();
 
     const tick = (now) => {
       if (cancelled) return;
-      const elapsed = now - start;
-      const t = Math.min(1, elapsed / LANDING_LOAD_MS);
+      const t = Math.min(1, (now - start) / LANDING_LOAD_MS);
       const eased = 1 - Math.pow(1 - t, 1.35);
+      setProgress(eased);
 
-      // On phone, blend in real frame-load progress so the % feels honest
-      if (phone) {
-        const frames = countLoadedPhoneScrubFrames();
-        const frameProgress = Math.min(1, frames / PHONE_MIN_SCRUB_FRAMES);
-        setProgress(Math.max(eased * 0.85, frameProgress * 0.95));
-      } else {
-        setProgress(eased);
-      }
-
-      const timeDone = t >= 1;
-      const framesReady =
-        !phone || countLoadedPhoneScrubFrames() >= PHONE_MIN_SCRUB_FRAMES;
-      const waitedTooLong = elapsed >= LANDING_LOAD_MS + PHONE_EXTRA_WAIT_MS;
-
-      if (!timeDone || (!framesReady && !waitedTooLong)) {
+      if (t < 1) {
         raf = requestAnimationFrame(tick);
         return;
       }
