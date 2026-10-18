@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   FRAME_COUNT,
+  frameSrc,
   getFrameImage,
   startFramePreload,
   subscribeFramePreload,
@@ -226,21 +227,27 @@ export default function Hero() {
     startFramePreload();
     syncCanvasSize();
 
-    if (getFrameImage(0)) {
-      drawFrame(0);
-      syncCopy(0);
+    const paintCurrent = () => {
+      const idx = Math.round(currentFrameRef.current);
+      if (!getFrameImage(idx) && !getFrameImage(0)) return false;
+      lastDrawn = -1;
+      drawFrame(idx);
+      syncCopy(idx);
       setReady(true);
-    }
+      kickRender();
+      return true;
+    };
+
+    paintCurrent();
 
     const unsub = subscribeFramePreload(() => {
       if (cancelled) return;
-      if (getFrameImage(0)) {
-        setReady(true);
-        lastDrawn = -1;
-      }
+      // When first frames arrive (common on phone after slow start), force a redraw.
+      // Idle rAF pause used to leave a permanent grey/black canvas.
+      paintCurrent();
     });
 
-    rafId = requestAnimationFrame(renderLoop);
+    if (!rafId) rafId = requestAnimationFrame(renderLoop);
 
     let st;
     const attachST = () => {
@@ -318,6 +325,16 @@ export default function Hero() {
         className={`pointer-events-none z-[1] h-dvh w-full overflow-hidden bg-neutral-950 ${
           phone ? "sticky top-0" : "fixed inset-0"
         }`}
+        style={
+          phone
+            ? {
+                // Fallback still while WebP frames decode on cellular
+                backgroundImage: `url(${frameSrc(0)})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : undefined
+        }
       >
         <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 

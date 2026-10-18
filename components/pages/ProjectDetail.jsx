@@ -8,6 +8,7 @@ import SectionEyebrow from "@/components/layout/SectionEyebrow";
 import ProjectImageSlideshow from "@/components/projects/ProjectImageSlideshow";
 import ProjectGallery from "@/components/projects/ProjectGallery";
 import { BRAND, CONTACT } from "@/lib/brand";
+import IconArrow from "@/components/IconArrow";
 import {
   getAdjacentProjects,
   getProjectImages,
@@ -46,7 +47,7 @@ export default function ProjectDetail({ project }) {
             href="/projects"
             className="mb-8 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-700 transition hover:text-[#0a0a0a]"
           >
-            <span aria-hidden>←</span> All Projects
+            <IconArrow dir="left" className="h-3 w-3" /> All Projects
           </Link>
 
           <motion.div
@@ -177,7 +178,7 @@ export default function ProjectDetail({ project }) {
                     rel="noreferrer"
                     className="type-button btn-pill btn-shine btn-solid w-full justify-center sm:w-auto lg:w-full"
                   >
-                    <span aria-hidden>↗</span>
+                    <IconArrow dir="ne" className="h-3 w-3" />
                     {CONTACT.whatsappLabel}
                   </a>
                 )}

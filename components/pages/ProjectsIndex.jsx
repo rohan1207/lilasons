@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PageShell from "@/components/layout/PageShell";
 import Reveal from "@/components/layout/Reveal";
 import SectionEyebrow from "@/components/layout/SectionEyebrow";
+import IconArrow from "@/components/IconArrow";
 import { PROJECTS, PROJECT_CATEGORIES, PROJECTS_PAGE } from "@/lib/projects";
 
 const ease = [0.22, 1, 0.36, 1];
@@ -194,9 +195,9 @@ export default function ProjectsIndex() {
           </div>
           <Link
             href="/contact"
-            className="type-button btn-pill btn-shine btn-outline"
+            className="type-button btn-pill btn-shine btn-outline gap-2"
           >
-            <span aria-hidden>↗</span>
+            <IconArrow dir="ne" className="h-3 w-3" />
             Start A Conversation
           </Link>
         </Reveal>

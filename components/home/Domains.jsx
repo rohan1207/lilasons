@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 import { DOMAINS } from "@/lib/brand";
+import IconArrow from "@/components/IconArrow";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,9 +39,7 @@ function DomainTile({ domain, className }) {
 }
 
 export default function Domains() {
-  const top = DOMAINS.filter((d) => d.span === "col");
-  const wide = DOMAINS.find((d) => d.span === "wide");
-  const narrow = DOMAINS.find((d) => d.span === "narrow");
+  const byTitle = Object.fromEntries(DOMAINS.map((d) => [d.title, d]));
 
   useEffect(() => {
     const id = window.requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -69,36 +68,70 @@ export default function Domains() {
 
           <Link
             href="/projects"
-            className="type-button btn-pill btn-shine btn-outline w-fit shrink-0"
+            className="type-button btn-pill btn-shine btn-outline w-fit shrink-0 gap-2"
           >
-            <span aria-hidden className="text-[13px] leading-none">
-              ↗
-            </span>
+            <IconArrow dir="ne" className="h-3 w-3" />
             View Projects
           </Link>
         </div>
 
+        {/* Phone: 2×2 + full commercial — no empty cell beside Design */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="grid min-h-0 flex-1 grid-cols-2 gap-[2px] sm:grid-cols-3 sm:grid-rows-[1fr_1.2fr]"
+          className="grid min-h-0 flex-1 grid-cols-2 gap-[2px] sm:hidden"
         >
-          {top.map((domain) => (
-            <DomainTile
-              key={domain.title}
-              domain={domain}
-              className="aspect-[4/5] sm:aspect-auto sm:h-full sm:min-h-0"
-            />
-          ))}
           <DomainTile
-            domain={wide}
-            className="col-span-2 aspect-[16/9] sm:col-span-2 sm:aspect-auto sm:h-full sm:min-h-0"
+            domain={byTitle.Residences}
+            className="aspect-[4/5]"
           />
           <DomainTile
-            domain={narrow}
-            className="col-span-2 aspect-[16/10] sm:col-span-1 sm:aspect-auto sm:h-full sm:min-h-0"
+            domain={byTitle.Developments}
+            className="aspect-[4/5]"
+          />
+          <DomainTile
+            domain={byTitle.Design}
+            className="aspect-[4/5]"
+          />
+          <DomainTile
+            domain={byTitle.Communities}
+            className="aspect-[4/5]"
+          />
+          <DomainTile
+            domain={byTitle.Commercial}
+            className="col-span-2 aspect-[16/9]"
+          />
+        </motion.div>
+
+        {/* Tablet / desktop: original 3-col bento */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          className="hidden min-h-0 flex-1 grid-cols-3 grid-rows-[1fr_1.2fr] gap-[2px] sm:grid"
+        >
+          <DomainTile
+            domain={byTitle.Residences}
+            className="h-full min-h-0"
+          />
+          <DomainTile
+            domain={byTitle.Developments}
+            className="h-full min-h-0"
+          />
+          <DomainTile
+            domain={byTitle.Design}
+            className="h-full min-h-0"
+          />
+          <DomainTile
+            domain={byTitle.Communities}
+            className="col-span-2 h-full min-h-0"
+          />
+          <DomainTile
+            domain={byTitle.Commercial}
+            className="h-full min-h-0"
           />
         </motion.div>
       </div>

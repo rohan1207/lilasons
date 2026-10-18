@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import IconArrow from "@/components/IconArrow";
 
 export default function ProjectImageSlideshow({ images, alt }) {
   const [active, setActive] = useState(0);
@@ -47,7 +48,7 @@ export default function ProjectImageSlideshow({ images, alt }) {
               className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/25 text-white backdrop-blur-sm transition hover:bg-black/45 md:left-5 md:h-11 md:w-11"
               aria-label="Previous image"
             >
-              ←
+              <IconArrow dir="left" className="h-4 w-4" />
             </button>
             <button
               type="button"
@@ -55,7 +56,7 @@ export default function ProjectImageSlideshow({ images, alt }) {
               className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/25 text-white backdrop-blur-sm transition hover:bg-black/45 md:right-5 md:h-11 md:w-11"
               aria-label="Next image"
             >
-              →
+              <IconArrow dir="right" className="h-4 w-4" />
             </button>
 
             <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">

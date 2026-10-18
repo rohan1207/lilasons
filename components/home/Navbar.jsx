@@ -102,9 +102,19 @@ export default function Navbar({ forceSolid = false }) {
                 >
                   {link.label}
                   {link.children ? (
-                    <span className="ml-1 inline-block text-[10px] !text-neutral-800">
-                      ›
-                    </span>
+                    <svg
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden
+                      className="ml-1 inline-block h-2.5 w-2.5 align-middle !text-neutral-800"
+                    >
+                      <path
+                        d="M4 2.5 7.5 6 4 9.5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="square"
+                      />
+                    </svg>
                   ) : null}
                 </Link>
 

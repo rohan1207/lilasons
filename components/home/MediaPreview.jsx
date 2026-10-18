@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import IconArrow from "@/components/IconArrow";
 import { MEDIA } from "@/lib/brand";
 import { PROJECTS } from "@/lib/projects";
 
@@ -176,9 +177,7 @@ export default function MediaPreview() {
             href="/media"
             className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
           >
-            <span aria-hidden className="text-[13px] leading-none">
-              ↗
-            </span>
+            <IconArrow dir="ne" className="h-3 w-3" />
             View Gallery
           </Link>
         </div>

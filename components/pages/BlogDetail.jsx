@@ -25,7 +25,10 @@ export default function BlogDetail({ post }) {
                 href="/blogs"
                 className="type-label text-[11px] text-neutral-700 transition-colors hover:text-neutral-950"
               >
-                ← All blogs
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden className="mr-1.5 inline-block h-3 w-3 align-[-1px]" style={{ transform: "rotate(180deg)" }}>
+                  <path d="M3 8h9.5M8.5 3.5 13.5 8l-5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
+                </svg>
+                All blogs
               </Link>
               <p className="type-label mt-6 text-[11px] sm:text-[12px]">
                 {post.category} · {post.readTime}

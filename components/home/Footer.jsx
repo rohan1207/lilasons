@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import BrandMark from "@/components/BrandMark";
+import IconArrow from "@/components/IconArrow";
 import { BRAND, FOOTER } from "@/lib/brand";
 
 function FooterLink({ href, children, external = false }) {
@@ -48,9 +49,7 @@ export default function Footer() {
             aria-label={FOOTER.workLabel}
             className="flex h-11 w-11 shrink-0 items-center justify-center border border-neutral-900 text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white sm:h-12 sm:w-12 lg:h-14 lg:w-14"
           >
-            <span aria-hidden className="text-[16px] leading-none sm:text-[18px] lg:text-[20px]">
-              ↘
-            </span>
+            <IconArrow dir="se" className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
           </Link>
         </div>
 
@@ -61,7 +60,7 @@ export default function Footer() {
               href={FOOTER.workHref}
               className="type-button btn-pill btn-shine btn-outline inline-flex w-fit gap-2 !h-10 !px-5 sm:!h-11"
             >
-              <span aria-hidden>↗</span>
+              <IconArrow dir="ne" className="h-3 w-3" />
               {FOOTER.workLabel}
             </Link>
           </div>
@@ -162,7 +161,7 @@ export default function Footer() {
             onClick={scrollTop}
             className="type-button btn-pill btn-outline !h-9 gap-1.5 !px-4 text-[10px] sm:!px-5 sm:text-[11px]"
           >
-            <span aria-hidden>↑</span>
+            <IconArrow dir="up" className="h-3 w-3" />
             {FOOTER.backToTop}
           </button>
         </div>

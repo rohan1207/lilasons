@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import IconArrow from "@/components/IconArrow";
 import { SHOWCASE } from "@/lib/brand";
 
 const ease = [0.22, 1, 0.36, 1];
@@ -91,9 +92,7 @@ export default function Showcase() {
                 className="type-button btn-pill btn-shine btn-solid"
               >
                 {SHOWCASE.cta}
-                <span aria-hidden className="text-[13px] leading-none">
-                  →
-                </span>
+                <IconArrow dir="right" className="h-3 w-3" />
               </Link>
             </FadeUp>
           </div>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import IconArrow from "@/components/IconArrow";
 import { PROJECTS } from "@/lib/projects";
 import { isPhoneViewport } from "@/lib/mobile";
 
@@ -236,9 +237,7 @@ export default function SelectedProjects() {
               href={PROJECTS[active].href}
               className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
-              <span aria-hidden className="text-[13px] leading-none">
-                ↗
-              </span>
+              <IconArrow dir="ne" className="h-3 w-3" />
               View Project
             </Link>
 
@@ -252,7 +251,7 @@ export default function SelectedProjects() {
                       onClick={() => go(-1)}
                       className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
                     >
-                      ‹
+                      <IconArrow dir="left" className="h-3.5 w-3.5" />
                     </button>
                     <p className="type-label text-[11px] tabular-nums text-neutral-700">
                       {String(active + 1).padStart(2, "0")} /{" "}
@@ -264,7 +263,7 @@ export default function SelectedProjects() {
                       onClick={() => go(1)}
                       className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
                     >
-                      ›
+                      <IconArrow dir="right" className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 ) : (
