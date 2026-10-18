@@ -9,27 +9,27 @@ import {
   FRAME_COUNT,
   frameSrc,
   getFrameImage,
+  getLoadedPhoneScrubFrames,
+  getPhoneScrubFrames,
   loadFrameIndices,
   startFramePreload,
   subscribeFramePreload,
 } from "@/lib/framePreloader";
 import { BRAND } from "@/lib/brand";
 import HeroClouds from "@/components/home/HeroClouds";
-import { isPhoneViewport } from "@/lib/mobile";
+import { isCoarsePointer, isPhoneViewport } from "@/lib/mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Desktop: tall runway + fixed canvas + scrubbed full sequence.
- * Phone: short runway + subsampled frames + native scroll driver
- * (ScrollTrigger alone often stalls on iOS; only frame 0 looked “stuck”).
+ * Desktop (fine pointer / wide): fixed canvas + ScrollTrigger scrub.
+ * Phone / real touch: sticky canvas + scrollY progress.
+ *   DevTools "phone" + mouse wheel still paints a fixed layer — real iOS does not
+ *   update position:fixed canvases during touch momentum. Sticky fixes that.
  */
 
-const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
-/** Shorter runway so phone scroll feels purposeful */
-const PHONE = { sequence: 340, hold: 48, scrub: true, lerp: 1 };
-/** Every Nth frame on phone — fewer downloads, still smooth enough */
-const PHONE_FRAME_STEP = 3;
+const DESKTOP = { sequenceVh: 1000, holdVh: 120, scrub: 0.28, lerp: 0.22 };
+const PHONE = { sequenceVh: 380, holdVh: 40 };
 
 const COPY_LAST_FRAME = 68;
 const COPY_FADE_START = 38;
@@ -41,13 +41,12 @@ function smoothstep(t) {
   return x * x * (3 - 2 * x);
 }
 
-function frameLerpFactor(delta, baseLerp) {
+function frameLerpFactor(delta) {
   const d = Math.abs(delta);
-  if (baseLerp >= 0.99) return 1;
-  if (d > 48) return 0.85;
-  if (d > 24) return 0.55;
-  if (d > 10) return 0.38;
-  return baseLerp;
+  if (d > 48) return 0.72;
+  if (d > 24) return 0.48;
+  if (d > 10) return 0.32;
+  return 0.22;
 }
 
 function cornerVisibility(frame) {
@@ -60,32 +59,26 @@ function cornerVisibility(frame) {
   );
 }
 
-function buildPhoneFrameList() {
-  const list = [];
-  for (let i = 0; i < FRAME_COUNT; i += PHONE_FRAME_STEP) list.push(i);
-  if (list[list.length - 1] !== FRAME_COUNT - 1) list.push(FRAME_COUNT - 1);
-  return list;
-}
-
-/** Nearest loaded frame by absolute distance (not “always walk back to 0”). */
-function findDrawable(index) {
+function findDrawableDesktop(index) {
   const max = FRAME_COUNT - 1;
   const i = Math.max(0, Math.min(index, max));
   const direct = getFrameImage(i);
   if (direct) return { img: direct, index: i };
 
-  let best = null;
-  let bestDist = Infinity;
-  for (let j = 0; j <= max; j += 1) {
-    const img = getFrameImage(j);
-    if (!img) continue;
-    const d = Math.abs(j - i);
-    if (d < bestDist) {
-      bestDist = d;
-      best = { img, index: j };
-    }
+  for (let back = i - 1; back >= 0; back -= 1) {
+    const img = getFrameImage(back);
+    if (img) return { img, index: back };
   }
-  return best;
+  for (let fwd = i + 1; fwd <= max; fwd += 1) {
+    const img = getFrameImage(fwd);
+    if (img) return { img, index: fwd };
+  }
+  return null;
+}
+
+/** Real touch device — not just a narrow DevTools pane with a mouse. */
+function useTouchScrub() {
+  return isPhoneViewport() && isCoarsePointer();
 }
 
 export default function Hero() {
@@ -98,13 +91,22 @@ export default function Hero() {
   const scrollHintRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [phone, setPhone] = useState(false);
+  const [touchScrub, setTouchScrub] = useState(false);
 
   useEffect(() => {
-    const sync = () => setPhone(isPhoneViewport());
+    const sync = () => {
+      setPhone(isPhoneViewport());
+      setTouchScrub(useTouchScrub());
+    };
     sync();
-    const mq = window.matchMedia("(max-width: 767px)");
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
+    const mqW = window.matchMedia("(max-width: 767px)");
+    const mqP = window.matchMedia("(pointer: coarse)");
+    mqW.addEventListener("change", sync);
+    mqP.addEventListener("change", sync);
+    return () => {
+      mqW.removeEventListener("change", sync);
+      mqP.removeEventListener("change", sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -116,16 +118,23 @@ export default function Hero() {
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
+    // Narrow viewport OR real touch → phone scroll scrub (no ScrollTrigger pin fight)
     const onPhone = isPhoneViewport();
-    const cfg = onPhone ? PHONE : DESKTOP;
-    const phoneFrames = onPhone ? buildPhoneFrameList() : null;
-    const totalVh = cfg.sequence + cfg.hold;
-    const frameProgressEnd = cfg.sequence / totalVh;
+    const isTouch = isCoarsePointer();
+    // Prefer sticky whenever phone-width: DevTools wheel still works with sticky;
+    // real iOS *requires* sticky (fixed canvas freezes mid-scroll).
+    const stickyMode = onPhone;
+
+    const sequenceVh = onPhone ? PHONE.sequenceVh : DESKTOP.sequenceVh;
+    const holdVh = onPhone ? PHONE.holdVh : DESKTOP.holdVh;
+    const totalVh = sequenceVh + holdVh;
+    const frameProgressEnd = sequenceVh / totalVh;
     block.style.height = `${totalVh}vh`;
 
     let cancelled = false;
     let rafId = 0;
     let lastDrawn = -1;
+    let touchInterval = 0;
 
     const targetFrameRef = { current: 0 };
     const currentFrameRef = { current: 0 };
@@ -166,6 +175,12 @@ export default function Hero() {
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
       const dpr = onPhone ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+      if (
+        canvas.width === Math.round(w * dpr) &&
+        canvas.height === Math.round(h * dpr)
+      ) {
+        return;
+      }
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       canvas.style.width = `${w}px`;
@@ -174,193 +189,257 @@ export default function Hero() {
       lastDrawn = -1;
     };
 
-    const drawFrame = (index) => {
-      const found = findDrawable(index);
+    const paintImage = (img) => {
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
-
       ctx.fillStyle = "#0a0a0a";
       ctx.fillRect(0, 0, w, h);
-      if (!found) return;
-
-      const { img } = found;
+      if (!img) return;
       const scale = Math.max(w / img.width, h / img.height);
       const dw = img.width * scale;
       const dh = img.height * scale;
       ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
     };
 
-    const applyProgress = (progress) => {
-      const play = Math.min(1, Math.max(0, progress) / frameProgressEnd);
-      if (phoneFrames) {
-        const idx = Math.min(
-          phoneFrames.length - 1,
-          Math.round(play * (phoneFrames.length - 1)),
-        );
-        targetFrameRef.current = phoneFrames[idx];
-      } else {
-        targetFrameRef.current = play * (FRAME_COUNT - 1);
-      }
-    };
-
-    const renderLoop = () => {
-      if (cancelled) return;
-
-      const target = targetFrameRef.current;
-      const current = currentFrameRef.current;
-      const delta = target - current;
-      let next = current + delta * frameLerpFactor(delta, cfg.lerp);
-      if (Math.abs(target - next) < 0.08) next = target;
-      currentFrameRef.current = next;
-
-      const display = Math.max(
-        0,
-        Math.min(FRAME_COUNT - 1, Math.round(next)),
-      );
-      if (display !== lastDrawn) {
-        drawFrame(display);
-        lastDrawn = display;
-        syncCopy(display);
-      }
-
-      // Keep looping while target is moving; stop only when caught up
-      if (Math.abs(target - next) < 0.08) {
-        rafId = 0;
+    const drawAbsoluteFrame = (index) => {
+      const found = onPhone
+        ? (() => {
+            const img = getFrameImage(index);
+            return img ? { img, index } : null;
+          })()
+        : findDrawableDesktop(index);
+      if (!found) {
+        paintImage(null);
         return;
       }
-      rafId = requestAnimationFrame(renderLoop);
+      paintImage(found.img);
+      syncCopy(found.index);
     };
 
-    const kickRender = () => {
-      if (cancelled) return;
-      if (!rafId) rafId = requestAnimationFrame(renderLoop);
+    /**
+     * Document scrollY based — more reliable on iOS than getBoundingClientRect
+     * alone while the address bar resizes during touch scroll.
+     */
+    const readProgress = () => {
+      const scrollY =
+        window.scrollY ||
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        0;
+      const blockTop = block.offsetTop;
+      const scrollable = Math.max(1, block.offsetHeight - window.innerHeight);
+      return Math.min(1, Math.max(0, (scrollY - blockTop) / scrollable));
     };
 
-    /** Native scroll progress — reliable on iOS when ST scrub stalls */
-    const readNativeProgress = () => {
-      const total = Math.max(1, block.offsetHeight - window.innerHeight);
-      const top = block.getBoundingClientRect().top;
-      return Math.min(1, Math.max(0, -top / total));
+    const frameFromPhoneProgress = (progress) => {
+      const play = Math.min(1, progress / frameProgressEnd);
+      const loaded = getLoadedPhoneScrubFrames();
+      if (loaded.length === 0) return 0;
+      if (loaded.length === 1) return loaded[0];
+      const i = Math.min(
+        loaded.length - 1,
+        Math.round(play * (loaded.length - 1)),
+      );
+      return loaded[i];
     };
 
-    const onNativeScroll = () => {
-      if (!onPhone) return;
-      applyProgress(readNativeProgress());
-      kickRender();
+    const applyPhoneScroll = () => {
+      if (cancelled || !onPhone) return;
+      syncCanvasSize();
+      const progress = readProgress();
+      const frame = frameFromPhoneProgress(progress);
+      targetFrameRef.current = frame;
+      currentFrameRef.current = frame;
 
-      const past = readNativeProgress() >= 0.998;
-      wrap.style.visibility = past ? "hidden" : "visible";
+      if (frame !== lastDrawn) {
+        drawAbsoluteFrame(frame);
+        lastDrawn = frame;
+        setReady(true);
+      }
+
+      // Sticky naturally leaves the viewport; keep a hard hide as safety for fixed fallback
+      if (!stickyMode) {
+        wrap.style.visibility = progress >= 0.998 ? "hidden" : "visible";
+      }
       wrap.style.pointerEvents = "none";
     };
 
+    const desktopLoop = () => {
+      if (cancelled) return;
+      const target = targetFrameRef.current;
+      const current = currentFrameRef.current;
+      const delta = target - current;
+      let next = current + delta * frameLerpFactor(delta);
+      if (Math.abs(target - next) < 0.05) next = target;
+      currentFrameRef.current = next;
+
+      const display = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(next)));
+      if (display !== lastDrawn) {
+        drawAbsoluteFrame(display);
+        lastDrawn = display;
+        setReady(true);
+      }
+
+      if (Math.abs(target - next) >= 0.05) {
+        rafId = requestAnimationFrame(desktopLoop);
+      } else {
+        rafId = 0;
+      }
+    };
+
+    const kickDesktop = () => {
+      if (!rafId) rafId = requestAnimationFrame(desktopLoop);
+    };
+
     startFramePreload();
-    if (phoneFrames) {
-      // Ensure the subsampled set loads first so scroll isn't stuck on frame 0
-      loadFrameIndices(phoneFrames, 6);
+    if (onPhone) {
+      loadFrameIndices(getPhoneScrubFrames(), 8);
     }
     syncCanvasSize();
 
-    const paintCurrent = () => {
-      const idx = Math.round(currentFrameRef.current);
-      if (!getFrameImage(idx) && !getFrameImage(0)) return false;
-      lastDrawn = -1;
-      drawFrame(idx);
-      syncCopy(idx);
-      setReady(true);
-      kickRender();
-      return true;
-    };
-
-    paintCurrent();
+    {
+      const img0 = getFrameImage(0);
+      if (img0) {
+        drawAbsoluteFrame(0);
+        setReady(true);
+      }
+    }
 
     const unsub = subscribeFramePreload(() => {
       if (cancelled) return;
-      // New frames decoded — invalidate so next rAF picks nearest loaded
-      if (!getFrameImage(0) && !getFrameImage(Math.round(currentFrameRef.current))) {
-        return;
+      if (onPhone) {
+        applyPhoneScroll();
+        if (getLoadedPhoneScrubFrames().length > 0) setReady(true);
+      } else if (getFrameImage(0)) {
+        setReady(true);
+        lastDrawn = -1;
+        kickDesktop();
       }
-      setReady(true);
-      lastDrawn = -1;
-      kickRender();
     });
 
-    let st = null;
-    if (!onPhone) {
-      st = ScrollTrigger.create({
-        trigger: block,
-        start: "top top",
-        end: "bottom top",
-        scrub: cfg.scrub,
-        invalidateOnRefresh: true,
-        fastScrollEnd: true,
-        onUpdate: (self) => {
-          applyProgress(self.progress);
-          kickRender();
-          const past = self.progress >= 0.998;
-          wrap.style.visibility = past ? "hidden" : "visible";
-          wrap.style.pointerEvents = "none";
-        },
-      });
-      ScrollTrigger.refresh();
-    } else {
-      // Phone: native scroll is the source of truth
-      window.addEventListener("scroll", onNativeScroll, { passive: true });
-      onNativeScroll();
+    if (onPhone) {
+      const onScroll = () => applyPhoneScroll();
+
+      // iOS pauses rAF during momentum scroll — setInterval keeps drawing.
+      const startTouchPoll = () => {
+        if (touchInterval) return;
+        applyPhoneScroll();
+        touchInterval = window.setInterval(applyPhoneScroll, 32);
+      };
+      const stopTouchPoll = () => {
+        if (touchInterval) {
+          window.clearInterval(touchInterval);
+          touchInterval = 0;
+        }
+        applyPhoneScroll();
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      document.addEventListener("scroll", onScroll, { passive: true, capture: true });
+      window.addEventListener("touchstart", startTouchPoll, { passive: true });
+      window.addEventListener("touchmove", onScroll, { passive: true });
+      window.addEventListener("touchend", stopTouchPoll, { passive: true });
+      window.addEventListener("touchcancel", stopTouchPoll, { passive: true });
+      window.visualViewport?.addEventListener("resize", onScroll);
+      window.visualViewport?.addEventListener("scroll", onScroll);
+
+      applyPhoneScroll();
+      const t1 = window.setTimeout(applyPhoneScroll, 100);
+      const t2 = window.setTimeout(applyPhoneScroll, 400);
+
+      const onResize = () => {
+        block.style.height = `${PHONE.sequenceVh + PHONE.holdVh}vh`;
+        syncCanvasSize();
+        applyPhoneScroll();
+      };
+      window.addEventListener("resize", onResize);
+
+      return () => {
+        cancelled = true;
+        cancelAnimationFrame(rafId);
+        if (touchInterval) window.clearInterval(touchInterval);
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+        unsub();
+        window.removeEventListener("scroll", onScroll);
+        document.removeEventListener("scroll", onScroll, true);
+        window.removeEventListener("touchstart", startTouchPoll);
+        window.removeEventListener("touchmove", onScroll);
+        window.removeEventListener("touchend", stopTouchPoll);
+        window.removeEventListener("touchcancel", stopTouchPoll);
+        window.visualViewport?.removeEventListener("resize", onScroll);
+        window.visualViewport?.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onResize);
+      };
     }
 
-    let bootA = requestAnimationFrame(() => {
-      bootA = requestAnimationFrame(() => {
-        syncCanvasSize();
-        paintCurrent();
-        if (st) ScrollTrigger.refresh();
-        else onNativeScroll();
-      });
+    // Desktop ScrollTrigger path
+    const st = ScrollTrigger.create({
+      trigger: block,
+      start: "top top",
+      end: "bottom top",
+      scrub: DESKTOP.scrub,
+      invalidateOnRefresh: true,
+      fastScrollEnd: true,
+      onUpdate: (self) => {
+        const play = Math.min(1, self.progress / frameProgressEnd);
+        targetFrameRef.current = play * (FRAME_COUNT - 1);
+        kickDesktop();
+        wrap.style.visibility = self.progress >= 0.998 ? "hidden" : "visible";
+        wrap.style.pointerEvents = "none";
+      },
     });
 
+    rafId = requestAnimationFrame(desktopLoop);
+    ScrollTrigger.refresh();
+
     const onResize = () => {
-      const next = isPhoneViewport() ? PHONE : DESKTOP;
-      block.style.height = `${next.sequence + next.hold}vh`;
+      block.style.height = `${DESKTOP.sequenceVh + DESKTOP.holdVh}vh`;
       syncCanvasSize();
-      drawFrame(Math.round(currentFrameRef.current));
-      if (st) ScrollTrigger.refresh();
-      else onNativeScroll();
+      lastDrawn = -1;
+      kickDesktop();
+      ScrollTrigger.refresh();
     };
     window.addEventListener("resize", onResize);
 
     const ro = new ResizeObserver(() => {
       syncCanvasSize();
-      drawFrame(Math.round(currentFrameRef.current));
+      lastDrawn = -1;
+      kickDesktop();
     });
     ro.observe(wrap);
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafId);
-      cancelAnimationFrame(bootA);
       unsub();
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onNativeScroll);
       ro.disconnect();
-      if (st) st.kill();
+      st.kill();
     };
   }, []);
+
+  const totalVh = phone
+    ? PHONE.sequenceVh + PHONE.holdVh
+    : DESKTOP.sequenceVh + DESKTOP.holdVh;
+
+  // Sticky on phone: stays in document flow so iOS paints canvas during touch scroll.
+  // Fixed on desktop: full-bleed pin over the tall runway.
+  const wrapClass = phone
+    ? "pointer-events-none sticky top-0 z-[1] h-[100dvh] w-full overflow-hidden bg-neutral-950"
+    : "pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950";
 
   return (
     <section
       id="home"
       ref={blockRef}
       className="relative w-full"
-      style={{
-        height: phone
-          ? `${PHONE.sequence + PHONE.hold}vh`
-          : `${DESKTOP.sequence + DESKTOP.hold}vh`,
-      }}
+      style={{ height: `${totalVh}vh` }}
       aria-label="Hero sequence"
     >
-      {/* Fixed on all viewports — sticky + ST was freezing phone frames */}
       <div
         ref={canvasWrapRef}
-        className="pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
+        className={wrapClass}
         style={
           phone
             ? {
@@ -371,7 +450,11 @@ export default function Hero() {
             : undefined
         }
       >
-        <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 block h-full w-full"
+          style={{ transform: "translateZ(0)" }}
+        />
 
         <HeroClouds ref={cloudsRef} />
 

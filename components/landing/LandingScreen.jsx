@@ -6,10 +6,16 @@ import Compass from "./Compass";
 import AnimatedSlogan from "./AnimatedSlogan";
 import BrandMark from "@/components/BrandMark";
 import {
+  countLoadedPhoneScrubFrames,
   LANDING_BG_SRC,
   LANDING_LOAD_MS,
   startFramePreload,
 } from "@/lib/framePreloader";
+import { isPhoneViewport } from "@/lib/mobile";
+
+/** Phone: don't dismiss loader until we have enough frames to scrub. */
+const PHONE_MIN_SCRUB_FRAMES = 28;
+const PHONE_EXTRA_WAIT_MS = 4000;
 
 /**
  * @param {{ onComplete?: () => void }} props
@@ -24,18 +30,34 @@ export default function LandingScreen({ onComplete }) {
     let cancelled = false;
     let raf = 0;
     const start = performance.now();
+    const phone = isPhoneViewport();
 
     const tick = (now) => {
       if (cancelled) return;
-      const t = Math.min(1, (now - start) / LANDING_LOAD_MS);
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / LANDING_LOAD_MS);
       const eased = 1 - Math.pow(1 - t, 1.35);
-      setProgress(eased);
 
-      if (t < 1) {
+      // On phone, blend in real frame-load progress so the % feels honest
+      if (phone) {
+        const frames = countLoadedPhoneScrubFrames();
+        const frameProgress = Math.min(1, frames / PHONE_MIN_SCRUB_FRAMES);
+        setProgress(Math.max(eased * 0.85, frameProgress * 0.95));
+      } else {
+        setProgress(eased);
+      }
+
+      const timeDone = t >= 1;
+      const framesReady =
+        !phone || countLoadedPhoneScrubFrames() >= PHONE_MIN_SCRUB_FRAMES;
+      const waitedTooLong = elapsed >= LANDING_LOAD_MS + PHONE_EXTRA_WAIT_MS;
+
+      if (!timeDone || (!framesReady && !waitedTooLong)) {
         raf = requestAnimationFrame(tick);
         return;
       }
 
+      setProgress(1);
       if (completed.current) return;
       completed.current = true;
       onComplete?.();
@@ -81,7 +103,6 @@ export default function LandingScreen({ onComplete }) {
         <AnimatedSlogan />
       </motion.div>
 
-      {/* Bottom-right loading % only */}
       <div className="absolute bottom-6 right-6 z-10 sm:bottom-8 sm:right-8 lg:bottom-10 lg:right-10">
         <p
           className="type-stat tabular-nums text-[1.35rem] text-neutral-950 sm:text-[1.6rem]"
@@ -89,7 +110,7 @@ export default function LandingScreen({ onComplete }) {
           aria-label={`Loading ${percent} percent`}
         >
           {percent}
-          <span className="ml-0.5 text-[0.75rem] font-semibold text-neutral-700 sm:text-[0.85rem]">
+          <span className="ml-0.5 text-[0.75rem] font-semibold text-neutral-400 sm:text-[0.85rem]">
             %
           </span>
         </p>
