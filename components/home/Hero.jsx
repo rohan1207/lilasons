@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   FRAME_COUNT,
-  frameSrc,
   getFrameImage,
   startFramePreload,
   subscribeFramePreload,
@@ -19,14 +18,15 @@ import { isPhoneViewport } from "@/lib/mobile";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Same full 300-frame sequence on desktop and phone.
- * Desktop: fixed canvas + ScrollTrigger.
- * Phone: sticky dual-img + native scroll (no Lenis / no ST — anti-jitter).
+ * Same full 300-frame canvas scrub on desktop and phone.
+ * Only the scroll *driver* differs:
+ *   Desktop → ScrollTrigger + fixed canvas
+ *   Phone   → native scroll + sticky canvas (no Lenis — avoids iOS jitter)
+ * Playhead lerp is the same so phone feels as smooth as desktop.
  */
 
 const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
-/** Same frame count as desktop; runway sized for touch scrub of all 300. */
-const PHONE = { sequence: 900, hold: 80, lerp: 1 };
+const PHONE = { sequence: 1000, hold: 120, lerp: 0.28 };
 
 const COPY_LAST_FRAME = 68;
 const COPY_FADE_START = 38;
@@ -40,10 +40,9 @@ function smoothstep(t) {
 
 function frameLerpFactor(delta, baseLerp) {
   const d = Math.abs(delta);
-  if (baseLerp >= 0.99) return 1;
-  if (d > 48) return 0.85;
-  if (d > 24) return 0.55;
-  if (d > 10) return 0.38;
+  if (d > 48) return Math.min(1, baseLerp + 0.55);
+  if (d > 24) return Math.min(1, baseLerp + 0.3);
+  if (d > 10) return Math.min(1, baseLerp + 0.12);
   return baseLerp;
 }
 
@@ -57,7 +56,6 @@ function cornerVisibility(frame) {
   );
 }
 
-/** Exact frame only — landing preloads all 300 so we never jump to neighbors. */
 function findDrawable(index) {
   const i = Math.max(0, Math.min(index, FRAME_COUNT - 1));
   const img = getFrameImage(i);
@@ -68,8 +66,6 @@ export default function Hero() {
   const blockRef = useRef(null);
   const canvasRef = useRef(null);
   const canvasWrapRef = useRef(null);
-  const phoneImgARef = useRef(null);
-  const phoneImgBRef = useRef(null);
   const headingRef = useRef(null);
   const restRef = useRef(null);
   const cloudsRef = useRef(null);
@@ -104,7 +100,7 @@ export default function Hero() {
     let rafId = 0;
     let lastDrawn = -1;
     let touchTimer = 0;
-    let phoneFront = 0; // 0 = A visible, 1 = B visible
+    let phoneLooping = false;
 
     const targetFrameRef = { current: 0 };
     const currentFrameRef = { current: 0 };
@@ -156,59 +152,9 @@ export default function Hero() {
       lastDrawn = -1;
     };
 
-    /**
-     * Phone: dual <img> swap — only switch when the next frame is already decoded.
-     * Keeps the previous frame visible so there is never a black gap.
-     */
-    const drawPhoneFrame = (index) => {
+    const drawFrame = (index) => {
       const found = findDrawable(index);
       if (!found?.img) return null;
-
-      const imgA = phoneImgARef.current;
-      const imgB = phoneImgBRef.current;
-      if (!imgA || !imgB) return found;
-
-      const nextEl = phoneFront === 0 ? imgB : imgA;
-      const prevEl = phoneFront === 0 ? imgA : imgB;
-      const src = frameSrc(found.index);
-
-      if (nextEl.getAttribute("data-frame") === String(found.index)) {
-        // Already showing / staged this frame
-        nextEl.style.opacity = "1";
-        prevEl.style.opacity = "0";
-        phoneFront = phoneFront === 0 ? 1 : 0;
-        return found;
-      }
-
-      const reveal = () => {
-        if (cancelled) return;
-        nextEl.style.opacity = "1";
-        prevEl.style.opacity = "0";
-        phoneFront = phoneFront === 0 ? 1 : 0;
-      };
-
-      nextEl.setAttribute("data-frame", String(found.index));
-      if (nextEl.src.endsWith(src) || nextEl.currentSrc.endsWith(src)) {
-        if (nextEl.complete && nextEl.naturalWidth > 0) reveal();
-        else nextEl.onload = reveal;
-        return found;
-      }
-
-      nextEl.onload = reveal;
-      nextEl.src = src;
-      // Cached + pre-decoded → often already complete synchronously
-      if (nextEl.complete && nextEl.naturalWidth > 0) {
-        nextEl.onload = null;
-        reveal();
-      }
-      return found;
-    };
-
-    const drawFrame = (index) => {
-      if (onPhone) return drawPhoneFrame(index);
-
-      const found = findDrawable(index);
-      if (!found?.img) return found; // keep previous canvas pixels — no black clear
 
       const w = Math.max(1, Math.round(wrap.clientWidth || window.innerWidth));
       const h = Math.max(1, Math.round(wrap.clientHeight || window.innerHeight));
@@ -216,17 +162,17 @@ export default function Hero() {
       const scale = Math.max(w / img.width, h / img.height);
       const dw = img.width * scale;
       const dh = img.height * scale;
-      // Draw over previous frame — never wipe to black between frames
+      // Overwrite previous frame — never clear to black
       ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
       return found;
     };
 
     const applyProgress = (progress) => {
       const play = Math.min(1, Math.max(0, progress) / frameProgressEnd);
-      // Full 0→299 sequence on phone and desktop
       targetFrameRef.current = play * (FRAME_COUNT - 1);
     };
 
+    /** Shared playhead — same smoothing desktop uses. */
     const renderLoop = () => {
       if (cancelled) return;
 
@@ -234,7 +180,7 @@ export default function Hero() {
       const current = currentFrameRef.current;
       const delta = target - current;
       let next = current + delta * frameLerpFactor(delta, cfg.lerp);
-      if (Math.abs(target - next) < 0.08) next = target;
+      if (Math.abs(target - next) < 0.05) next = target;
       currentFrameRef.current = next;
 
       const display = Math.max(
@@ -250,13 +196,10 @@ export default function Hero() {
         }
       }
 
-      // Phone: keep the loop alive while the hero is on screen — iOS pauses
-      // rAF during scroll, but when it resumes we must still catch the target.
-      const stillInHero =
-        onPhone &&
-        (block.getBoundingClientRect().bottom > 0 ||
-          Math.abs(target - next) >= 0.08);
-      if (stillInHero || Math.abs(target - next) >= 0.08) {
+      const catchingUp = Math.abs(target - next) >= 0.05;
+      const inHero =
+        onPhone && block.getBoundingClientRect().bottom > 8;
+      if (catchingUp || (onPhone && (phoneLooping || inHero))) {
         rafId = requestAnimationFrame(renderLoop);
       } else {
         rafId = 0;
@@ -274,26 +217,12 @@ export default function Hero() {
       return Math.min(1, Math.max(0, -top / total));
     };
 
+    /** Phone: only update the *target* playhead — lerp handles smoothness. */
     const onNativeScroll = () => {
       if (!onPhone || cancelled) return;
       const progress = readNativeProgress();
       applyProgress(progress);
-      // Synchronous draw path — do not wait for rAF (paused on iOS scroll)
-      const target = targetFrameRef.current;
-      currentFrameRef.current = target;
-      const display = Math.round(target);
-      if (display !== lastDrawn) {
-        const found = drawFrame(display);
-        if (found) {
-          lastDrawn = display;
-          syncCopy(found.index);
-          setReady(true);
-        }
-      }
       kickRender();
-
-      const past = progress >= 0.998;
-      wrap.style.visibility = past ? "hidden" : "visible";
       wrap.style.pointerEvents = "none";
     };
 
@@ -304,9 +233,11 @@ export default function Hero() {
       const idx = Math.round(currentFrameRef.current);
       if (!getFrameImage(idx) && !getFrameImage(0)) return false;
       lastDrawn = -1;
-      drawFrame(idx);
-      syncCopy(idx);
-      setReady(true);
+      const found = drawFrame(idx);
+      if (found) {
+        syncCopy(found.index);
+        setReady(true);
+      }
       kickRender();
       return true;
     };
@@ -320,21 +251,27 @@ export default function Hero() {
       }
       setReady(true);
       lastDrawn = -1;
+      kickRender();
       if (onPhone) onNativeScroll();
-      else kickRender();
     });
 
     const startTouchPoll = () => {
+      phoneLooping = true;
       if (touchTimer) return;
       onNativeScroll();
-      touchTimer = window.setInterval(onNativeScroll, 32);
+      // Keep sampling scroll position while finger is down (iOS scroll events are sparse)
+      touchTimer = window.setInterval(onNativeScroll, 16);
+      kickRender();
     };
     const stopTouchPoll = () => {
+      phoneLooping = false;
       if (touchTimer) {
         window.clearInterval(touchTimer);
         touchTimer = 0;
       }
       onNativeScroll();
+      // Keep lerping until playhead catches the final target
+      kickRender();
     };
 
     let st = null;
@@ -354,6 +291,7 @@ export default function Hero() {
         },
       });
       ScrollTrigger.refresh();
+      kickRender();
     } else {
       window.addEventListener("scroll", onNativeScroll, { passive: true });
       document.addEventListener("scroll", onNativeScroll, {
@@ -365,6 +303,7 @@ export default function Hero() {
       window.addEventListener("touchend", stopTouchPoll, { passive: true });
       window.addEventListener("touchcancel", stopTouchPoll, { passive: true });
       onNativeScroll();
+      phoneLooping = true;
       kickRender();
     }
 
@@ -420,16 +359,16 @@ export default function Hero() {
     };
   }, []);
 
+  const totalVh = phone
+    ? PHONE.sequence + PHONE.hold
+    : DESKTOP.sequence + DESKTOP.hold;
+
   return (
     <section
       id="home"
       ref={blockRef}
       className="relative w-full"
-      style={{
-        height: phone
-          ? `${PHONE.sequence + PHONE.hold}vh`
-          : `${DESKTOP.sequence + DESKTOP.hold}vh`,
-      }}
+      style={{ height: `${totalVh}vh` }}
       aria-label="Hero sequence"
     >
       <div
@@ -440,36 +379,10 @@ export default function Hero() {
             : "pointer-events-none fixed inset-0 z-[1] h-dvh w-full overflow-hidden bg-neutral-950"
         }
       >
-        {/* Phone: dual images — previous stays until next is ready (no black flash). */}
-        {phone ? (
-          <>
-            <img
-              ref={phoneImgARef}
-              alt=""
-              draggable={false}
-              data-frame="0"
-              src={frameSrc(0)}
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ opacity: 1 }}
-            />
-            <img
-              ref={phoneImgBRef}
-              alt=""
-              draggable={false}
-              data-frame=""
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ opacity: 0 }}
-            />
-          </>
-        ) : null}
-
         <canvas
           ref={canvasRef}
-          className={`absolute inset-0 block h-full w-full ${
-            phone ? "pointer-events-none opacity-0" : ""
-          }`}
+          className="absolute inset-0 block h-full w-full"
           style={{ transform: "translateZ(0)" }}
-          aria-hidden={phone ? "true" : undefined}
         />
 
         <HeroClouds ref={cloudsRef} />
