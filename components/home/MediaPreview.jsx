@@ -89,8 +89,8 @@ export default function MediaPreview() {
       const isPhone = w < 768;
       setPhone(isPhone);
       if (isPhone) {
-        // Wide cards for the vertical wheel — fill most of the phone width
-        setCardWidth(Math.round(Math.min(w * 0.72, 300)));
+        // Fewer cards → tighter cylinder; cards sized to read well when scaled up
+        setCardWidth(Math.round(Math.min(Math.max(w * 0.42, 140), 176)));
       } else if (w < 1024) setCardWidth(220);
       else setCardWidth(260);
     };
@@ -99,22 +99,16 @@ export default function MediaPreview() {
     return () => window.removeEventListener("resize", sync);
   }, []);
 
-  const carouselItems = phone ? GALLERY_ITEMS.slice(0, 8) : GALLERY_ITEMS;
+  // Fewer items on phone → smaller circle radius → can scale up and stay visible
+  const carouselItems = phone ? GALLERY_ITEMS.slice(0, 10) : GALLERY_ITEMS;
 
   return (
     <section
       id="media-preview"
-      className={`relative z-10 flex flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7] ${
-        phone
-          ? "h-[min(100dvh,820px)] max-h-[100dvh]"
-          : "h-[100dvh] max-h-[100dvh]"
-      }`}
+      className="relative z-10 flex h-[100dvh] max-h-[100dvh] flex-col overflow-hidden border-t border-neutral-200/80 bg-[#f7f7f7]"
       aria-label="Media gallery preview"
     >
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden
-      >
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/about/expand-story-hero.jpg"
@@ -124,7 +118,11 @@ export default function MediaPreview() {
         <div className="absolute inset-0 bg-[#f7f7f7]/45" />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1500px] flex-col px-5 pt-20 sm:px-8 sm:pt-24 lg:px-12">
+      <div
+        className={`relative z-10 mx-auto flex h-full w-full max-w-[1500px] flex-col pt-20 sm:px-8 sm:pt-24 lg:px-12 ${
+          phone ? "px-3" : "px-5"
+        }`}
+      >
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -149,24 +147,32 @@ export default function MediaPreview() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.75, delay: 0.06, ease }}
           className="relative min-h-0 w-full flex-1 text-neutral-950"
+          style={
+            phone
+              ? {
+                  transform: "scale(1.12)",
+                  transformOrigin: "center center",
+                }
+              : undefined
+          }
         >
           <CircularCarousel
             items={carouselItems}
-            preset={phone ? "wheel" : "cylinder"}
+            preset="cylinder"
             intro={phone ? "none" : "rise"}
             cardWidth={cardWidth}
-            aspectRatio={phone ? 4 / 3 : 1}
-            gap={phone ? 10 : 32}
-            curve={phone ? 0.85 : 1}
-            perspective={phone ? 1300 : undefined}
-            tilt={phone ? 0 : undefined}
-            speed={phone ? 3.2 : 7}
+            aspectRatio={1}
+            gap={phone ? 14 : 32}
+            curve={1}
+            perspective={phone ? 1600 : undefined}
+            tilt={phone ? -4 : undefined}
+            speed={phone ? 5 : 7}
             autoplay="drift"
-            scrollLinked={!phone}
-            momentum={phone ? 0.35 : 0.75}
+            scrollLinked
+            momentum={phone ? 0.55 : 0.75}
             fadeColor="#f7f7f7"
-            depthFade={phone ? 0.22 : 0.42}
-            cornerRadius={phone ? 14 : 10}
+            depthFade={phone ? 0.28 : 0.42}
+            cornerRadius={phone ? 12 : 10}
             pauseOnHover={!phone}
             draggable
           />
