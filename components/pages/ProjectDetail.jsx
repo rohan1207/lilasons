@@ -29,6 +29,10 @@ export default function ProjectDetail({ project }) {
   ].filter(Boolean);
 
   const facts = [
+    project.status &&
+    !(project.meta || []).some((item) => item.label === "Status")
+      ? { label: "Status", value: project.status }
+      : null,
     ...(project.meta || []),
     project.rera ? { label: "RERA", value: project.rera } : null,
     project.address ? { label: "Address", value: project.address } : null,
@@ -171,6 +175,22 @@ export default function ProjectDetail({ project }) {
               </div>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">
+                {project.status === "Upcoming" && (
+                  <Link
+                    href="/contact"
+                    className="type-button btn-pill btn-shine btn-solid w-full justify-center sm:w-auto lg:w-full"
+                  >
+                    Enquire Now
+                  </Link>
+                )}
+                {project.planHref && (
+                  <Link
+                    href={project.planHref}
+                    className="type-button btn-pill btn-shine btn-outline w-full justify-center sm:w-auto lg:w-full"
+                  >
+                    Download Plan
+                  </Link>
+                )}
                 {project.whatsapp && (
                   <a
                     href={BRAND.whatsappUrl}

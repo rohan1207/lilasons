@@ -388,7 +388,7 @@ export default function Hero() {
 
         <HeroClouds ref={cloudsRef} />
 
-        <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(6.75rem,17vh)]">
+        <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(8.25rem,18vh)]">
           <div
             ref={headingRef}
             className="will-change-transform"

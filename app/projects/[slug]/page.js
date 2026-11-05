@@ -11,8 +11,8 @@ export async function generateMetadata({ params }) {
   const project = getProject(slug);
   if (!project) return { title: "Project | Lilasons RR Realty Developers" };
   return {
-    title: `${project.title} | Lilasons RR Realty Developers`,
-    description: project.summary,
+    title: project.seoTitle || `${project.title} | Lilasons RR Realty Developers`,
+    description: project.seoDescription || project.summary,
   };
 }
 

@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import IconArrow from "@/components/IconArrow";
-import { PROJECTS } from "@/lib/projects";
+import { getCatalogProjects } from "@/lib/projects";
 import { isPhoneViewport } from "@/lib/mobile";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -42,7 +42,8 @@ export default function SelectedProjects() {
   const [active, setActive] = useState(0);
   const [phone, setPhone] = useState(false);
 
-  const total = PROJECTS.length;
+  const projects = getCatalogProjects();
+  const total = projects.length;
 
   useEffect(() => {
     const sync = () => setPhone(isPhoneViewport());
@@ -178,7 +179,7 @@ export default function SelectedProjects() {
               phone ? "min-h-[280px]" : "flex-1"
             }`}
           >
-            {PROJECTS.map((project, i) => {
+            {projects.map((project, i) => {
               const on = i === active;
               return (
                 <div
@@ -234,7 +235,7 @@ export default function SelectedProjects() {
 
           <div className="mt-4 flex shrink-0 flex-col gap-3 border-t border-neutral-200 pt-4 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
             <Link
-              href={PROJECTS[active].href}
+              href={projects[active].href}
               className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               <IconArrow dir="ne" className="h-3 w-3" />
@@ -289,7 +290,7 @@ export default function SelectedProjects() {
         </div>
 
         <div className="relative order-1 min-h-[34vh] w-full shrink-0 overflow-hidden bg-neutral-200 lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
-          {PROJECTS.map((project, i) => {
+          {projects.map((project, i) => {
             const on = i === active;
             return (
               // eslint-disable-next-line @next/next/no-img-element

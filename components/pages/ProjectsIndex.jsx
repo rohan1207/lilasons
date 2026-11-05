@@ -7,7 +7,8 @@ import PageShell from "@/components/layout/PageShell";
 import Reveal from "@/components/layout/Reveal";
 import SectionEyebrow from "@/components/layout/SectionEyebrow";
 import IconArrow from "@/components/IconArrow";
-import { PROJECTS, PROJECT_CATEGORIES, PROJECTS_PAGE } from "@/lib/projects";
+import { getCatalogProjects, PROJECT_CATEGORIES, PROJECTS_PAGE } from "@/lib/projects";
+import UpcomingProjects from "@/components/home/UpcomingProjects";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -28,12 +29,14 @@ function FadeUp({ children, className = "", delay = 0 }) {
 export default function ProjectsIndex() {
   const [active, setActive] = useState("All");
 
+  const catalog = useMemo(() => getCatalogProjects(), []);
+
   const filtered = useMemo(
     () =>
       active === "All"
-        ? PROJECTS
-        : PROJECTS.filter((p) => p.category === active),
-    [active],
+        ? catalog
+        : catalog.filter((p) => p.category === active),
+    [active, catalog],
   );
 
   return (
@@ -92,6 +95,8 @@ export default function ProjectsIndex() {
           </FadeUp>
         </div>
       </section>
+
+      <UpcomingProjects />
 
       <section className="border-t border-black/10 bg-white px-5 py-14 sm:px-8 md:px-12 md:py-20 lg:px-14">
         <div className="mx-auto max-w-[1600px]">
@@ -164,6 +169,7 @@ export default function ProjectsIndex() {
 
                     <div className="pt-3 md:pt-5">
                       <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-700 md:mb-2 md:text-[10px] md:tracking-[0.22em]">
+                        {project.status ? `${project.status} · ` : ""}
                         {project.category}
                       </p>
                       <h3 className="mb-1 text-sm font-medium leading-snug tracking-[-0.02em] text-[#0a0a0a] md:mb-2 md:text-[clamp(1.1rem,1.8vw,1.35rem)]">

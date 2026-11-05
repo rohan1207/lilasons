@@ -28,19 +28,33 @@ export default function Navbar({ forceSolid = false }) {
         setSolid(true);
         return;
       }
-      setSolid(hero.getBoundingClientRect().bottom <= 0);
+      // Transparent only while the hero is still on screen. Solid once it has passed.
+      // scrollY is more reliable than scroll events alone on phone momentum.
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const heroEnd = hero.offsetTop + hero.offsetHeight;
+      const pastHero = scrollY >= heroEnd - 8;
+      const rectPast = hero.getBoundingClientRect().bottom <= 0;
+      setSolid(pastHero || rectPast);
     };
 
     update();
     window.addEventListener("scroll", update, { passive: true });
+    document.addEventListener("scroll", update, { passive: true, capture: true });
     window.addEventListener("resize", update);
+    window.addEventListener("touchend", update, { passive: true });
+    window.visualViewport?.addEventListener("scroll", update);
+    window.visualViewport?.addEventListener("resize", update);
 
     const t1 = window.setTimeout(update, 120);
     const t2 = window.setTimeout(update, 700);
 
     return () => {
       window.removeEventListener("scroll", update);
+      document.removeEventListener("scroll", update, true);
       window.removeEventListener("resize", update);
+      window.removeEventListener("touchend", update);
+      window.visualViewport?.removeEventListener("scroll", update);
+      window.visualViewport?.removeEventListener("resize", update);
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
@@ -79,8 +93,8 @@ export default function Navbar({ forceSolid = false }) {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 sm:h-24 sm:px-8 lg:px-10">
-          <BrandMark />
+        <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 sm:h-24 sm:px-8 lg:h-28 lg:px-10">
+          <BrandMark imgClassName="h-14 w-auto max-h-14 object-contain object-left sm:h-16 sm:max-h-16 lg:h-[6.25rem] lg:max-h-[6.25rem]" />
 
           <ul className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-x-5 lg:flex xl:gap-x-7">
             {NAV_PRIMARY.map((link) => (

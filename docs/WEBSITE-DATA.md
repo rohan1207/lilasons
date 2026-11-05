@@ -2,7 +2,7 @@
 
 **Source of truth in code:** `lib/brand.js`, `lib/projects.js`, `lib/blogs.js`, `lib/legal.js`  
 **Document generated from the live content catalogue** (accurate to the codebase).  
-**Site:** https://lilasonsdevelopers.in/
+**Site:** https://lilasonsrrrealty.com/
 
 ---
 
@@ -34,8 +34,8 @@
 | Tagline | Building Your Foundation, Building Your Environment |
 | Headline | Excellency Redefined |
 | Logo | `/lilasons-logo.png` |
-| Website | https://lilasonsdevelopers.in/ |
-| Email | developers@lilasons.in |
+| Website | https://lilasonsrrrealty.com/ |
+| Email | Sales@lilasonsrrrealty.com |
 | Phone 1 | +91 98234 41147 |
 | Phone 2 | +91 95273 29363 |
 | WhatsApp | 919823441147 |
@@ -396,12 +396,13 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 
 | # | Project | Status (doc) | Typology | RERA | Location |
 |---|---------|--------------|----------|------|----------|
-| 01 | Amrut Sai Gold Star | Ongoing | Residential | P51500020039 | Golwadi |
+| 01 | Amrut Sai Gold Star | Nearing Possession – Ongoing | Residential | P51500020039 | Golwadi |
 | 02 | ASGS PH-II Row House | Ongoing | Row House | P51500050887 | Golwadi |
 | 03 | Amrut Sai Plaza PH-II | Ongoing | Residential | P51500011307 | MIDC / Railway Station |
-| 04 | Amrut Sai Solitaire | Completed / Operational | Commercial | — | Station Road |
+| 04 | Amrut Sai Solitaire | Completed | Commercial | — | Station Road |
 | 05 | Golden Heights | Ongoing | Luxury Living | — | Itkheda |
-| 06 | Lilasons Golden Estate | Upcoming | Plotted Development | — | Patoda, CSN |
+| 06 | Lilasons Golden Estate | Ongoing | Plotted Development | — | Patoda, CSN |
+| 07 | Imperium Landmark | Upcoming | Commercial | — | Boutique offices & retail |
 
 ---
 
