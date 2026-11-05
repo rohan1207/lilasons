@@ -102,12 +102,15 @@ export default function UpcomingProjects() {
                 >
                   Read More
                 </Link>
-                <Link
-                  href={project.planHref || "/contact"}
-                  className="type-button btn-pill btn-shine btn-outline !h-9 !px-4 text-[10px] sm:!h-11 sm:!px-6 sm:text-[11px]"
-                >
-                  Download Plan
-                </Link>
+                {project.planHref ? (
+                  <a
+                    href={project.planHref}
+                    download={decodeURIComponent(project.planHref.split("/").pop())}
+                    className="type-button btn-pill btn-shine btn-outline !h-9 !px-4 text-[10px] sm:!h-11 sm:!px-6 sm:text-[11px]"
+                  >
+                    Download Plan
+                  </a>
+                ) : null}
               </div>
             </div>
           </motion.article>

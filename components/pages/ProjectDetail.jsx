@@ -184,12 +184,13 @@ export default function ProjectDetail({ project }) {
                   </Link>
                 )}
                 {project.planHref && (
-                  <Link
+                  <a
                     href={project.planHref}
+                    download={decodeURIComponent(project.planHref.split("/").pop())}
                     className="type-button btn-pill btn-shine btn-outline w-full justify-center sm:w-auto lg:w-full"
                   >
                     Download Plan
-                  </Link>
+                  </a>
                 )}
                 {project.whatsapp && (
                   <a
