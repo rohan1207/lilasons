@@ -1,6 +1,6 @@
 import Navbar from "@/components/home/Navbar";
 import Hero from "@/components/home/Hero";
-import OfferStrip from "@/components/home/OfferStrip";
+// import OfferStrip from "@/components/home/OfferStrip";
 import Showcase from "@/components/home/Showcase";
 import Domains from "@/components/home/Domains";
 import Amenities from "@/components/home/Amenities";
@@ -17,7 +17,7 @@ export default function HomeView() {
     <main className="relative z-0 min-h-dvh bg-[#f7f7f7]">
       <Navbar />
       <Hero />
-      <OfferStrip />
+      {/* <OfferStrip /> */}
       <Showcase />
       <Domains />
       <Amenities />

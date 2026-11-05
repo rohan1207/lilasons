@@ -2,9 +2,9 @@ import LegalPage from "@/components/pages/LegalPage";
 import { PRIVACY } from "@/lib/legal";
 
 export const metadata = {
-  title: "Privacy Policy | Lilasons Developers",
+  title: "Privacy Policy | Lilasons RR Realty Developers",
   description:
-    "How Lilasons Developers collects, uses, and protects personal information from website enquiries and visits.",
+    "How Lilasons RR Realty Developers collects, uses, and protects personal information from website enquiries and visits.",
 };
 
 export default function Page() {

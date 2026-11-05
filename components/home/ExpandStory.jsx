@@ -82,7 +82,7 @@ export default function ExpandStory() {
             />
             <button
               type="submit"
-              className="type-button btn-pill btn-shine btn-solid shrink-0 !bg-white !text-neutral-950 hover:!opacity-90"
+              className="type-button btn-pill btn-shine btn-solid shrink-0"
             >
               {HOME.subscribeCta}
             </button>

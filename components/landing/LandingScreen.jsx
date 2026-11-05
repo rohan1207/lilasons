@@ -95,7 +95,7 @@ export default function LandingScreen({ onComplete }) {
           <BrandMark
             asLink={false}
             className="justify-center"
-            imgClassName="h-auto w-[72%] max-w-[200px] object-contain sm:max-w-[240px] md:max-w-[280px]"
+            imgClassName="mx-auto h-auto w-[min(72%,220px)] max-w-[220px] object-contain sm:w-[min(70%,260px)] sm:max-w-[260px] md:max-w-[300px]"
             textClassName="type-logo text-[1.4rem] tracking-[-0.02em] text-neutral-950 sm:text-[1.7rem]"
           />
         </Compass>

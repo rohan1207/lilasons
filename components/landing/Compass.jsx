@@ -112,7 +112,7 @@ export default function Compass({ progress = 0, children, className = "" }) {
           fill="none"
           className="h-10 w-4 sm:h-12 sm:w-[18px]"
         >
-          <path d="M8 0L15.5 39H0.5L8 0Z" fill="#c5e24a" />
+          <path d="M8 0L15.5 39H0.5L8 0Z" fill="#c59d5f" />
         </svg>
       </div>
 

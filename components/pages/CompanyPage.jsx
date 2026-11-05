@@ -34,7 +34,7 @@ export default function CompanyPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={ABOUT.heroImage}
-          alt="Lilasons Developers — About Us"
+          alt="Lilasons RR Realty Developers — About Us"
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />
@@ -70,13 +70,13 @@ export default function CompanyPage() {
           <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href={ABOUT.heroCtaHref}
-              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
+              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {ABOUT.heroCta}
             </Link>
             <Link
               href={ABOUT.heroCtaSecondaryHref}
-              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
+              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-[var(--gold)]/70 !text-[var(--gold-light)] hover:!border-[var(--gold)] hover:!bg-[var(--gold)] hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {ABOUT.heroCtaSecondary}
             </Link>
@@ -108,7 +108,7 @@ export default function CompanyPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={ABOUT.storyImage}
-                alt="Lilasons Developers landmark project"
+                alt="Lilasons RR Realty Developers landmark project"
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
@@ -380,7 +380,7 @@ export default function CompanyPage() {
               </p>
               <Link
                 href="/projects"
-                className="type-button btn-pill btn-shine btn-solid mt-6 !bg-white !text-neutral-950 hover:!opacity-90"
+                className="type-button btn-pill btn-shine btn-solid mt-6"
               >
                 View Projects
               </Link>
@@ -467,7 +467,7 @@ export default function CompanyPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ABOUT.presenceImage}
-              alt="Lilasons Developers in Aurangabad"
+              alt="Lilasons RR Realty Developers in Aurangabad"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </FadeUp>

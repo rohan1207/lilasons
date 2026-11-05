@@ -9,9 +9,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = getBlog(slug);
-  if (!post) return { title: "Blog | Lilasons Developers" };
+  if (!post) return { title: "Blog | Lilasons RR Realty Developers" };
   return {
-    title: `${post.title} | Lilasons Developers`,
+    title: `${post.title} | Lilasons RR Realty Developers`,
     description: post.excerpt,
     keywords: post.keywords,
     openGraph: {

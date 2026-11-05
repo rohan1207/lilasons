@@ -106,7 +106,7 @@ export default function AboutPreview() {
     <section
       id="about"
       className="relative z-10 flex h-auto flex-col overflow-hidden bg-[#fbfbfb] pt-24 pb-10 sm:h-dvh sm:max-h-dvh sm:pb-0 sm:pt-28 md:pt-32"
-      aria-label="About Lilasons Developers"
+      aria-label="About Lilasons RR Realty Developers"
     >
       {/* Soft architectural grid */}
       <div
@@ -144,7 +144,7 @@ export default function AboutPreview() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/about/dubai-villa.jpg"
-                alt="Lilasons Developers residential living"
+                alt="Lilasons RR Realty Developers residential living"
                 className="aspect-[3/4] max-h-[min(32dvh,240px)] w-full object-cover sm:max-h-[min(36dvh,280px)]"
               />
             </div>
@@ -180,7 +180,7 @@ export default function AboutPreview() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/about/dubai-tower.jpg"
-                alt="Lilasons Developers landmark project"
+                alt="Lilasons RR Realty Developers landmark project"
                 className="h-full max-h-[min(48dvh,480px)] w-full object-cover sm:aspect-auto sm:max-h-full sm:min-h-[min(52dvh,500px)]"
               />
             </div>

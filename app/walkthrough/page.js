@@ -1,7 +1,7 @@
 import WalkthroughPage from "@/components/pages/WalkthroughPage";
 
 export const metadata = {
-  title: "Walkthrough | Lilasons Developers",
+  title: "Walkthrough | Lilasons RR Realty Developers",
   description:
     "Lilasons intro video, Amrut Sai Gold Star, and Amrut Sai Solitaire walkthroughs.",
 };

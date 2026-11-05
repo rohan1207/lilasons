@@ -20,7 +20,7 @@ function buildGalleryItems() {
     const event = MEDIA.events[i % MEDIA.events.length];
     return {
       src,
-      alt: event?.title || "Lilasons Developers media",
+      alt: event?.title || "Lilasons RR Realty Developers media",
       title: event?.title || "Beyond the Office",
       subtitle: "Media",
     };

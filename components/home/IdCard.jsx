@@ -132,12 +132,9 @@ export default function IdCard() {
                       <img
                         src={BRAND.logo}
                         alt={BRAND.name}
-                        className="h-10 w-auto max-w-[200px] object-contain brightness-0 invert"
+                        className="h-12 w-auto max-w-[140px] rounded-sm object-contain object-left sm:h-14 sm:max-w-[160px]"
                         draggable={false}
                       />
-                      <p className="mt-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/55">
-                        Developers
-                      </p>
                     </div>
                     <div className="rounded-full border border-white/25 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.12em] text-white/70">
                       Aurangabad

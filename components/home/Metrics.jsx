@@ -169,7 +169,7 @@ export default function Metrics() {
               playsInline
               preload="metadata"
               className="absolute inset-0 h-full w-full object-cover"
-              aria-label="Lilasons Developers property walkthrough"
+              aria-label="Lilasons RR Realty Developers property walkthrough"
             />
             <div
               className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent dark:from-black/40"

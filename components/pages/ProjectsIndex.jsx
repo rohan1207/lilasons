@@ -43,7 +43,7 @@ export default function ProjectsIndex() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={PROJECTS_PAGE.heroImage}
-          alt="Lilasons Developers projects"
+          alt="Lilasons RR Realty Developers projects"
           className="absolute inset-0 h-full w-full object-cover"
           draggable={false}
         />
@@ -79,13 +79,13 @@ export default function ProjectsIndex() {
           <FadeUp delay={0.34} className="mt-7 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
             <Link
               href={PROJECTS_PAGE.ctaHref}
-              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
+              className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {PROJECTS_PAGE.cta}
             </Link>
             <Link
               href={PROJECTS_PAGE.ctaSecondaryHref}
-              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
+              className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-[var(--gold)]/70 !text-[var(--gold-light)] hover:!border-[var(--gold)] hover:!bg-[var(--gold)] hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
             >
               {PROJECTS_PAGE.ctaSecondary}
             </Link>

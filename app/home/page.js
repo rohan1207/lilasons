@@ -1,9 +1,9 @@
 import HomeView from "@/components/home/HomeView";
 
 export const metadata = {
-  title: "Lilasons Developers | Home",
+  title: "Lilasons RR Realty Developers | Home",
   description:
-    "Lilasons Developers — excellency redefined. Explore homes, row houses, and commercial projects in Aurangabad.",
+    "Lilasons RR Realty Developers — excellency redefined. Explore homes, row houses, and commercial projects in Aurangabad.",
 };
 
 export default function HomePage() {

@@ -7,7 +7,8 @@ import { BRAND } from "@/lib/brand";
 export default function BrandMark({
   href = "/home",
   className = "",
-  imgClassName = "h-9 w-auto max-w-[148px] object-contain object-left sm:h-14 sm:max-w-[290px] lg:h-16 lg:max-w-[320px]",
+  /** Square wordmark logo — sized for nav / footer / landing */
+  imgClassName = "h-11 w-auto max-h-11 object-contain object-left sm:h-14 sm:max-h-14 lg:h-[3.75rem] lg:max-h-[3.75rem]",
   textClassName = "type-logo text-[0.95rem] tracking-[-0.02em] text-neutral-950 sm:text-[1.35rem] lg:text-[1.5rem]",
   asLink = true,
 }) {

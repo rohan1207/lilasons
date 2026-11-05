@@ -18,9 +18,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata = {
-  title: "Lilasons Developers | Homes & Flats in Aurangabad",
+  title: "Lilasons RR Realty Developers | Homes & Flats in Aurangabad",
   description:
-    "Lilasons Developers — Excellency Redefined. Building your foundation, building your environment. Residential & commercial projects in Aurangabad, Maharashtra.",
+    "Lilasons RR Realty Developers — Excellency Redefined. Building a Better Tomorrow. Residential & commercial projects in Aurangabad, Maharashtra.",
 };
 
 export default function RootLayout({ children }) {

@@ -6,7 +6,13 @@
   --muted: #404040;
   --tick: #d6d6d6;
   --tick-active: #1a1a1a;
-  --accent: #c5e24a;
+  /* Lilasons RR gold — from brand mark */
+  --accent: #c59d5f;
+  --gold: #c59d5f;
+  --gold-light: #e8c67c;
+  --gold-dark: #8a6a3a;
+  --ink: #0a0a0a;
+  --paper: #ffffff;
 
   /* Showcase-aligned type scale — sitewide source of truth */
   --tracking-display: -0.03em;
@@ -25,6 +31,9 @@
   --color-tick: var(--tick);
   --color-tick-active: var(--tick-active);
   --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
   --font-sans: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -173,7 +182,7 @@ textarea {
   border-radius: 9999px !important;
 }
 
-/* Solid primary CTA — matches Showcase “Book a viewing” */
+/* Solid primary CTA — gold fill, black type (brand palette) */
 .btn-solid {
   display: inline-flex;
   height: 2.75rem;
@@ -182,17 +191,31 @@ textarea {
   gap: 0.625rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  background-color: #0a0a0a;
-  color: #fff;
+  background-color: var(--gold);
+  background-image: linear-gradient(
+    165deg,
+    var(--gold-light) 0%,
+    var(--gold) 48%,
+    var(--gold-dark) 100%
+  );
+  color: var(--ink);
   font-size: 11px;
-  transition: opacity 0.2s ease;
+  border: 1px solid transparent;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
 }
 
 .btn-solid:hover {
-  opacity: 0.85;
+  filter: brightness(1.06);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 8px 20px -12px rgba(138, 106, 58, 0.55);
 }
 
-/* Outline secondary CTA */
+/* Outline secondary CTA — black line, gold on hover */
 .btn-outline {
   display: inline-flex;
   height: 2.75rem;
@@ -212,8 +235,9 @@ textarea {
 }
 
 .btn-outline:hover {
-  background-color: #0a0a0a;
-  color: #fff;
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-light);
 }
 
 @media (min-width: 640px) {
@@ -242,9 +266,9 @@ textarea {
   background: linear-gradient(
     100deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 35%,
+    rgba(255, 255, 255, 0.12) 35%,
     rgba(255, 255, 255, 0.55) 50%,
-    rgba(255, 255, 255, 0.1) 65%,
+    rgba(232, 198, 124, 0.25) 62%,
     transparent 100%
   );
   transform: translateX(-160%) skewX(-16deg);
@@ -257,8 +281,8 @@ textarea {
 }
 
 ::selection {
-  background: var(--accent);
-  color: #111;
+  background: var(--gold);
+  color: #0a0a0a;
 }
 
 /* ——— Offer marquee (RTL scroll) ——— */

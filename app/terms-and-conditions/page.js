@@ -2,9 +2,9 @@ import LegalPage from "@/components/pages/LegalPage";
 import { TERMS } from "@/lib/legal";
 
 export const metadata = {
-  title: "Terms & Conditions | Lilasons Developers",
+  title: "Terms & Conditions | Lilasons RR Realty Developers",
   description:
-    "Terms of use for the Lilasons Developers website, project information, and enquiries.",
+    "Terms of use for the Lilasons RR Realty Developers website, project information, and enquiries.",
 };
 
 export default function Page() {

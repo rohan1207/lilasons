@@ -14,7 +14,7 @@ function StripTrack({ ariaHidden }) {
             {line}
           </span>
           <span
-            className="inline-block size-2.5 shrink-0 rounded-full bg-[var(--accent)] sm:size-3 md:size-3.5"
+            className="inline-block size-2.5 shrink-0 rounded-full bg-[var(--gold)] sm:size-3 md:size-3.5"
             aria-hidden
           />
         </span>
@@ -30,7 +30,7 @@ export default function OfferStrip() {
       className="relative z-20 overflow-hidden border-y border-neutral-900 bg-neutral-950"
       aria-label="Current offers"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(197,226,74,0.12)_0%,transparent_18%,transparent_82%,rgba(197,226,74,0.12)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(197,157,95,0.18)_0%,transparent_18%,transparent_82%,rgba(197,157,95,0.18)_100%)]" />
 
       <div className="offer-strip-mask relative flex items-center py-4 sm:py-5 md:py-6">
         <div className="offer-strip-row flex w-max">
@@ -38,8 +38,6 @@ export default function OfferStrip() {
           <StripTrack ariaHidden />
         </div>
       </div>
-
-      <p className="sr-only">{OFFER_STRIP.join(". ")}</p>
     </section>
   );
 }

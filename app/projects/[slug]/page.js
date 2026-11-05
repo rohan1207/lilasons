@@ -9,9 +9,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProject(slug);
-  if (!project) return { title: "Project | Lilasons Developers" };
+  if (!project) return { title: "Project | Lilasons RR Realty Developers" };
   return {
-    title: `${project.title} | Lilasons Developers`,
+    title: `${project.title} | Lilasons RR Realty Developers`,
     description: project.summary,
   };
 }

@@ -75,7 +75,7 @@ export default function ContactPage() {
       {/* Full-viewport map hero */}
       <section className="relative flex h-dvh max-h-dvh min-h-dvh overflow-hidden bg-neutral-200">
         <iframe
-          title="Lilasons Developers office location"
+          title="Lilasons RR Realty Developers office location"
           src={CONTACT.mapEmbed}
           className="absolute inset-0 h-full w-full border-0"
           loading="lazy"
@@ -119,7 +119,7 @@ export default function ContactPage() {
                 href={mapsHref}
                 target="_blank"
                 rel="noreferrer"
-                className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] !bg-white !text-neutral-950 hover:!opacity-90 sm:!h-12 sm:!px-7 sm:text-[11px]"
+                className="type-button btn-pill btn-shine btn-solid !h-10 !px-5 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 Get directions
               </a>
@@ -127,7 +127,7 @@ export default function ContactPage() {
                 href={BRAND.whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-white/50 !text-white hover:!border-white hover:!bg-white hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
+                className="type-button btn-pill btn-shine btn-outline !h-10 !px-5 text-[10px] !border-[var(--gold)]/70 !text-[var(--gold-light)] hover:!border-[var(--gold)] hover:!bg-[var(--gold)] hover:!text-neutral-950 sm:!h-12 sm:!px-7 sm:text-[11px]"
               >
                 {CONTACT.whatsappLabel}
               </a>
