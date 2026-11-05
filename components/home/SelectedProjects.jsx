@@ -38,6 +38,8 @@ export default function SelectedProjects() {
   const activeRef = useRef(0);
   const rafRef = useRef(0);
   const barRef = useRef(null);
+  const phoneBarRef = useRef(null);
+  const swipeRef = useRef(null);
 
   const [active, setActive] = useState(0);
   const [phone, setPhone] = useState(false);
@@ -90,9 +92,9 @@ export default function SelectedProjects() {
 
       displayProgress.current = display;
 
-      if (barRef.current) {
-        barRef.current.style.width = `${Math.min(100, Math.max(0, display * 100))}%`;
-      }
+      const width = `${Math.min(100, Math.max(0, display * 100))}%`;
+      if (barRef.current) barRef.current.style.width = width;
+      if (phoneBarRef.current) phoneBarRef.current.style.width = width;
 
       const idx = indexFromProgress(display, total);
       if (idx !== activeRef.current) {
@@ -141,44 +143,63 @@ export default function SelectedProjects() {
 
   useEffect(() => {
     activeRef.current = active;
-    if (phone && barRef.current) {
-      barRef.current.style.width = `${((active + 1) / total) * 100}%`;
-    }
+    if (!phone) return;
+    const width = `${((active + 1) / total) * 100}%`;
+    if (phoneBarRef.current) phoneBarRef.current.style.width = width;
   }, [active, phone, total]);
 
+  useEffect(() => {
+    if (!phone || total < 2) return undefined;
+    const id = window.setInterval(() => {
+      setActive((prev) => (prev + 1) % total);
+    }, 4000);
+    return () => window.clearInterval(id);
+  }, [phone, total, active]);
+
   const go = (dir) => {
-    setActive((prev) => {
-      const next = (prev + dir + total) % total;
-      return next;
-    });
+    setActive((prev) => (prev + dir + total) % total);
+  };
+
+  const onTouchStart = (event) => {
+    if (!isPhoneViewport()) return;
+    const touch = event.touches[0];
+    swipeRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const onTouchEnd = (event) => {
+    if (!isPhoneViewport() || !swipeRef.current) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - swipeRef.current.x;
+    const dy = touch.clientY - swipeRef.current.y;
+    swipeRef.current = null;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
+    go(dx < 0 ? 1 : -1);
   };
 
   return (
     <section
       id="residences"
       ref={rootRef}
-      className="relative z-10 bg-white"
+      className="relative z-10 bg-white max-md:flex max-md:h-[calc(100svh-5rem)] max-md:max-h-[calc(100svh-5rem)] max-md:flex-col max-md:overflow-hidden"
       aria-label="Selected work"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
       <div
         ref={stageRef}
-        className="relative flex w-full flex-col overflow-hidden lg:flex-row"
+        className="relative flex w-full flex-col overflow-hidden max-md:h-full max-md:min-h-0 lg:flex-row"
       >
-        <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-5 sm:px-8 sm:py-9 lg:order-1 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
-          <header className="shrink-0 pb-3 sm:pb-6">
-            <p className="type-label mb-1.5 text-[11px] text-neutral-700 sm:text-[12px]">
+        <div className="relative order-3 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-3 sm:px-8 md:order-2 md:py-9 lg:order-1 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
+          <header className="shrink-0 pb-2 md:pb-6">
+            <p className="type-label mb-1 text-[11px] text-neutral-700 sm:mb-1.5 sm:text-[12px]">
               — Our Projects
             </p>
-            <h2 className="type-heading text-[24px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
+            <h2 className="type-heading text-[22px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
               Selected Work
             </h2>
           </header>
 
-          <div
-            className={`relative min-h-0 overflow-hidden ${
-              phone ? "min-h-[280px]" : "flex-1"
-            }`}
-          >
+          <div className="relative min-h-0 flex-1 overflow-hidden">
             {projects.map((project, i) => {
               const on = i === active;
               return (
@@ -204,19 +225,19 @@ export default function SelectedProjects() {
                     {project.category} · {project.indexLabel}
                   </p>
 
-                  <h3 className="type-heading mt-2 text-[22px] text-neutral-950 sm:mt-4 sm:text-[34px] md:text-[40px] lg:text-[44px]">
+                  <h3 className="type-heading mt-1 line-clamp-2 text-[20px] leading-[1.15] text-neutral-950 md:mt-4 md:text-[34px] md:leading-none lg:text-[44px]">
                     {project.title}
                   </h3>
 
-                  <p className="type-kicker mt-2 text-[11px] sm:mt-3 sm:text-[12px]">
+                  <p className="type-kicker mt-1.5 line-clamp-1 text-[11px] md:mt-3 md:text-[12px]">
                     {project.placeLine}
                   </p>
 
-                  <p className="type-body mt-3 line-clamp-3 max-w-[40ch] text-[12px] sm:mt-5 sm:line-clamp-none sm:text-[14px] md:text-[15px]">
+                  <p className="type-body mt-2 line-clamp-2 max-w-[40ch] text-[12px] md:mt-5 md:line-clamp-none md:text-[15px]">
                     {project.summary}
                   </p>
 
-                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-neutral-200 pt-4 sm:mt-6 sm:gap-y-4 sm:pt-6">
+                  <div className="mt-2.5 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-neutral-200 pt-2.5 md:mt-6 md:gap-y-4 md:pt-6">
                     {project.meta.slice(0, 4).map((item) => (
                       <div key={item.label}>
                         <p className="type-label text-[9px] sm:text-[11px]">
@@ -233,7 +254,7 @@ export default function SelectedProjects() {
             })}
           </div>
 
-          <div className="mt-4 flex shrink-0 flex-col gap-3 border-t border-neutral-200 pt-4 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
+          <div className="mt-auto flex shrink-0 flex-col gap-3 border-t border-neutral-200 pt-3 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
             <Link
               href={projects[active].href}
               className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
@@ -242,42 +263,13 @@ export default function SelectedProjects() {
               View Project
             </Link>
 
-            <div className="min-w-[140px] sm:max-w-[200px] sm:flex-1 sm:text-right">
-              <div className="flex items-center justify-between gap-3 sm:justify-end sm:gap-4">
-                {phone ? (
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      aria-label="Previous project"
-                      onClick={() => go(-1)}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
-                    >
-                      <IconArrow dir="left" className="h-3.5 w-3.5" />
-                    </button>
-                    <p className="type-label text-[11px] tabular-nums text-neutral-700">
-                      {String(active + 1).padStart(2, "0")} /{" "}
-                      {String(total).padStart(2, "0")}
-                    </p>
-                    <button
-                      type="button"
-                      aria-label="Next project"
-                      onClick={() => go(1)}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-950"
-                    >
-                      <IconArrow dir="right" className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <p className="type-label text-[11px] tabular-nums text-neutral-700">
-                      {String(active + 1).padStart(2, "0")} /{" "}
-                      {String(total).padStart(2, "0")}
-                    </p>
-                    <p className="type-label text-[10px] text-neutral-700 sm:text-[11px]">
-                      Scroll
-                    </p>
-                  </>
-                )}
+            <div className="hidden min-w-[140px] md:block md:max-w-[200px] md:flex-1 md:text-right">
+              <div className="flex items-center justify-end gap-4">
+                <p className="type-label text-[11px] tabular-nums text-neutral-700">
+                  {String(active + 1).padStart(2, "0")} /{" "}
+                  {String(total).padStart(2, "0")}
+                </p>
+                <p className="type-label text-[11px] text-neutral-700">Scroll</p>
               </div>
               <div className="mt-2.5 h-px w-full bg-neutral-200 sm:ml-auto sm:max-w-[200px]">
                 <div
@@ -289,7 +281,7 @@ export default function SelectedProjects() {
           </div>
         </div>
 
-        <div className="relative order-1 min-h-[34vh] w-full shrink-0 overflow-hidden bg-neutral-200 lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
+        <div className="relative order-1 h-[42%] w-full shrink-0 overflow-hidden bg-neutral-200 max-md:min-h-0 md:h-auto md:min-h-[34vh] lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
           {projects.map((project, i) => {
             const on = i === active;
             return (
@@ -307,6 +299,36 @@ export default function SelectedProjects() {
               />
             );
           })}
+
+          <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/70 via-black/35 to-transparent px-4 pb-3 pt-12 md:hidden">
+            <div className="mb-2.5 h-px w-full bg-white/25">
+              <div
+                ref={phoneBarRef}
+                className="h-px w-0 bg-white will-change-[width]"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                aria-label="Previous project"
+                onClick={() => go(-1)}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-950"
+              >
+                <IconArrow dir="left" className="h-3.5 w-3.5" />
+              </button>
+              <p className="type-label text-[11px] tabular-nums text-white">
+                {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+              </p>
+              <button
+                type="button"
+                aria-label="Next project"
+                onClick={() => go(1)}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-neutral-950"
+              >
+                <IconArrow dir="right" className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
