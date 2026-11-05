@@ -716,7 +716,7 @@ Full wording: `lib/legal.js`.
 | We | belong. |
 | We | endure. |
 
-Hero sequence: **300** WebP frames under `/frames/` (frame preload on landing before home).
+Hero sequence: **249** PNG frames under `/final_frames/` (frame preload on landing before home).
 
 ---
 
@@ -735,7 +735,7 @@ Hero sequence: **300** WebP frames under `/frames/` (frame preload on landing be
 | Blogs | `/blogs/*.jpg` |
 | Footer | `/footer/footer-skyline-dark.jpg` |
 | Video | `/video.mp4` |
-| Frames | `/frames/ezgif-frame-001.webp` … `300` |
+| Frames | `/final_frames/ezgif-frame-001.png` … `249` |
 
 Project galleries also use remote images from `img1.wsimg.com` (listed per project in `lib/projects.js`).
 

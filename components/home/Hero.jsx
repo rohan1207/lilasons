@@ -18,7 +18,7 @@ import { isPhoneViewport } from "@/lib/mobile";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Same full 300-frame canvas scrub on desktop and phone.
+ * Same full 249-frame canvas scrub on desktop and phone (public/final_frames).
  * Only the scroll *driver* differs:
  *   Desktop → ScrollTrigger + fixed canvas
  *   Phone   → native scroll + sticky canvas (no Lenis — avoids iOS jitter)
@@ -28,8 +28,9 @@ gsap.registerPlugin(ScrollTrigger);
 const DESKTOP = { sequence: 1000, hold: 120, scrub: 0.28, lerp: 0.22 };
 const PHONE = { sequence: 1000, hold: 120, lerp: 0.28 };
 
-const COPY_LAST_FRAME = 68;
-const COPY_FADE_START = 38;
+/** Fade copy over the same early portion of the sequence (was 38–68 of 300). */
+const COPY_LAST_FRAME = 56;
+const COPY_FADE_START = 32;
 const SLIDE_HEADING_PX = 96;
 const SLIDE_REST_PX = 72;
 
