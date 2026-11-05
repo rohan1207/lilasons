@@ -6,14 +6,13 @@ import MobileGate from "@/components/MobileGate";
 const interTight = Inter_Tight({
   variable: "--font-tsk",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-lilasons-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: "500",
   display: "swap",
 });
 
