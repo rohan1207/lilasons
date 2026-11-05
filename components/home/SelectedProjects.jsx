@@ -187,9 +187,9 @@ export default function SelectedProjects() {
     >
       <div
         ref={stageRef}
-        className="relative flex w-full flex-col overflow-hidden max-md:h-full max-md:min-h-0 lg:flex-row"
+        className="relative flex w-full flex-col overflow-hidden max-md:h-full max-md:min-h-0 md:flex-row"
       >
-        <div className="relative order-3 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-3 sm:px-8 md:order-2 md:py-9 lg:order-1 lg:w-[46%] lg:max-w-[640px] lg:px-12 lg:py-11 xl:px-14">
+        <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-3 sm:px-8 md:order-1 md:w-[46%] md:max-w-[640px] md:px-8 md:py-8 lg:px-12 lg:py-11 xl:px-14">
           <header className="shrink-0 pb-2 md:pb-6">
             <p className="type-label mb-1 text-[11px] text-neutral-700 sm:mb-1.5 sm:text-[12px]">
               — Our Projects
@@ -281,7 +281,7 @@ export default function SelectedProjects() {
           </div>
         </div>
 
-        <div className="relative order-1 h-[42%] w-full shrink-0 overflow-hidden bg-neutral-200 max-md:min-h-0 md:h-auto md:min-h-[34vh] lg:order-2 lg:min-h-0 lg:w-[54%] lg:flex-1">
+        <div className="relative order-1 h-[42%] w-full shrink-0 overflow-hidden bg-neutral-200 max-md:min-h-0 md:order-2 md:h-full md:min-h-0 md:w-[54%] md:flex-1">
           {projects.map((project, i) => {
             const on = i === active;
             return (

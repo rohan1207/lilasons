@@ -62,7 +62,7 @@ export default function Showcase() {
       className="relative z-10 flex min-h-0 items-center border-t border-neutral-200/70 bg-[#f4f4f2] lg:min-h-dvh"
       aria-label="Signature living"
     >
-      <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col justify-center px-5 py-12 sm:px-8 sm:py-12 lg:h-[100dvh] lg:max-h-[100dvh] lg:px-12 lg:py-8 xl:py-10">
+      <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col justify-center px-5 py-12 sm:px-8 sm:py-14 lg:min-h-dvh lg:px-12 lg:py-10 xl:py-12">
         <div className="grid flex-1 grid-cols-1 gap-5 lg:grid-cols-12 lg:grid-rows-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-5 xl:gap-6">
           {/* Copy */}
           <div className="flex flex-col justify-between gap-5 sm:gap-6 lg:col-span-4 lg:row-span-1">

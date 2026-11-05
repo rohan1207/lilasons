@@ -45,7 +45,7 @@ export default function BlogsIndex() {
 
       <section className="bg-[#f7f7f7]">
         <div className="mx-auto max-w-[1500px] px-5 py-12 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
-          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4 lg:gap-6">
+          <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
             {BLOGS.map((post, i) => (
               <FadeUp key={post.slug} delay={i * 0.05}>
                 <Link

@@ -39,7 +39,7 @@ export default function PageHero({
       )}
 
       <div
-        className={`relative mx-auto flex max-w-[1600px] flex-col justify-start px-5 pb-10 pt-[max(7.5rem,calc(env(safe-area-inset-top,0px)+6.75rem))] sm:px-8 md:min-h-[min(78vh,720px)] md:justify-end md:px-12 md:pb-20 md:pt-[calc(84px+4rem)] lg:px-14 lg:pt-[calc(7rem+4rem)] ${
+        className={`relative mx-auto flex max-w-[1600px] flex-col justify-start px-5 pb-10 pt-[max(6.5rem,calc(env(safe-area-inset-top,0px)+5.75rem))] sm:px-8 md:min-h-[min(70vh,680px)] md:justify-end md:px-10 md:pb-16 md:pt-[calc(5.5rem+3rem)] lg:px-12 lg:pt-[calc(6rem+3rem)] xl:px-14 xl:pt-[calc(7rem+3.5rem)] ${
           isCenter ? "items-center text-center" : "items-start text-left"
         }`}
       >

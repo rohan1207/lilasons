@@ -93,10 +93,10 @@ export default function Navbar({ forceSolid = false }) {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 sm:h-24 sm:px-8 lg:h-28 lg:px-10">
-          <BrandMark imgClassName="h-14 w-auto max-h-14 object-contain object-left sm:h-16 sm:max-h-16 lg:h-[6.25rem] lg:max-h-[6.25rem]" />
+        <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between gap-3 px-4 sm:px-6 lg:h-24 lg:gap-4 lg:px-8 xl:px-10 2xl:h-28">
+          <BrandMark imgClassName="h-14 w-auto max-h-14 shrink-0 object-contain object-left sm:h-16 sm:max-h-16 lg:h-16 lg:max-h-16 xl:h-20 xl:max-h-20 2xl:h-[6.25rem] 2xl:max-h-[6.25rem]" />
 
-          <ul className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-x-5 lg:flex xl:gap-x-7">
+          <ul className="z-10 hidden min-w-0 flex-1 items-center justify-center gap-x-2.5 lg:flex xl:gap-x-4 2xl:gap-x-6">
             {NAV_PRIMARY.map((link) => (
               <li
                 key={link.href + link.label}
@@ -108,7 +108,7 @@ export default function Navbar({ forceSolid = false }) {
               >
                 <Link
                   href={link.href}
-                  className={`type-label whitespace-nowrap text-[11px] transition-colors xl:text-[12px] ${
+                  className={`type-label whitespace-nowrap text-[10px] !tracking-[0.08em] transition-colors xl:text-[11px] xl:!tracking-[0.1em] 2xl:text-[12px] ${
                     isActive(link.href)
                       ? "!text-[var(--gold-dark)]"
                       : "!text-neutral-950 hover:!text-black"
@@ -167,7 +167,7 @@ export default function Navbar({ forceSolid = false }) {
               aria-label="Open menu"
               aria-expanded={megaOpen}
               onClick={() => setMegaOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300/80 bg-white/55 transition-colors hover:border-neutral-900 hover:bg-white sm:h-10 sm:w-10"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300/80 bg-white/55 transition-colors hover:border-neutral-900 hover:bg-white sm:h-10 sm:w-10 lg:hidden"
             >
               <span className="flex flex-col gap-[5px]">
                 <span className="block h-px w-4 bg-neutral-900" />

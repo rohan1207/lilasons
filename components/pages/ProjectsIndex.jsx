@@ -129,7 +129,7 @@ export default function ProjectsIndex() {
 
           <motion.div
             layout
-            className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 lg:gap-10"
+            className="grid grid-cols-1 gap-6 min-[480px]:grid-cols-2 min-[480px]:gap-4 sm:gap-6 lg:grid-cols-3 lg:gap-10"
           >
             <AnimatePresence mode="popLayout">
               {filtered.map((project, i) => (
@@ -168,7 +168,7 @@ export default function ProjectsIndex() {
                     </div>
 
                     <div className="pt-3 md:pt-5">
-                      <p className="mb-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-700 md:mb-2 md:text-[10px] md:tracking-[0.22em]">
+                      <p className="mb-1 text-[10px] font-semibold uppercase leading-snug tracking-[0.12em] text-neutral-700 md:mb-2 md:text-[10px] md:tracking-[0.16em]">
                         {project.status ? `${project.status} · ` : ""}
                         {project.category}
                       </p>

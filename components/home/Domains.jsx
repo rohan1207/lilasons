@@ -53,7 +53,7 @@ export default function Domains() {
   return (
     <section
       id="domains"
-      className="relative z-10 flex h-auto flex-col overflow-hidden bg-white px-4 pb-8 pt-24 sm:h-dvh sm:max-h-dvh sm:px-6 sm:pb-6 sm:pt-28 md:px-10 md:pb-8 md:pt-32 lg:px-14"
+      className="relative z-10 flex h-auto flex-col overflow-hidden bg-white px-4 pb-10 pt-16 sm:px-6 sm:pb-12 sm:pt-20 md:px-10 lg:px-14 lg:pb-16 lg:pt-24"
     >
       <div className="mx-auto flex h-full min-h-0 w-full max-w-[1600px] flex-col">
         <div className="mb-5 flex shrink-0 flex-col gap-3 sm:mb-5 sm:flex-row sm:items-end sm:justify-between md:mb-6">
@@ -111,7 +111,7 @@ export default function Domains() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="hidden min-h-0 flex-1 grid-cols-3 grid-rows-[1fr_1.2fr] gap-[2px] sm:grid"
+          className="hidden h-[min(68vh,720px)] min-h-[420px] grid-cols-3 grid-rows-[1fr_1.2fr] gap-[2px] sm:grid md:min-h-[480px] lg:h-[min(72vh,780px)]"
         >
           <DomainTile
             domain={byTitle.Residences}

@@ -35,12 +35,12 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="relative z-10 flex h-auto min-h-0 flex-col overflow-visible border-t border-neutral-200/80 bg-[#f7f7f7] text-neutral-950 lg:h-[calc(100dvh-6rem)] lg:max-h-[calc(100dvh-6rem)] lg:overflow-hidden"
+      className="relative z-10 flex h-auto min-h-0 flex-col overflow-visible border-t border-neutral-200/80 bg-[#f7f7f7] text-neutral-950"
     >
       <div className="mx-auto flex h-full w-full max-w-[1500px] flex-col px-5 py-8 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
         {/* Large CTA — single line */}
         <div className="flex shrink-0 items-center justify-between gap-3 border-b border-neutral-300/80 pb-5 sm:gap-6 sm:pb-6 lg:pb-7">
-          <h2 className="type-heading max-w-[18ch] text-[clamp(1.35rem,5.5vw,3.25rem)] leading-[1.05] text-neutral-950 sm:max-w-none sm:whitespace-nowrap">
+          <h2 className="type-heading min-w-0 text-[clamp(1.35rem,4vw,3.25rem)] leading-[1.05] text-neutral-950 lg:whitespace-nowrap">
             {FOOTER.cta}
           </h2>
 

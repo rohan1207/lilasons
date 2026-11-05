@@ -94,7 +94,7 @@ export default function Metrics() {
     <section
       ref={ref}
       id="metrics"
-      className="relative z-10 flex h-auto max-h-none overflow-visible border-t border-neutral-200/80 bg-[#f4f4f2] text-neutral-950 lg:h-dvh lg:max-h-dvh lg:overflow-hidden dark:border-white/10 dark:bg-[#0a0a0a] dark:text-white"
+      className="relative z-10 flex h-auto overflow-visible border-t border-neutral-200/80 bg-[#f4f4f2] text-neutral-950 lg:min-h-dvh dark:border-white/10 dark:bg-[#0a0a0a] dark:text-white"
       aria-label="Decades of trust"
     >
       <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col gap-6 px-5 py-14 sm:px-8 sm:py-20 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-10 xl:gap-14">

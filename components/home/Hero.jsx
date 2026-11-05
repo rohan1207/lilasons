@@ -388,7 +388,7 @@ export default function Hero() {
 
         <HeroClouds ref={cloudsRef} />
 
-        <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(8.25rem,18vh)]">
+        <div className="pointer-events-none absolute inset-x-0 top-[max(5.75rem,14vh)] z-10 flex flex-col items-center px-5 text-center sm:top-[max(6.25rem,15vh)] sm:px-8 lg:top-[max(6.75rem,16vh)] 2xl:top-[max(8.25rem,18vh)]">
           <div
             ref={headingRef}
             className="will-change-transform"
@@ -397,7 +397,7 @@ export default function Hero() {
             <p className="type-label mb-3 text-[11px] !text-neutral-950 sm:mb-4 sm:text-[12px] lg:mb-5 lg:text-[13px]">
               Lilasons RR · Aurangabad
             </p>
-            <h1 className="type-heading mx-auto max-w-[12ch] text-[clamp(2.75rem,8.2vw,7rem)] leading-[0.9] text-neutral-950">
+            <h1 className="type-heading mx-auto max-w-[12ch] text-[clamp(2.15rem,8.2vw,7rem)] leading-[0.9] text-neutral-950">
               {BRAND.headline}
             </h1>
           </div>
