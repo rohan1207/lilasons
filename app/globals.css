@@ -334,3 +334,99 @@ textarea {
     animation: none;
   }
 }
+
+/* Testimonials — opposite marquees (vertical on desktop, horizontal on phone) */
+.testimonial-mask-y {
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
+.testimonial-mask-x {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 6%,
+    #000 94%,
+    transparent 100%
+  );
+}
+
+.testimonial-y-up,
+.testimonial-y-down,
+.testimonial-x-ltr,
+.testimonial-x-rtl {
+  will-change: transform;
+}
+
+.testimonial-y-up {
+  animation: testimonial-y-up 42s linear infinite;
+}
+
+.testimonial-y-down {
+  animation: testimonial-y-down 42s linear infinite;
+}
+
+.testimonial-x-ltr {
+  animation: testimonial-x-ltr 48s linear infinite;
+}
+
+.testimonial-x-rtl {
+  animation: testimonial-x-rtl 48s linear infinite;
+}
+
+.testimonial-mask-y:hover .testimonial-y-up,
+.testimonial-mask-y:hover .testimonial-y-down,
+.testimonial-mask-x:hover .testimonial-x-ltr,
+.testimonial-mask-x:hover .testimonial-x-rtl {
+  animation-play-state: paused;
+}
+
+@keyframes testimonial-y-up {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes testimonial-y-down {
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes testimonial-x-ltr {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes testimonial-x-rtl {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial-y-up,
+  .testimonial-y-down,
+  .testimonial-x-ltr,
+  .testimonial-x-rtl {
+    animation: none;
+  }
+}

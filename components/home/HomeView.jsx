@@ -6,11 +6,13 @@ import Domains from "@/components/home/Domains";
 import Amenities from "@/components/home/Amenities";
 import SelectedProjects from "@/components/home/SelectedProjects";
 import UpcomingProjects from "@/components/home/UpcomingProjects";
+import EnquiryStrip from "@/components/home/EnquiryStrip";
 import MediaPreview from "@/components/home/MediaPreview";
 import Brands from "@/components/home/Brands";
 import Metrics from "@/components/home/Metrics";
 import Recognition from "@/components/home/Recognition";
 import ExpandStory from "@/components/home/ExpandStory";
+import Testimonials from "@/components/home/Testimonials";
 import Footer from "@/components/home/Footer";
 
 export default function HomeView() {
@@ -29,6 +31,7 @@ export default function HomeView() {
       <Metrics />
       <Recognition />
       <ExpandStory />
+      <Testimonials />
       <Footer />
     </main>
   );

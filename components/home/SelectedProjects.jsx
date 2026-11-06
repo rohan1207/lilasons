@@ -189,12 +189,16 @@ export default function SelectedProjects() {
         ref={stageRef}
         className="relative flex w-full flex-col overflow-hidden max-md:h-full max-md:min-h-0 md:flex-row"
       >
-        <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-white px-5 py-3 sm:px-8 md:order-1 md:w-[46%] md:max-w-[640px] md:px-8 md:py-8 lg:px-12 lg:py-11 xl:px-14">
-          <header className="shrink-0 pb-2 md:pb-6">
-            <p className="type-label mb-1 text-[11px] text-neutral-700 sm:mb-1.5 sm:text-[12px]">
+        <div className="relative order-2 flex min-h-0 w-full flex-1 flex-col bg-[#f6f3ee] px-5 py-3 sm:px-8 md:order-1 md:w-[46%] md:max-w-[680px] md:px-10 md:py-8 lg:px-12 lg:py-10 xl:px-14">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute bottom-8 left-0 top-8 hidden w-px bg-[#c59d5f] md:block"
+          />
+          <header className="shrink-0 pb-2 md:pb-5">
+            <p className="type-label mb-1 text-[11px] text-[#8a6a3a] sm:mb-1.5 sm:text-[12px]">
               — Our Projects
             </p>
-            <h2 className="type-heading text-[22px] text-neutral-950 sm:text-[34px] lg:text-[38px]">
+            <h2 className="type-heading text-[22px] text-neutral-950 sm:text-[34px] lg:text-[40px]">
               Selected Work
             </h2>
           </header>
@@ -221,29 +225,52 @@ export default function SelectedProjects() {
                   }
                   aria-hidden={!on}
                 >
-                  <p className="type-label text-[11px] text-neutral-700 sm:text-[12px]">
-                    {project.category} · {project.indexLabel}
-                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="type-label text-[10px] text-neutral-600 sm:text-[11px]">
+                      <span className="text-[#8a6a3a]">{project.indexLabel}</span>
+                      <span className="mx-2 inline-block h-px w-5 translate-y-[-3px] bg-[#c59d5f] align-middle" />
+                      {project.category}
+                    </p>
+                  </div>
 
-                  <h3 className="type-heading mt-1 line-clamp-2 text-[20px] leading-[1.15] text-neutral-950 md:mt-4 md:text-[34px] md:leading-none lg:text-[44px]">
-                    {project.title}
-                  </h3>
+                  <div className="relative mt-1.5 md:mt-4">
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -right-1 -top-3 hidden select-none font-display text-[6.5rem] font-medium leading-none text-[#c59d5f]/25 lg:block xl:text-[7.5rem]"
+                    >
+                      {project.indexLabel}
+                    </span>
+                    <h3
+                      className="relative z-[1] block text-left font-display text-[1.45rem] font-medium uppercase text-neutral-950 sm:text-[1.7rem] md:max-w-[9.2em] md:text-[clamp(2.15rem,2.7vw,3.15rem)]"
+                      style={{
+                        letterSpacing: "-0.03em",
+                        wordSpacing: "normal",
+                        textAlign: "left",
+                        textAlignLast: "left",
+                        fontStretch: "normal",
+                        lineHeight: 1.02,
+                      }}
+                    >
+                      {project.title}
+                    </h3>
+                  </div>
 
-                  <p className="type-kicker mt-1.5 line-clamp-1 text-[11px] md:mt-3 md:text-[12px]">
+                  <p className="mt-2 max-w-[34ch] text-[11px] font-medium uppercase leading-snug tracking-[0.06em] text-neutral-600 md:mt-4 md:text-[12px]">
+                    <span className="mr-2 inline-block h-px w-5 translate-y-[-3px] bg-[#c59d5f] align-middle" />
                     {project.placeLine}
                   </p>
 
-                  <p className="type-body mt-2 line-clamp-2 max-w-[40ch] text-[12px] md:mt-5 md:line-clamp-none md:text-[15px]">
+                  <p className="type-body mt-2 max-h-[3.4em] max-w-[42ch] overflow-hidden text-[12px] md:mt-5 md:max-h-[6.6em] md:text-[15px]">
                     {project.summary}
                   </p>
 
-                  <div className="mt-2.5 grid grid-cols-2 gap-x-4 gap-y-1.5 border-t border-neutral-200 pt-2.5 md:mt-6 md:gap-y-4 md:pt-6">
+                  <div className="mt-2.5 grid grid-cols-2 gap-x-5 gap-y-2 md:mt-6 md:gap-y-4">
                     {project.meta.slice(0, 4).map((item) => (
-                      <div key={item.label}>
-                        <p className="type-label text-[9px] sm:text-[11px]">
+                      <div key={item.label} className="border-t border-[#c59d5f]/55 pt-1.5 md:pt-2.5">
+                        <p className="type-label text-[9px] text-[#8a6a3a] sm:text-[10px]">
                           {item.label}
                         </p>
-                        <p className="mt-0.5 text-[12px] font-medium tracking-[-0.01em] text-neutral-900 sm:mt-1 sm:text-[14px]">
+                        <p className="mt-0.5 text-[12px] font-medium tracking-[-0.01em] text-neutral-950 sm:mt-1 sm:text-[14px]">
                           {item.value}
                         </p>
                       </div>
@@ -254,7 +281,7 @@ export default function SelectedProjects() {
             })}
           </div>
 
-          <div className="mt-auto flex shrink-0 flex-col gap-3 border-t border-neutral-200 pt-3 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-6">
+          <div className="mt-auto flex shrink-0 flex-col gap-3 border-t border-[#e4dccf] pt-3 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 sm:pt-5">
             <Link
               href={projects[active].href}
               className="type-button btn-pill btn-shine btn-outline w-fit !h-9 !px-4 text-[10px] sm:!h-12 sm:!px-7 sm:text-[11px]"
@@ -271,10 +298,10 @@ export default function SelectedProjects() {
                 </p>
                 <p className="type-label text-[11px] text-neutral-700">Scroll</p>
               </div>
-              <div className="mt-2.5 h-px w-full bg-neutral-200 sm:ml-auto sm:max-w-[200px]">
+              <div className="mt-2.5 h-px w-full bg-[#e4dccf] sm:ml-auto sm:max-w-[200px]">
                 <div
                   ref={barRef}
-                  className="h-px w-0 bg-neutral-950 will-change-[width]"
+                  className="h-px w-0 bg-[#8a6a3a] will-change-[width]"
                 />
               </div>
             </div>
@@ -299,6 +326,12 @@ export default function SelectedProjects() {
               />
             );
           })}
+
+          <div className="pointer-events-none absolute left-3 top-3 z-10 max-w-[70%] md:left-6 md:top-6">
+            <span className="inline-block rounded-full bg-black/45 px-3 py-1.5 text-[10px] font-semibold uppercase leading-snug tracking-[0.14em] text-[#e8c67c] backdrop-blur-[2px] sm:text-[11px]">
+              {projects[active].status}
+            </span>
+          </div>
 
           <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/70 via-black/35 to-transparent px-4 pb-3 pt-12 md:hidden">
             <div className="mb-2.5 h-px w-full bg-white/25">

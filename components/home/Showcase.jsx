@@ -147,18 +147,18 @@ export default function Showcase() {
           </FadeUp>
 
           {/* Detail + lines */}
-          <div className="relative flex min-h-0 gap-3 lg:col-span-4 lg:gap-4">
+          <div className="relative flex min-h-0 flex-col gap-3 sm:flex-row lg:col-span-4 lg:gap-4">
             <RevealImage
               src={SHOWCASE.detailImage}
               alt={SHOWCASE.detailAlt}
-              className="aspect-[3/4] h-auto min-h-0 w-full max-w-[200px] flex-1 sm:aspect-auto sm:h-[48vw] sm:min-h-[200px] sm:max-w-none lg:h-full lg:min-h-0 lg:max-w-none"
+              className="aspect-[16/10] h-auto min-h-0 w-full sm:aspect-[3/4] sm:h-auto sm:max-w-[200px] sm:flex-1 lg:aspect-auto lg:h-full lg:min-h-0 lg:max-w-none"
               delay={reduce ? 0 : 0.14}
             />
-            <ul className="flex shrink-0 flex-col justify-end gap-2 pb-1">
+            <ul className="flex flex-row flex-wrap content-end gap-x-4 gap-y-2 sm:w-[9.5rem] sm:shrink-0 sm:flex-col sm:justify-end sm:gap-2.5 sm:pb-1">
               {SHOWCASE.detailLines.map((line) => (
                 <li
                   key={line}
-                  className="text-[8px] font-semibold uppercase tracking-[0.16em] text-neutral-700 sm:text-[10px] sm:tracking-[0.18em]"
+                  className="text-[11px] font-semibold uppercase leading-snug tracking-[0.12em] text-neutral-700 sm:text-[10px] sm:tracking-[0.14em]"
                 >
                   {line}
                 </li>
