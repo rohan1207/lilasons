@@ -98,6 +98,9 @@ export default function UpcomingProjects() {
               <div className="flex shrink-0 flex-wrap gap-2 sm:gap-2.5">
                 <Link
                   href={project.href}
+                  {...(project.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   className="type-button btn-pill btn-shine btn-solid !h-9 !px-4 text-[10px] sm:!h-11 sm:!px-6 sm:text-[11px]"
                 >
                   Read More
