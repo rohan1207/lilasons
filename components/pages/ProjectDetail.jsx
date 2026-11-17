@@ -7,6 +7,7 @@ import Reveal from "@/components/layout/Reveal";
 import SectionEyebrow from "@/components/layout/SectionEyebrow";
 import ProjectImageSlideshow from "@/components/projects/ProjectImageSlideshow";
 import ProjectGallery from "@/components/projects/ProjectGallery";
+import ImperiumHomeEmbed from "@/components/imperium/ImperiumHomeEmbed";
 import { BRAND, CONTACT } from "@/lib/brand";
 import IconArrow from "@/components/IconArrow";
 import {
@@ -42,6 +43,15 @@ export default function ProjectDetail({ project }) {
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     project.address || project.title,
   )}`;
+
+  /* Imperium Landmark — full Imperium home experience inside Lilasons shell */
+  if (project.slug === "imperium-landmark") {
+    return (
+      <PageShell showTestimonials={false}>
+        <ImperiumHomeEmbed />
+      </PageShell>
+    );
+  }
 
   return (
     <PageShell>
@@ -224,7 +234,10 @@ export default function ProjectDetail({ project }) {
       </section>
 
       {galleryImages.length > 0 && (
-        <section className="border-t border-black/10 bg-[#f5f5f3] px-5 py-14 sm:px-8 md:px-12 md:py-20 lg:px-14">
+        <section
+          id="gallery"
+          className="scroll-mt-28 border-t border-black/10 bg-[#f5f5f3] px-5 py-14 sm:px-8 md:px-12 md:py-20 lg:px-14"
+        >
           <div className="mx-auto max-w-[1600px]">
             <Reveal className="mb-8 md:mb-10">
               <SectionEyebrow className="mb-4">Gallery</SectionEyebrow>

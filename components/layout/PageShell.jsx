@@ -2,12 +2,16 @@ import Navbar from "@/components/home/Navbar";
 import Testimonials from "@/components/home/Testimonials";
 import Footer from "@/components/home/Footer";
 
-export default function PageShell({ children, solidNav = true }) {
+export default function PageShell({
+  children,
+  solidNav = true,
+  showTestimonials = true,
+}) {
   return (
     <main className="relative z-0 min-h-dvh bg-[#f7f7f7]">
       <Navbar forceSolid={solidNav} />
       {children}
-      <Testimonials />
+      {showTestimonials ? <Testimonials /> : null}
       <Footer />
     </main>
   );

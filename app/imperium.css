@@ -1,0 +1,128 @@
+/* Imperium project embed — aligned to Lilasons RR site theme */
+.imperium-root {
+  --imp-ink: #0a0a0a;
+  --imp-ink-soft: #171717;
+  --imp-stone: #f7f7f7;
+  --imp-stone-deep: #e8e8e6;
+  --imp-gold: #c59d5f;
+  --imp-gold-light: #e8c67c;
+  --imp-gold-dark: #8a6a3a;
+  --imp-muted: #525252;
+  --imp-line: rgba(197, 157, 95, 0.35);
+  --imp-display: var(--font-lilasons-display), "Times New Roman", Georgia, serif;
+  --imp-sans: var(--font-tsk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--imp-ink);
+  background: var(--imp-stone);
+  font-family: var(--imp-sans);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.imperium-root * {
+  box-sizing: border-box;
+}
+
+.imperium-display {
+  font-family: var(--imp-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+.imperium-label {
+  font-family: var(--imp-sans);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--imp-gold-dark);
+}
+
+.imperium-body {
+  font-family: var(--imp-sans);
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--imp-muted);
+}
+
+.imperium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 2.85rem;
+  padding: 0 1.45rem;
+  border-radius: 9999px;
+  font-family: var(--imp-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.imperium-btn-solid {
+  background: linear-gradient(165deg, var(--imp-gold-light), var(--imp-gold) 48%, var(--imp-gold-dark));
+  color: var(--imp-ink);
+  border: 1px solid transparent;
+}
+
+.imperium-btn-solid:hover {
+  filter: brightness(1.05);
+}
+
+.imperium-btn-ghost {
+  border: 1px solid rgba(232, 198, 124, 0.55);
+  color: var(--imp-gold-light);
+  background: transparent;
+}
+
+.imperium-btn-ghost:hover {
+  background: rgba(232, 198, 124, 0.1);
+}
+
+.imperium-btn-dark {
+  border: 1px solid var(--imp-ink);
+  color: var(--imp-ink);
+  background: transparent;
+}
+
+.imperium-btn-dark:hover {
+  background: var(--imp-ink);
+  color: var(--imp-gold-light);
+}
+
+.imperium-highlights-track {
+  animation: imperium-scroll-x 48s linear infinite;
+  width: max-content;
+}
+
+.imperium-highlights-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes imperium-scroll-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imperium-highlights-track {
+    animation: none;
+  }
+}
+
+.imperium-map-glow {
+  filter: drop-shadow(0 0 24px rgba(197, 157, 95, 0.4));
+}
