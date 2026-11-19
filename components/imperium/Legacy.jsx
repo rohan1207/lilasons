@@ -1,7 +1,8 @@
 import { LEGACY } from "@/lib/imperium";
-import { GOLD, INK, PAPER, STONE } from "@/components/imperium/theme";
+import { GOLD, INK, MUTED, PAPER, STONE, STONE_DEEP } from "@/components/imperium/theme";
 
 const CARD = PAPER;
+const INK_RGB = "10,10,10";
 
 function StatIcon({ type }) {
   const common = {
@@ -53,16 +54,16 @@ function TimelineRail({ className = "" }) {
     <div
       aria-hidden
       className={`relative flex w-10 shrink-0 items-stretch justify-center sm:w-12 lg:w-14 ${className}`}
-      style={{ backgroundColor: "#f0ebe3" }}
+      style={{ backgroundColor: STONE_DEEP }}
     >
       <div className="relative my-8 w-px lg:my-10" style={{ backgroundColor: `${GOLD}99` }}>
         <span
-          className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] bg-[#f0ebe3]"
-          style={{ borderColor: GOLD }}
+          className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px]"
+          style={{ borderColor: GOLD, backgroundColor: STONE_DEEP }}
         />
         <span
-          className="absolute bottom-0 left-1/2 h-3 w-3 -translate-x-1/2 translate-y-1/2 rounded-[3px] border-[1.5px] bg-[#f0ebe3]"
-          style={{ borderColor: GOLD }}
+          className="absolute bottom-0 left-1/2 h-3 w-3 -translate-x-1/2 translate-y-1/2 rounded-[3px] border-[1.5px]"
+          style={{ borderColor: GOLD, backgroundColor: STONE_DEEP }}
         />
       </div>
     </div>
@@ -117,7 +118,7 @@ function LegacyBand() {
             >
               <span
                 className="flex h-10 w-10 items-center justify-center rounded-[0.7rem] sm:h-11 sm:w-11"
-                style={{ backgroundColor: "rgba(243,232,216,0.12)" }}
+                style={{ backgroundColor: "rgba(197,157,95,0.14)" }}
               >
                 <StatIcon type={stat.icon} />
               </span>
@@ -140,7 +141,7 @@ function LegacyCard() {
   return (
     <section
       id="legacy"
-      className="relative scroll-mt-24 overflow-hidden px-5 py-14 sm:px-8 sm:py-18 lg:px-10 lg:py-22"
+      className="relative scroll-mt-24 overflow-x-clip px-4 py-10 sm:px-8 sm:py-18 lg:px-10 lg:py-22"
       style={{ backgroundColor: STONE }}
       aria-label="Legacy of excellence"
     >
@@ -158,10 +159,10 @@ function LegacyCard() {
       </svg>
 
       <div className="relative z-[1] mx-auto max-w-[1500px]">
-        <div className="overflow-hidden rounded-[1.15rem] shadow-[0_24px_60px_-30px_rgba(13,47,36,0.55)] sm:rounded-[1.35rem] lg:rounded-[1.5rem]">
+        <div className="overflow-hidden rounded-[1rem] shadow-[0_24px_60px_-30px_rgba(10,10,10,0.35)] sm:rounded-[1.35rem] lg:rounded-[1.5rem]">
           <div className="flex flex-col lg:flex-row lg:items-stretch">
             <div
-              className="relative min-h-[18rem] overflow-hidden sm:min-h-[22rem] lg:min-h-[26rem] lg:w-[52%]"
+              className="relative min-h-[16rem] overflow-hidden sm:min-h-[22rem] lg:min-h-[26rem] lg:w-[52%]"
               style={{ backgroundColor: INK }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -169,32 +170,30 @@ function LegacyCard() {
                 src={LEGACY.image}
                 alt=""
                 aria-hidden
-                className="absolute inset-0 h-full w-full object-cover object-[72%_center] opacity-95"
+                className="absolute inset-0 h-full w-full object-cover object-[60%_center] opacity-95 sm:object-[72%_center]"
               />
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 hidden lg:block"
                 style={{
-                  background:
-                    "linear-gradient(90deg, rgba(13,47,36,0.92) 0%, rgba(13,47,36,0.72) 38%, rgba(13,47,36,0.28) 68%, rgba(13,47,36,0.12) 100%)",
+                  background: `linear-gradient(90deg, rgba(${INK_RGB},0.92) 0%, rgba(${INK_RGB},0.72) 38%, rgba(${INK_RGB},0.28) 68%, rgba(${INK_RGB},0.12) 100%)`,
                 }}
               />
               <div
                 className="absolute inset-0 lg:hidden"
                 style={{
-                  background:
-                    "linear-gradient(180deg, rgba(13,47,36,0.55) 0%, rgba(13,47,36,0.2) 42%, rgba(13,47,36,0.75) 100%)",
+                  background: `linear-gradient(180deg, rgba(${INK_RGB},0.45) 0%, rgba(${INK_RGB},0.15) 40%, rgba(${INK_RGB},0.78) 100%)`,
                 }}
               />
 
-              <div className="relative z-[1] flex h-full flex-col justify-end px-6 py-8 sm:px-8 sm:py-10 lg:justify-center lg:px-10 lg:py-12 xl:px-12">
-                <div className="max-w-[18rem] sm:max-w-[20rem] lg:max-w-[22rem]">
+              <div className="relative z-[1] flex h-full flex-col justify-end px-5 py-7 sm:px-8 sm:py-10 lg:justify-center lg:px-10 lg:py-12 xl:px-12">
+                <div className="max-w-[17rem] sm:max-w-[20rem] lg:max-w-[22rem]">
                   <span
                     aria-hidden
-                    className="mb-4 block h-px w-12 sm:mb-5 sm:w-14"
+                    className="mb-3 block h-px w-10 sm:mb-5 sm:w-14"
                     style={{ backgroundColor: GOLD }}
                   />
                   <h2
-                    className="text-[clamp(1.45rem,3.2vw,2.35rem)] font-medium uppercase leading-[1.18] tracking-[0.02em] text-white"
+                    className="text-[clamp(1.25rem,5.5vw,2.35rem)] font-medium uppercase leading-[1.18] tracking-[0.02em] text-white"
                     style={{ fontFamily: "var(--imp-display)" }}
                   >
                     <span className="block">All this, backed by a</span>
@@ -205,7 +204,7 @@ function LegacyCard() {
                   </h2>
                   <span
                     aria-hidden
-                    className="mt-4 block h-px w-12 sm:mt-5 sm:w-14"
+                    className="mt-3 block h-px w-10 sm:mt-5 sm:w-14"
                     style={{ backgroundColor: GOLD }}
                   />
                 </div>
@@ -215,36 +214,39 @@ function LegacyCard() {
             <TimelineRail className="hidden lg:flex" />
 
             <div
-              className="flex flex-1 flex-col justify-center px-5 py-6 sm:px-8 sm:py-5 lg:px-9 lg:py-6 xl:px-11"
+              className="flex flex-1 flex-col justify-center px-4 py-4 sm:px-8 sm:py-5 lg:px-9 lg:py-6 xl:px-11"
               style={{ backgroundColor: CARD }}
             >
               <ul>
                 {LEGACY.stats.map((stat, i) => (
                   <li
                     key={stat.label}
-                    className={`flex items-center gap-4 py-5 sm:gap-5 sm:py-6 ${
+                    className={`flex items-center gap-3 py-4 sm:gap-5 sm:py-6 ${
                       i > 0 ? "border-t border-black/[0.08]" : ""
                     }`}
                   >
                     <span
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[0.7rem] shadow-[0_8px_18px_-10px_rgba(13,47,36,0.35)] sm:h-12 sm:w-12 sm:rounded-[0.8rem]"
-                      style={{ backgroundColor: "#f0ebe3" }}
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[0.7rem] shadow-[0_8px_18px_-10px_rgba(10,10,10,0.2)] sm:h-12 sm:w-12 sm:rounded-[0.8rem]"
+                      style={{ backgroundColor: STONE }}
                     >
                       <StatIcon type={stat.icon} />
                     </span>
                     <span
                       aria-hidden
-                      className="h-9 w-px shrink-0 sm:h-10"
+                      className="h-8 w-px shrink-0 sm:h-10"
                       style={{ backgroundColor: GOLD }}
                     />
                     <span className="min-w-0">
                       <span
-                        className="block text-[1.65rem] font-medium uppercase leading-none tracking-[-0.02em] sm:text-[1.9rem] lg:text-[2.05rem]"
+                        className="block text-[1.4rem] font-medium uppercase leading-none tracking-[-0.02em] sm:text-[1.9rem] lg:text-[2.05rem]"
                         style={{ fontFamily: "var(--imp-display)", color: GOLD }}
                       >
                         {stat.value}
                       </span>
-                      <span className="mt-1.5 block text-[13px] font-medium text-[#3a3a3a] sm:text-[14px]">
+                      <span
+                        className="mt-1.5 block text-[12px] font-medium leading-snug sm:text-[14px]"
+                        style={{ color: MUTED }}
+                      >
                         {stat.label}
                       </span>
                     </span>

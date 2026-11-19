@@ -37,11 +37,11 @@ export default function ContactForm({ compact = false }) {
   };
 
   const field =
-    "mt-1.5 h-11 w-full rounded-full border border-black/[0.08] bg-[#fffdf9] px-4 text-[14px] outline-none transition focus:border-[var(--imp-gold)] sm:mt-2 sm:h-12 sm:px-5";
+    "mt-1.5 h-11 w-full rounded-full border border-black/[0.08] bg-[#f7f7f7] px-4 text-[14px] outline-none transition focus:border-[var(--imp-gold)] focus:bg-white sm:mt-2 sm:h-12 sm:px-5";
 
   return (
     <form onSubmit={onSubmit} className="space-y-3 sm:space-y-4">
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
         <label className="block min-w-0">
           <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--imp-gold-dark)] sm:text-[11px]">
             Name
@@ -117,7 +117,7 @@ export default function ContactForm({ compact = false }) {
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
-            className="mt-1.5 min-h-[4.5rem] w-full rounded-2xl border border-black/[0.08] bg-[#fffdf9] px-4 py-3 text-[14px] outline-none transition focus:border-[var(--imp-gold)] sm:mt-2 sm:min-h-[7.5rem] sm:px-5 sm:py-4"
+            className="mt-1.5 min-h-[4.5rem] w-full rounded-2xl border border-black/[0.08] bg-[#f7f7f7] px-4 py-3 text-[14px] outline-none transition focus:border-[var(--imp-gold)] focus:bg-white sm:mt-2 sm:min-h-[7.5rem] sm:px-5 sm:py-4"
             placeholder="Size, timeline…"
           />
         </label>

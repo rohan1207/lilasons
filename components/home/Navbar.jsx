@@ -93,8 +93,8 @@ export default function Navbar({ forceSolid = false }) {
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between gap-3 px-4 sm:px-6 lg:h-24 lg:gap-4 lg:px-8 xl:px-10 2xl:h-28">
-          <BrandMark imgClassName="h-14 w-auto max-h-14 shrink-0 object-contain object-left sm:h-16 sm:max-h-16 lg:h-16 lg:max-h-16 xl:h-20 xl:max-h-20 2xl:h-[6.25rem] 2xl:max-h-[6.25rem]" />
+        <nav className="relative mx-auto flex h-[4.5rem] max-w-[1600px] items-center justify-between gap-2 px-3 sm:h-20 sm:gap-3 sm:px-6 lg:h-24 lg:gap-4 lg:px-8 xl:px-10 2xl:h-28">
+          <BrandMark imgClassName="h-11 w-auto max-h-11 shrink-0 object-contain object-left sm:h-16 sm:max-h-16 lg:h-16 lg:max-h-16 xl:h-20 xl:max-h-20 2xl:h-[6.25rem] 2xl:max-h-[6.25rem]" />
 
           <ul className="z-10 hidden min-w-0 flex-1 items-center justify-center gap-x-2.5 lg:flex xl:gap-x-4 2xl:gap-x-6">
             {NAV_PRIMARY.map((link) => (

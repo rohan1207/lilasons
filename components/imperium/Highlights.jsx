@@ -2,133 +2,93 @@
 
 import { useRef } from "react";
 import { HIGHLIGHTS } from "@/lib/imperium";
-import { GOLD, STONE } from "@/components/imperium/theme";
+import { GOLD_DARK, PAPER } from "@/components/imperium/theme";
 
-export default function Highlights({ layout = "scroll" }) {
+export default function Highlights() {
   const scroller = useRef(null);
-  const isGrid = layout === "grid";
 
   const nudge = (dir) => {
     const el = scroller.current;
     if (!el) return;
-    el.scrollBy({ left: dir * Math.min(300, el.clientWidth * 0.72), behavior: "smooth" });
+    const card = el.querySelector("[data-highlight-card]");
+    const step = card ? card.getBoundingClientRect().width + 8 : el.clientWidth * 0.75;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
   return (
     <section
       id="highlights"
-      className="scroll-mt-28 border-t border-[var(--imp-stone-deep)] py-14 text-[var(--imp-ink)] sm:py-16 lg:py-20"
-      style={{ backgroundColor: STONE }}
+      className="scroll-mt-28 overflow-x-clip"
+      style={{ backgroundColor: PAPER }}
       aria-label="Highlights"
     >
-      <div className="mx-auto flex max-w-[1500px] items-end justify-between gap-4 px-6 sm:gap-6 sm:px-8 lg:px-12">
-        <div className="min-w-0 max-w-[42rem]">
-          <div className="flex items-center gap-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2a2a2a] sm:text-[12px]">
-              Highlights
-            </p>
-            <span className="h-px w-11 sm:w-14" style={{ backgroundColor: GOLD }} />
-          </div>
-          <h2
-            className="mt-3 text-[clamp(1.55rem,3.4vw,2.85rem)] font-medium leading-[1.08] tracking-[-0.03em]"
-            style={{ fontFamily: "var(--imp-display)" }}
-          >
-            The details that set Imperium apart
-          </h2>
-        </div>
-
-        {!isGrid ? (
-          <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              aria-label="Previous highlights"
-              onClick={() => nudge(-1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-[var(--imp-ink)] transition hover:border-[var(--imp-gold)] sm:h-11 sm:w-11"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              aria-label="Next highlights"
-              onClick={() => nudge(1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-[var(--imp-ink)] transition hover:border-[var(--imp-gold)] sm:h-11 sm:w-11"
-            >
-              →
-            </button>
-          </div>
-        ) : null}
+      {/* Title bar */}
+      <div
+        className="mt-6 px-4 py-4 text-center sm:mt-10 sm:px-6 sm:py-6 lg:mt-12 lg:py-7"
+        style={{ backgroundColor: GOLD_DARK }}
+      >
+        <h2
+          className="mx-auto max-w-[22rem] text-[clamp(0.95rem,3.8vw,1.65rem)] font-medium uppercase leading-snug tracking-[0.05em] text-white sm:max-w-none sm:leading-tight sm:tracking-[0.06em]"
+          style={{ fontFamily: "var(--imp-display)" }}
+        >
+          The highlights that set us apart.
+        </h2>
       </div>
 
-      {isGrid ? (
-        <div className="mx-auto mt-8 grid max-w-[1500px] gap-4 px-6 sm:mt-10 sm:grid-cols-2 sm:gap-6 sm:px-8 lg:grid-cols-3 lg:px-12">
-          {HIGHLIGHTS.map((item) => (
-            <article
-              key={item.id}
-              className="group flex flex-col overflow-hidden rounded-[1.1rem] bg-white shadow-[0_16px_36px_-24px_rgba(27,48,34,0.4)] ring-1 ring-black/[0.04] sm:rounded-[1.2rem]"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-[var(--imp-stone-deep)]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
-                  draggable={false}
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-4 sm:p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] sm:text-[11px]" style={{ color: GOLD }}>
-                  {item.kicker}
-                </p>
-                <h3
-                  className="mt-2 text-[1.15rem] font-medium leading-[1.1] tracking-[-0.02em] text-[var(--imp-ink)] sm:mt-2.5 sm:text-[1.4rem]"
-                  style={{ fontFamily: "var(--imp-display)" }}
-                >
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-[12.5px] leading-relaxed text-[#4a4a4a] sm:mt-2.5 sm:text-[14px]">
-                  {item.body}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
+      {/* Cards + side arrows */}
+      <div className="relative pb-6 sm:pb-8">
+        <button
+          type="button"
+          aria-label="Previous highlights"
+          onClick={() => nudge(-1)}
+          className="absolute left-1.5 top-1/2 z-[2] flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-black/15 bg-white/95 text-[var(--imp-ink)] shadow-sm transition hover:border-black/30 sm:left-4 sm:h-11 sm:w-11 lg:left-5"
+        >
+          <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="M12.5 5 7.5 10l5 5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-label="Next highlights"
+          onClick={() => nudge(1)}
+          className="absolute right-1.5 top-1/2 z-[2] flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-black/15 bg-white/95 text-[var(--imp-ink)] shadow-sm transition hover:border-black/30 sm:right-4 sm:h-11 sm:w-11 lg:right-5"
+        >
+          <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="m7.5 5 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
         <div
           ref={scroller}
-          className="mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-6 scroll-pr-6 px-6 pb-2 sm:mt-10 sm:gap-5 sm:scroll-pl-8 sm:scroll-pr-8 sm:px-8 lg:scroll-pl-12 lg:scroll-pr-12 lg:px-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth px-11 py-2 sm:gap-1.5 sm:px-16 lg:px-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {HIGHLIGHTS.map((item) => (
             <article
               key={item.id}
-              className="group flex w-[68vw] max-w-[240px] shrink-0 snap-start flex-col overflow-hidden rounded-[1rem] bg-white shadow-[0_16px_36px_-24px_rgba(27,48,34,0.4)] ring-1 ring-black/[0.04] sm:w-[280px] sm:max-w-none sm:rounded-[1.15rem] lg:w-[300px]"
+              data-highlight-card
+              className="group relative aspect-[3/4] h-auto w-[68vw] max-w-[260px] shrink-0 snap-center overflow-hidden sm:aspect-auto sm:h-[420px] sm:w-[260px] sm:max-w-none md:h-[460px] md:w-[280px] lg:h-[520px] lg:w-[300px]"
             >
-              <div className="relative aspect-[5/4] overflow-hidden bg-[var(--imp-stone-deep)] sm:aspect-[3/4]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.04]"
-                  draggable={false}
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-3.5 sm:p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] sm:text-[11px] sm:tracking-[0.16em]" style={{ color: GOLD }}>
-                  {item.kicker}
-                </p>
-                <h3
-                  className="mt-1.5 text-[1.05rem] font-medium leading-[1.12] tracking-[-0.02em] text-[var(--imp-ink)] sm:mt-2.5 sm:text-[1.45rem] sm:leading-[1.08]"
-                  style={{ fontFamily: "var(--imp-display)" }}
-                >
-                  {item.title}
-                </h3>
-                <p className="mt-2 line-clamp-3 text-[12px] leading-relaxed text-[#4a4a4a] sm:mt-3 sm:line-clamp-none sm:text-[14px]">
-                  {item.body}
-                </p>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.image}
+                alt={item.title}
+                className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
+                draggable={false}
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/70 via-black/25 to-transparent"
+                aria-hidden
+              />
+              <h3
+                className="absolute inset-x-0 bottom-0 z-[1] px-3 pb-4 text-center text-[11px] font-medium uppercase leading-snug tracking-[0.04em] text-white sm:px-4 sm:pb-6 sm:text-[13px] lg:text-[14px]"
+                style={{ fontFamily: "var(--imp-display)" }}
+              >
+                {item.title}
+              </h3>
             </article>
           ))}
         </div>
-      )}
+      </div>
     </section>
   );
 }

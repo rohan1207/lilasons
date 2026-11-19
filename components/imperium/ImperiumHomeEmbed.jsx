@@ -12,9 +12,9 @@ export default function ImperiumHomeEmbed() {
     <div className="imperium-root">
       <HomeHero />
       <Highlights />
+      <LocationMap />
       <FloorPlans />
       <Proximity />
-      <LocationMap linked={false} />
       <Legacy />
       <EnquirySection />
     </div>

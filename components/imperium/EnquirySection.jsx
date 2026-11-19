@@ -14,7 +14,7 @@ export default function EnquirySection() {
   return (
     <section
       id="enquire"
-      className="relative scroll-mt-24 overflow-hidden border-t border-[var(--imp-stone-deep)] px-5 py-10 sm:px-8 sm:py-18 lg:px-10 lg:py-22"
+      className="relative scroll-mt-24 overflow-x-clip border-t border-[var(--imp-stone-deep)] px-4 py-9 sm:px-8 sm:py-18 lg:px-10 lg:py-22"
       style={{ backgroundColor: STONE }}
       aria-label="Enquiry"
     >
@@ -33,16 +33,16 @@ export default function EnquirySection() {
 
       <div className="relative z-[1] mx-auto max-w-[1500px]">
         <div className="grid items-start gap-5 sm:gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 xl:gap-16">
-          <div className="max-w-xl">
+          <div className="min-w-0 max-w-xl">
             <div className="flex items-center gap-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2a2a2a] sm:text-[12px]">
                 {ENQUIRY.eyebrow}
               </p>
-              <span className="h-px w-11 sm:w-14" style={{ backgroundColor: GOLD }} />
+              <span className="h-px w-8 shrink-0 sm:w-14" style={{ backgroundColor: GOLD }} />
             </div>
 
             <h2
-              className="mt-2.5 text-[clamp(1.55rem,4vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em] text-[var(--imp-ink)] sm:mt-3"
+              className="mt-2.5 text-[clamp(1.4rem,6vw,3rem)] font-medium leading-[1.1] tracking-[-0.03em] text-[var(--imp-ink)] sm:mt-3"
               style={{ fontFamily: "var(--imp-display)" }}
             >
               {titleParts[0]}
@@ -120,7 +120,7 @@ export default function EnquirySection() {
             </a>
           </div>
 
-          <div className="rounded-[1.15rem] bg-white p-4 shadow-[0_18px_40px_-26px_rgba(27,48,34,0.45)] ring-1 ring-black/[0.04] sm:rounded-[1.35rem] sm:p-7 lg:p-8">
+          <div className="min-w-0 rounded-[1rem] bg-white p-3.5 shadow-[0_18px_40px_-26px_rgba(10,10,10,0.3)] ring-1 ring-black/[0.04] sm:rounded-[1.35rem] sm:p-7 lg:p-8">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] sm:text-[12px]" style={{ color: GOLD }}>
               Send an enquiry
             </p>

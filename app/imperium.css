@@ -17,6 +17,9 @@
   font-weight: 500;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .imperium-root * {
