@@ -72,20 +72,19 @@ export default function ContactPage() {
 
   return (
     <PageShell>
-      {/* Full-viewport map hero */}
-      <section className="relative flex h-dvh max-h-dvh min-h-dvh overflow-hidden bg-neutral-200">
-        <iframe
-          title="Lilasons RR Realty Developers office location"
-          src={CONTACT.mapEmbed}
-          className="absolute inset-0 h-full w-full border-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
+      {/* Full-viewport property hero */}
+      <section className="relative flex h-dvh max-h-dvh min-h-dvh overflow-hidden bg-neutral-900">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/contact/contact-hero.jpg"
+          alt="Lilasons RR Realty premium residential living"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          draggable={false}
         />
 
-        {/* Soft scrim so type stays readable over the map */}
+        {/* Soft scrim so type stays readable over the image */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/15"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/20"
           aria-hidden
         />
 

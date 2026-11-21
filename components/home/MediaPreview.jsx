@@ -42,8 +42,8 @@ function buildGalleryItems() {
   const extras = [
     {
       src: "/welcome/welcome-aurangabad.jpg",
-      alt: "Lilasons residential living in Aurangabad",
-      title: "Aurangabad",
+      alt: "Lilasons residential living in Chhatrapati Sambhaji Nagar",
+      title: "Chhatrapati Sambhaji Nagar",
       subtitle: "Residences",
     },
     {

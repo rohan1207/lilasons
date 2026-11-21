@@ -60,14 +60,14 @@
 | Line 1 | Office No. 119, Amrut Sai Solitaire |
 | Line 2 | Beside Goldie Theatre, Railway Station Road |
 | Building | Amrut Sai Solitaire, Railway Station Road, MIDC |
-| City | Aurangabad (Chhatrapati Sambhaji Nagar) |
+| City | Chhatrapati Sambhaji Nagar |
 | State | Maharashtra |
 | PIN | 431001 |
 | Country | India |
-| Short | Aurangabad, Maharashtra |
-| Full | Office No. 119, Amrut Sai Solitaire, Beside Goldie Theatre, Railway Station Road, Aurangabad - 431001 |
+| Short | Chhatrapati Sambhaji Nagar, Maharashtra |
+| Full | Office No. 119, Amrut Sai Solitaire, Beside Goldie Theatre, Railway Station Road, Chhatrapati Sambhaji Nagar - 431001 |
 
-**Maps query:** `Amrut+Sai+Solitaire,+Railway+Station+Road,+Aurangabad,+Maharashtra+431001`
+**Maps query:** `Amrut+Sai+Solitaire,+Railway+Station+Road,+Chhatrapati+Sambhaji+Nagar,+Maharashtra+431001`
 
 **Contact page copy**
 
@@ -78,7 +78,7 @@
 | Title | Contact Us |
 | Intro | Better yet, see us in person! |
 | Body | We love our customers, so feel free to visit anytime during business hours. |
-| Hero body | Office No. 119, Amrut Sai Solitaire — Railway Station Road, Aurangabad. Reach us by phone, WhatsApp, or drop by. |
+| Hero body | Office No. 119, Amrut Sai Solitaire — Railway Station Road, Chhatrapati Sambhaji Nagar. Reach us by phone, WhatsApp, or drop by. |
 | WhatsApp label | Message us on WhatsApp |
 | Form title | Send us a message |
 | Form body | Tell us what you’re looking for — we’ll get back shortly during business hours. |
@@ -137,7 +137,7 @@
 | Field | Value |
 |-------|--------|
 | Eyebrow | — Portfolio |
-| Kicker | Across Aurangabad |
+| Kicker | Across Chhatrapati Sambhaji Nagar |
 | Title | Our Projects |
 | Body | Residential towers, row houses, commercial spaces, and plotted estates — each crafted by Lilasons RR Realty Developers for lasting living. |
 | CTA | Contact Us → `/contact` |
@@ -159,16 +159,16 @@
 | Category | Residential |
 | Index | 01 |
 | Location label | Golwadi |
-| Place line | Golwadi, Aurangabad — RERA P51500020039 |
+| Place line | Golwadi, Chhatrapati Sambhaji Nagar — RERA P51500020039 |
 | Tagline | Luxurious living in Golwadi |
 | RERA | P51500020039 |
-| Address | Gut No. 32, Golwadi, Paithan Road, Aurangabad, Maharashtra |
+| Address | Gut No. 32, Golwadi, Paithan Road, Chhatrapati Sambhaji Nagar, Maharashtra |
 | Options | 1 BHK, 2 BHK, 3 BHK, 4 BHK |
 | Page | `/projects/amrut-sai-gold-star` |
 | Cover image | `/projects/project-marina.jpg` |
 
 **Summary**  
-Indulge in luxurious living with Amrut Sai Gold Star in Golwadi, Aurangabad, brought to you by Lilasons RR Realty Developers. This exceptional residential project offers a perfect blend of contemporary architecture and cutting-edge features, promising you a comfortable and opulent lifestyle.
+Indulge in luxurious living with Amrut Sai Gold Star in Golwadi, Chhatrapati Sambhaji Nagar, brought to you by Lilasons RR Realty Developers. This exceptional residential project offers a perfect blend of contemporary architecture and cutting-edge features, promising you a comfortable and opulent lifestyle.
 
 **Brief**  
 Sprawling over a colossal area of 1.76 acres of land, Amrut Sai Gold Star boasts of 9 majestic towers, each towering up to 4 floors. Revel in the grandeur of the 150 exquisite units on offer, ranging in size from a lavish 30.0 Sq.M to an expansive 51.0 Sq.M. Come, experience the epitome of luxury living with Amrut Sai Gold Star!
@@ -197,16 +197,16 @@ Located in Upcoming Posh Area · Children Play Area · Landscape Garden · Joggi
 | Category | Row House |
 | Index | 02 |
 | Location label | Golwadi |
-| Place line | Golwadi, Aurangabad — RERA P51500050887 |
+| Place line | Golwadi, Chhatrapati Sambhaji Nagar — RERA P51500050887 |
 | Tagline | 32 exclusive row houses |
 | RERA | P51500050887 |
-| Address | Gut No. 32, Golwadi, Paithan Road, Aurangabad, Maharashtra |
+| Address | Gut No. 32, Golwadi, Paithan Road, Chhatrapati Sambhaji Nagar, Maharashtra |
 | Options | 4 BHK Row Houses - Road or Internal Facing Options |
 | Page | `/projects/asgs-ph-ii-row-house` |
 | Cover image | `/projects/project-palm.jpg` |
 
 **Summary**  
-Experience luxurious living at Gold Stars' 32 Row Houses, an exquisite residential project in Golwadi, Aurangabad, presented by Lilasons RR Realty Developers.
+Experience luxurious living at Gold Stars' 32 Row Houses, an exquisite residential project in Golwadi, Chhatrapati Sambhaji Nagar, presented by Lilasons RR Realty Developers.
 
 **Brief**  
 Spread across a sprawling 1.5 acres of land, this exclusive project offers 32 splendid row houses, each a testament to the perfect blend of contemporary design and modern-day amenities. Every house in Lila's 32 Crown stands tall at 2 floors, with a terrace that offers a breathtaking view of the surroundings. The built-up area of each row house is approximately 2300 Sq ft, providing ample living space for you and your family.
@@ -235,16 +235,16 @@ Located in Upcoming Posh Area · Children Play Area · Landscape Garden · Joggi
 | Category | Residential |
 | Index | 03 |
 | Location label | Railway Station |
-| Place line | MIDC, Aurangabad — RERA P51500011307 |
+| Place line | MIDC, Chhatrapati Sambhaji Nagar — RERA P51500011307 |
 | Tagline | Luxury living near the railway station |
 | RERA | P51500011307 |
-| Address | CTS no. 18762, Near Hamalawada, MIDC, Aurangabad, Maharashtra 431005 |
+| Address | CTS no. 18762, Near Hamalawada, MIDC, Chhatrapati Sambhaji Nagar, Maharashtra 431005 |
 | Options | 2 BHK, 3 BHK, 3 BHK Duplex Flats, 4 BHK |
 | Page | `/projects/amrut-sai-plaza-ph-ii` |
 | Cover image | `/projects/project-downtown.jpg` |
 
 **Summary**  
-Following the monumental success of Sai Plaza Ph-1, Lilasons RR Realty Developers proudly present Amrut Sai Plaza Ph-2 — an exclusive residential project that redefines luxury living in Aurangabad.
+Following the monumental success of Sai Plaza Ph-1, Lilasons RR Realty Developers proudly present Amrut Sai Plaza Ph-2 — an exclusive residential project that redefines luxury living in Chhatrapati Sambhaji Nagar.
 
 **Brief**  
 Spanning over a colossal area of 3.85 acres, this project offers a total of 304 units that cater to the varied needs of modern-day families. The housing society comprises of 9 majestic towers, each rising up to 4 floors, offering a stunning view of the surroundings. Indulge in a host of premium amenities including a beautiful temple, a water softener plant, and a mesmerizing fountain.
@@ -273,10 +273,10 @@ Located walking distance from Railway Station · Children Play Area · Sand Pit 
 | Category | Luxury Living |
 | Index | 05 |
 | Location label | Golden City, Itkheda |
-| Place line | Itkheda, Aurangabad |
-| Tagline | Luxurious flats and commercial spaces in Aurangabad's most posh area |
+| Place line | Itkheda, Chhatrapati Sambhaji Nagar |
+| Tagline | Luxurious flats and commercial spaces in Chhatrapati Sambhaji Nagar's most posh area |
 | RERA | — (not listed in data) |
-| Address | Gut No. 68, Behind Nath Seeds, Itkheda, Aurangabad - 431001 |
+| Address | Gut No. 68, Behind Nath Seeds, Itkheda, Chhatrapati Sambhaji Nagar - 431001 |
 | Options | Commercial Shops/Offices, 3 BHK, 4 BHK |
 | WhatsApp CTA | Yes |
 | Page | `/projects/golden-heights` |
@@ -293,7 +293,7 @@ With unmatched elegance, world-class amenities, and convenient connectivity to m
 | Label | Value |
 |-------|--------|
 | Typology | Luxury Residences |
-| Location | Itkheda, Aurangabad |
+| Location | Itkheda, Chhatrapati Sambhaji Nagar |
 | Options | 3 BHK · 4 BHK |
 | Also | Shops & Offices |
 | Highlights | Turf · Open Gym · Lifts |
@@ -314,16 +314,16 @@ Impressive Main Gate and Lobbies · Automatic Barrier Entry System · Fire Fight
 | Category | Commercial |
 | Index | 04 |
 | Location label | Station Road |
-| Place line | Railway Station Road, Aurangabad |
+| Place line | Railway Station Road, Chhatrapati Sambhaji Nagar |
 | Tagline | Shops & offices in the city centre |
 | RERA | — (not listed in data) |
-| Address | Plot No.6, Beside Goldie Cinema, Railway Station Road, Aurangabad, Maharashtra 431005 |
+| Address | Plot No.6, Beside Goldie Cinema, Railway Station Road, Chhatrapati Sambhaji Nagar, Maharashtra 431005 |
 | Options | Shops and Office Spaces |
 | Page | `/projects/amrut-sai-solitaire` |
 | Cover image | `/projects/project-downtown.jpg` |
 
 **Summary**  
-Amrut Sai Solitaire, located in the heart of Aurangabad, is a commercial development by Shivaji Construction Company. The project offers a range of commercial shops at affordable prices — an ideal investment for businesses of all sizes.
+Amrut Sai Solitaire, located in the heart of Chhatrapati Sambhaji Nagar, is a commercial development by Shivaji Construction Company. The project offers a range of commercial shops at affordable prices — an ideal investment for businesses of all sizes.
 
 **Brief**  
 Equipped with all the necessary amenities, Amrut Sai Solitaire provides a conducive environment for businesses to thrive. Spread over an area of 0.31 acres, the project offers a total of 57 units — the perfect destination for businesses looking for a strategic location to grow and prosper.
@@ -357,7 +357,7 @@ Located in City Centre · Double Height Shops/Offices · Basement Parking · 4-S
 | Place line | Patoda, Chhatrapati Sambhaji Nagar |
 | Tagline | Unveiling Lilasons Golden Estate — the gateway to peace |
 | RERA | — (not listed in data) |
-| Address | Gut No. 18, Beside Sayadri School, Patoda, CSN — Lila Farm, Patoda, Aurangabad Division, Maharashtra, India |
+| Address | Gut No. 18, Beside Sayadri School, Patoda, CSN — Lila Farm, Patoda, Chhatrapati Sambhaji Nagar Division, Maharashtra, India |
 | Project phone | 9665283030 |
 | Options | Premium N.A. Plots |
 | WhatsApp CTA | Yes |
@@ -414,14 +414,14 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 |-------|--------|
 | Welcome eyebrow | Welcome to Lilasons RR Realty Developers |
 | Welcome title | Excellency Redefined as a Harmonious Blend of Trust & Design |
-| Welcome body | There's much to see here. So, take your time, look around, and learn all there is to know about us as a real estate developer. From the Lilasons Group's pioneering legacy since 1971 to homes, row houses, commercial spaces, and plotted estates across Aurangabad — we hope you enjoy our site and take a moment to explore our flats for sale. |
+| Welcome body | There's much to see here. So, take your time, look around, and learn all there is to know about us as a real estate developer. From the Lilasons Group's pioneering legacy since 1971 to homes, row houses, commercial spaces, and plotted estates across Chhatrapati Sambhaji Nagar — we hope you enjoy our site and take a moment to explore our flats for sale. |
 | Welcome CTA | Find out more → `/our-company` |
 
 **Welcome panels**
 
 | Label | Image |
 |-------|--------|
-| AURANGABAD | `/welcome/welcome-aurangabad.jpg` |
+| CHHATRAPATI SAMBHAJI NAGAR | `/welcome/welcome-aurangabad.jpg` |
 | MAHARASHTRA | `/welcome/welcome-estate.jpg` |
 
 **Subscribe**
@@ -439,7 +439,7 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 |-------|--------|
 | Title | Homes shaped by trust. |
 | Subtitle | Exceptional residences for a more human tomorrow. |
-| Body | From thoughtfully planned towers to gated estates across Aurangabad — Lilasons crafts spaces where families grow, light settles, and lasting value begins. |
+| Body | From thoughtfully planned towers to gated estates across Chhatrapati Sambhaji Nagar — Lilasons crafts spaces where families grow, light settles, and lasting value begins. |
 | CTA | Book a viewing → `/contact` |
 | Stats | 30+ Years of excellence · 540+ Homes & spaces |
 
@@ -474,7 +474,7 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 |-------|--------|
 | Badge | Since 1971 · Lilasons Group |
 | Title | Three houses. Decades of trust for lasting homes. |
-| Body | Every Lilasons address is backed by a pioneering group legacy — residences, growth corridors, and commercial spaces across Aurangabad, held to one standard of craft. |
+| Body | Every Lilasons address is backed by a pioneering group legacy — residences, growth corridors, and commercial spaces across Chhatrapati Sambhaji Nagar, held to one standard of craft. |
 | CTA | Explore Our Brands → `/our-company` |
 | Video | `/video.mp4` |
 
@@ -499,12 +499,12 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 
 | Field | Value |
 |-------|--------|
-| Kicker | Lilasons · Aurangabad |
+| Kicker | Lilasons · Chhatrapati Sambhaji Nagar |
 | Title | Excellency / Redefined |
 | Hint | Scroll to reveal |
 | Overlay eyebrow | — Our Promise |
 | Overlay title | Building your foundation, / your environment |
-| Overlay body | From thoughtfully planned homes to commercial destinations — Lilasons RR Realty Developers crafts spaces for families and businesses across Aurangabad. |
+| Overlay body | From thoughtfully planned homes to commercial destinations — Lilasons RR Realty Developers crafts spaces for families and businesses across Chhatrapati Sambhaji Nagar. |
 | Image | `/about/expand-story-hero.jpg` |
 
 ---
@@ -517,7 +517,7 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 | Title | About Us |
 | Hero kicker | 30 Years and Counting |
 | Hero title | Excellency Redefined |
-| Hero body | From a pioneering group legacy since 1971 to homes, commercial spaces, and estates across Aurangabad — Lilasons crafts places where families and businesses belong. |
+| Hero body | From a pioneering group legacy since 1971 to homes, commercial spaces, and estates across Chhatrapati Sambhaji Nagar — Lilasons crafts places where families and businesses belong. |
 | Hero CTAs | View Projects → `/projects` · Contact Us → `/contact` |
 | Hero image | `/about/about-hero.jpg` |
 
@@ -526,7 +526,7 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 | Field | Value |
 |-------|--------|
 | Eyebrow | — Our Story |
-| Lead | A pioneering group shaping Aurangabad’s skyline with trust and design. |
+| Lead | A pioneering group shaping Chhatrapati Sambhaji Nagar’s skyline with trust and design. |
 | Heading | Rooted in legacy, reaching for excellence. |
 | Quote | From industry icons to lasting homes — one standard of craft. |
 
@@ -535,20 +535,20 @@ Gated development · Scenic surroundings · Modern infrastructure · Lifestyle a
 | # | Title | Body (summary) |
 |---|--------|----------------|
 | 01 | Born of enterprise | Since 1971 — Kangaro, Khajuraho; steel, aluminium, floriculture, and beyond. |
-| 02 | A bold step into real estate | Landmark residential and commercial projects reshaping Aurangabad. |
+| 02 | A bold step into real estate | Landmark residential and commercial projects reshaping Chhatrapati Sambhaji Nagar. |
 | 03 | Built on trust | Market insight, impeccable construction, state-of-the-art design. |
 
 **Full paragraphs (site)**
 
 1. The Lilasons Group, a pioneering entrepreneurial entity since 1971, has an illustrious history rooted in the dynamic Indian beer industry, with world-renowned brands such as Kangaro and Khajuraho.
-2. In a bold move, the group ventured into real estate — starting with landmark projects in Aurangabad and maintaining a reputation for quality residential and commercial buildings.
+2. In a bold move, the group ventured into real estate — starting with landmark projects in Chhatrapati Sambhaji Nagar and maintaining a reputation for quality residential and commercial buildings.
 3. Deep market understanding and impeccable construction remain the ideals that drive Lilasons forward as a trailblazer in the city’s real estate sphere.
 
 **Philosophy / values**
 
 | Title | Body |
 |-------|------|
-| State of the Art Design | Associates of architects and designers craft spectacular residential and commercial spaces across Aurangabad. |
+| State of the Art Design | Associates of architects and designers craft spectacular residential and commercial spaces across Chhatrapati Sambhaji Nagar. |
 | Impeccable Construction | A steadfast commitment to quality, market understanding, and delivering homes families can trust. |
 | Lilasons Cares | Through Lilasons Charitable Trust we support hospitals, schools, and community spaces including a one-kilometer jogging track. |
 | Legacy of Trust | From Kangaro and Khajuraho to real estate landmarks — a pioneering ethos since 1971. |
@@ -560,7 +560,7 @@ Title: State of the Art Designs — Our associates of architects and designers h
 Lilasons Charitable Trust is a non-profit trust established solely for extending a helping hand to the needy. In the field of health, Lilasons has donated fully automated Ambulances to hospitals in the region. Lilasons directors have actively taken part in development of hospitals and schools in the city. We also developed a one-kilometer long jogging track spread across an eight-acre area full of amazing flora.
 
 **Presence**  
-Aurangabad — Based in Chhatrapati Sambhaji Nagar, Lilasons RR Realty Developers crafts residences, commercial destinations, and plotted estates for the city we call home.
+Chhatrapati Sambhaji Nagar — Based in Chhatrapati Sambhaji Nagar, Lilasons RR Realty Developers crafts residences, commercial destinations, and plotted estates for the city we call home.
 
 **About stats**
 
@@ -578,7 +578,7 @@ Aurangabad — Based in Chhatrapati Sambhaji Nagar, Lilasons RR Realty Developer
 | 1971 | Lilasons Group founded — pioneering spirit begins |
 | 1980s | Iconic brands Kangaro & Khajuraho establish national reputation |
 | 1990s | Diversification into stainless steel, aluminium & floriculture |
-| 2000s | Entry into real estate — landmark projects reshape Aurangabad |
+| 2000s | Entry into real estate — landmark projects reshape Chhatrapati Sambhaji Nagar |
 | Today | Homes, row houses, commercial & estates across the city |
 
 ---
@@ -614,7 +614,7 @@ Aurangabad — Based in Chhatrapati Sambhaji Nagar, Lilasons RR Realty Developer
 | Eyebrow | — Walkthrough |
 | Kicker | See before you decide |
 | Title | Walkthroughs |
-| Body | Step inside Lilasons homes through curated films — from our intro story to featured developments across Aurangabad. |
+| Body | Step inside Lilasons homes through curated films — from our intro story to featured developments across Chhatrapati Sambhaji Nagar. |
 | CTAs | Book a Visit → `/contact` · View Projects → `/projects` |
 | Hero | `/walkthrough/walkthrough-hero.jpg` |
 
@@ -663,16 +663,16 @@ Aurangabad — Based in Chhatrapati Sambhaji Nagar, Lilasons RR Realty Developer
 | Field | Value |
 |-------|--------|
 | Eyebrow | — Insights |
-| Kicker | Guides from Aurangabad |
+| Kicker | Guides from Chhatrapati Sambhaji Nagar |
 | Title | Blogs |
-| Body | Practical notes on homes, amenities, trust, and investing — drawn from Lilasons projects and decades of building in Aurangabad. |
+| Body | Practical notes on homes, amenities, trust, and investing — drawn from Lilasons projects and decades of building in Chhatrapati Sambhaji Nagar. |
 
 | # | Slug | Title | Category | Date | Read time |
 |---|------|--------|----------|------|-----------|
-| 1 | `how-to-choose-a-home-in-aurangabad` | How to Choose a Home in Aurangabad: A Practical Buyer’s Guide | Buying Guide | 12 Mar 2026 | 6 min |
+| 1 | `how-to-choose-a-home-in-chhatrapati-sambhaji-nagar` | How to Choose a Home in Chhatrapati Sambhaji Nagar: A Practical Buyer’s Guide | Buying Guide | 12 Mar 2026 | 6 min |
 | 2 | `amenities-that-define-everyday-living` | Amenities That Define Everyday Living in Modern Communities | Lifestyle | 28 Feb 2026 | 5 min |
 | 3 | `why-rera-and-legacy-matter-in-real-estate` | Why RERA and Developer Legacy Matter When You Buy | Trust | 10 Feb 2026 | 5 min |
-| 4 | `investing-in-aurangabad-real-estate` | Investing in Aurangabad Real Estate: Corridors Worth Watching | Investment | 22 Jan 2026 | 7 min |
+| 4 | `investing-in-chhatrapati-sambhaji-nagar-real-estate` | Investing in Chhatrapati Sambhaji Nagar Real Estate: Corridors Worth Watching | Investment | 22 Jan 2026 | 7 min |
 | 5 | `first-time-home-buyers-checklist` | A First-Time Home Buyer’s Checklist for Lilasons Communities | Buying Guide | 08 Jan 2026 | 6 min |
 
 **Author (all):** Lilasons RR Realty Developers  

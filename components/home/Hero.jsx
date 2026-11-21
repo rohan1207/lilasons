@@ -63,6 +63,23 @@ function findDrawable(index) {
   return img ? { img, index: i } : null;
 }
 
+/** Instant jump past the hero sequence → Showcase (#signature). */
+function scrollPastIntro(targetEl) {
+  if (!targetEl || typeof window === "undefined") return;
+
+  const lenis = window.__tskLenis;
+  if (lenis && typeof lenis.scrollTo === "function") {
+    lenis.scrollTo(targetEl, { offset: 0, immediate: true });
+  } else {
+    targetEl.scrollIntoView({ behavior: "auto", block: "start" });
+  }
+
+  // Sync ScrollTrigger / sticky hero state after the hard jump
+  requestAnimationFrame(() => {
+    ScrollTrigger.update();
+  });
+}
+
 export default function Hero() {
   const blockRef = useRef(null);
   const canvasRef = useRef(null);
@@ -71,6 +88,7 @@ export default function Hero() {
   const restRef = useRef(null);
   const cloudsRef = useRef(null);
   const scrollHintRef = useRef(null);
+  const skipRef = useRef(null);
   const [ready, setReady] = useState(false);
   const [phone, setPhone] = useState(false);
 
@@ -168,9 +186,20 @@ export default function Hero() {
       return found;
     };
 
+    const syncSkipVisibility = (progress) => {
+      const skip = skipRef.current;
+      if (!skip) return;
+      const show = progress < 0.985;
+      skip.style.opacity = show ? "1" : "0";
+      skip.style.visibility = show ? "visible" : "hidden";
+      skip.tabIndex = show ? 0 : -1;
+      skip.setAttribute("aria-hidden", show ? "false" : "true");
+    };
+
     const applyProgress = (progress) => {
       const play = Math.min(1, Math.max(0, progress) / frameProgressEnd);
       targetFrameRef.current = play * (FRAME_COUNT - 1);
+      syncSkipVisibility(progress);
     };
 
     /** Shared playhead — same smoothing desktop uses. */
@@ -395,7 +424,7 @@ export default function Hero() {
             style={{ opacity: 1 }}
           >
             <p className="type-label mb-3 text-[11px] !text-neutral-950 sm:mb-4 sm:text-[12px] lg:mb-5 lg:text-[13px]">
-              Lilasons RR · Aurangabad
+              Lilasons RR Realty · Chhatrapati Sambhaji Nagar
             </p>
             <h1 className="type-heading mx-auto max-w-[12ch] text-[clamp(2.15rem,8.2vw,7rem)] leading-[0.9] text-neutral-950">
               {BRAND.headline}
@@ -427,16 +456,17 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* Scroll cue — fades with intro copy; shifted up to leave room for Skip */}
         <div
           ref={scrollHintRef}
-          className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 sm:bottom-9"
+          className="pointer-events-none absolute bottom-[4.75rem] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2.5 sm:bottom-[5.5rem] sm:gap-3"
           style={{ opacity: 1 }}
         >
           <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-neutral-950 sm:text-[11px]">
             Scroll to explore
           </p>
           <motion.div
-            className="flex h-9 w-5 items-start justify-center rounded-full border border-neutral-800/45 pt-1.5"
+            className="flex h-8 w-[1.15rem] items-start justify-center rounded-full border border-neutral-800/45 pt-1.5 sm:h-9 sm:w-5"
             aria-hidden="true"
           >
             <motion.span
@@ -450,7 +480,7 @@ export default function Hero() {
             />
           </motion.div>
           <motion.div
-            className="h-4 w-px origin-top bg-neutral-800/50"
+            className="h-3 w-px origin-top bg-neutral-800/50 sm:h-4"
             animate={{ scaleY: [0.65, 1, 0.65], opacity: [0.4, 1, 0.4] }}
             transition={{
               duration: 1.6,
@@ -460,8 +490,22 @@ export default function Hero() {
           />
         </div>
 
+        {/* Skip intro — stays through the sequence; bottom-center (clear of WhatsApp FAB) */}
+        <button
+          ref={skipRef}
+          type="button"
+          onClick={() => {
+            const target = document.getElementById("signature");
+            if (target) scrollPastIntro(target);
+          }}
+          className="pointer-events-auto absolute bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-20 -translate-x-1/2 rounded-full border border-neutral-900/15 bg-white/55 px-3.5 py-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-neutral-900/75 backdrop-blur-sm transition-[color,background-color,border-color,opacity] duration-300 hover:border-neutral-900/35 hover:bg-white/80 hover:text-neutral-950 sm:bottom-5 sm:px-4 sm:py-1.5 sm:text-[10px]"
+          style={{ opacity: 1 }}
+        >
+          Skip intro
+        </button>
+
         <div
-          className={`pointer-events-none absolute inset-0 z-20 bg-neutral-950 transition-opacity duration-700 ${
+          className={`pointer-events-none absolute inset-0 z-[25] bg-neutral-950 transition-opacity duration-700 ${
             ready ? "opacity-0" : "opacity-100"
           }`}
         />

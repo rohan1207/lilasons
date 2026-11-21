@@ -195,7 +195,7 @@ export default function ProjectsIndex() {
               Looking for your next home?
             </h2>
             <p className="mt-4 text-base leading-relaxed text-neutral-600">
-              Walk through our developments across Aurangabad — residences, row
+              Walk through our developments across Chhatrapati Sambhaji Nagar — residences, row
               houses, commercial spaces, and plotted estates.
             </p>
           </div>

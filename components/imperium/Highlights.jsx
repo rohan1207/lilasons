@@ -66,11 +66,11 @@ export default function Highlights() {
             <article
               key={item.id}
               data-highlight-card
-              className="group relative aspect-[3/4] h-auto w-[68vw] max-w-[260px] shrink-0 snap-center overflow-hidden sm:aspect-auto sm:h-[420px] sm:w-[260px] sm:max-w-none md:h-[460px] md:w-[280px] lg:h-[520px] lg:w-[300px]"
+              className="group relative aspect-[3/4] h-auto w-[68vw] max-w-[260px] shrink-0 snap-center overflow-hidden rounded-[0.85rem] sm:aspect-auto sm:h-[420px] sm:w-[260px] sm:max-w-none sm:rounded-[1rem] md:h-[460px] md:w-[280px] lg:h-[520px] lg:w-[300px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={item.image}
+                src={`${item.image}?v=4`}
                 alt={item.title}
                 className="absolute inset-0 h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
                 draggable={false}

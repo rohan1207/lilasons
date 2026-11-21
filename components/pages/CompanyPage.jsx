@@ -467,7 +467,7 @@ export default function CompanyPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={ABOUT.presenceImage}
-              alt="Lilasons RR Realty Developers in Aurangabad"
+              alt="Lilasons RR Realty Developers in Chhatrapati Sambhaji Nagar"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </FadeUp>

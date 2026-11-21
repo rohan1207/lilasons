@@ -39,7 +39,14 @@ export default function ProjectDetail({ project }) {
     project.address ? { label: "Address", value: project.address } : null,
   ].filter(Boolean);
 
-  const phone = project.phone ? `+91 ${project.phone}` : BRAND.phones[0];
+  const contacts = project.contacts?.length
+    ? project.contacts
+    : project.phone
+      ? [{ name: null, phones: [project.phone] }]
+      : [];
+  const primaryPhone = contacts[0]?.phones?.[0]
+    ? `+91 ${contacts[0].phones[0]}`
+    : BRAND.phones[0];
   const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     project.address || project.title,
   )}`;
@@ -166,22 +173,42 @@ export default function ProjectDetail({ project }) {
                 ))}
               </dl>
 
-              <div className="mt-8 space-y-2 border-t border-black/10 pt-6 text-sm">
+              <div className="mt-8 space-y-4 border-t border-black/10 pt-6 text-sm">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-neutral-700">
                   {CONTACT.title}
                 </p>
-                <a
-                  href={`mailto:${BRAND.email}`}
-                  className="block font-medium text-[#0a0a0a] transition hover:opacity-70"
-                >
-                  {BRAND.email}
-                </a>
-                <a
-                  href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="block font-medium text-[#0a0a0a] transition hover:opacity-70"
-                >
-                  {phone}
-                </a>
+                {contacts.length > 0 ? (
+                  <ul className="space-y-3">
+                    {contacts.map((person) => (
+                      <li key={`${person.name || "contact"}-${person.phones.join("-")}`}>
+                        {person.name ? (
+                          <p className="font-medium text-[#0a0a0a]">{person.name}</p>
+                        ) : null}
+                        <div className="mt-0.5 space-y-0.5">
+                          {person.phones.map((num) => {
+                            const display = `+91 ${num}`;
+                            return (
+                              <a
+                                key={num}
+                                href={`tel:+91${String(num).replace(/\s/g, "")}`}
+                                className="block text-[#0a0a0a] transition hover:opacity-70"
+                              >
+                                {display}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <a
+                    href={`tel:${primaryPhone.replace(/\s/g, "")}`}
+                    className="block font-medium text-[#0a0a0a] transition hover:opacity-70"
+                  >
+                    {primaryPhone}
+                  </a>
+                )}
               </div>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">

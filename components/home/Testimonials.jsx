@@ -75,7 +75,7 @@ export default function Testimonials() {
             — From the city
           </p>
           <h2 className="type-heading mt-2 text-[clamp(2rem,4vw,3.4rem)] text-neutral-950">
-            Heard around Aurangabad
+            Heard around Chhatrapati Sambhaji Nagar
           </h2>
           <p className="type-body mt-4 text-[14px] text-neutral-700 sm:text-[15px]">
             Shop owners on Station Road, families in Golwadi and Itkheda, and

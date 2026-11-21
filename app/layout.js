@@ -18,9 +18,9 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata = {
-  title: "Lilasons RR Realty Developers | Homes & Flats in Aurangabad",
+  title: "Lilasons RR Realty Developers | Homes & Flats in Chhatrapati Sambhaji Nagar",
   description:
-    "Lilasons RR Realty Developers — Excellency Redefined. Building a Better Tomorrow. Residential & commercial projects in Aurangabad, Maharashtra.",
+    "Lilasons RR Realty Developers — Excellency Redefined. Building a Better Tomorrow. Residential & commercial projects in Chhatrapati Sambhaji Nagar, Maharashtra.",
 };
 
 export default function RootLayout({ children }) {
